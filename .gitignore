@@ -1,0 +1,12 @@
+.settings
+.project
+.classpath
+.settings
+.loadpath
+.metadata
+datanuclus.log
+target
+.jar
+.war
+.ear
+.class
