@@ -3,6 +3,7 @@ package es.deusto.spq.pojo;
 public class DirectMessage {
 
     private UserData userData;
+    private AdminData adminData;
     private MessageData messageData;
 
     public DirectMessage() {
@@ -24,4 +25,13 @@ public class DirectMessage {
     public MessageData getMessageData() {
         return this.messageData;
     }
+
+	public void setAdminData(AdminData adminData) {
+		this.adminData = adminData;
+		
+	}
+    public AdminData getAdminData() {
+        return this.adminData;
+    }
+
 }

@@ -1,6 +1,7 @@
 package es.deusto.spq.client;
 
 import javax.ws.rs.client.Client;
+
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
@@ -12,6 +13,7 @@ import javax.ws.rs.core.Response.Status;
 import es.deusto.spq.pojo.DirectMessage;
 import es.deusto.spq.pojo.MessageData;
 import es.deusto.spq.pojo.UserData;
+import es.deusto.spq.pojo.AdminData;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +24,9 @@ public class ExampleClient {
 
 	private static final String USER = "dipina";
 	private static final String PASSWORD = "dipina";
-
+	
+	private static final String SUPER_USER = "admin";
+	private static final String S_PASSWORD = "admin";
 
 	private Client client;
 	private WebTarget webTarget;
@@ -40,6 +44,20 @@ public class ExampleClient {
 		userData.setLogin(login);
 		userData.setPassword(password);
 		Response response = invocationBuilder.post(Entity.entity(userData, MediaType.APPLICATION_JSON));
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+		} else {
+			logger.info("User correctly registered");
+		}
+	}
+	public void registerAdmin(String login, String password) {
+		WebTarget registerAdminWebTarget = webTarget.path("register");
+		Invocation.Builder invocationBuilder = registerAdminWebTarget.request(MediaType.APPLICATION_JSON);
+		
+		AdminData AdminData = new AdminData();
+		AdminData.setLogin(login);
+		AdminData.setPassword(password);
+		Response response = invocationBuilder.post(Entity.entity(AdminData, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());
 		} else {
@@ -82,6 +100,10 @@ public class ExampleClient {
 
 		ExampleClient exampleClient = new ExampleClient(hostname, port);
 		exampleClient.registerUser(USER, PASSWORD);
+		exampleClient.registerAdmin(SUPER_USER, S_PASSWORD);
+		exampleClient.sayMessage(SUPER_USER, S_PASSWORD, "Prueba Admin");
+		
 		exampleClient.sayMessage(USER, PASSWORD, "This is a test!...");
+		exampleClient.sayMessage(USER, PASSWORD, "VIDEOCLUB");
 	}
 }
