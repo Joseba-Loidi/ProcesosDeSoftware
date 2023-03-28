@@ -7,7 +7,9 @@ import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
 
 import es.deusto.spq.server.jdo.User;
+import es.deusto.spq.server.jdo.Admin;
 import es.deusto.spq.server.jdo.Message;
+import es.deusto.spq.pojo.AdminData;
 import es.deusto.spq.pojo.DirectMessage;
 import es.deusto.spq.pojo.MessageData;
 import es.deusto.spq.pojo.UserData;
@@ -101,6 +103,44 @@ public class Resource {
 				user = new User(userData.getLogin(), userData.getPassword());
 				pm.makePersistent(user);					 
 				logger.info("User created: {}", user);
+			}
+			tx.commit();
+			return Response.ok().build();
+        }
+        finally
+        {
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+      
+		}
+	}
+	
+	///////////////////////////////////////
+	@POST
+	@Path("/adminRegister")
+	public Response registerAdmin(AdminData adminData) {
+		try
+        {	
+            tx.begin();
+            logger.info("Checking whether the user already exits or not: '{}'", adminData.getLogin());
+			Admin admin = null;
+			try {
+				admin = pm.getObjectById(Admin.class, adminData.getLogin());
+			} catch (javax.jdo.JDOObjectNotFoundException jonfe) {
+				logger.info("Exception launched: {}", jonfe.getMessage());
+			}
+			logger.info("Admin: {}", admin);
+			if (admin != null) {
+				logger.info("Setting password admin: {}", admin);
+				admin.setPassword(adminData.getPassword());
+				logger.info("Password set admin: {}", admin);
+			} else {
+				logger.info("Creating admin: {}", admin);
+				admin = new Admin(adminData.getLogin(), adminData.getPassword());
+				pm.makePersistent(admin);					 
+				logger.info("User created: {}", admin);
 			}
 			tx.commit();
 			return Response.ok().build();

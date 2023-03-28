@@ -51,7 +51,7 @@ public class ExampleClient {
 		}
 	}
 	public void registerAdmin(String login, String password) {
-		WebTarget registerAdminWebTarget = webTarget.path("register");
+		WebTarget registerAdminWebTarget = webTarget.path("adminRegister");
 		Invocation.Builder invocationBuilder = registerAdminWebTarget.request(MediaType.APPLICATION_JSON);
 		
 		AdminData AdminData = new AdminData();
@@ -61,7 +61,7 @@ public class ExampleClient {
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());
 		} else {
-			logger.info("User correctly registered");
+			logger.info("Admin correctly registered");
 		}
 	}
 
