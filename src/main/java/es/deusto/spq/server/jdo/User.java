@@ -2,11 +2,16 @@ package es.deusto.spq.server.jdo;
 
 import java.util.Set;
 
+
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.Join;
 import javax.jdo.annotations.Persistent;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 @PersistenceCapable
 public class User {
@@ -18,7 +23,8 @@ public class User {
 	@Join
 	Set<Message> messages = new HashSet<>();
 	
-	
+	@Join
+	List<Pelicula> peliculas = new ArrayList<>();
 	
 	public User(String login, String password) {
 		this.login = login;
@@ -31,6 +37,13 @@ public class User {
 
 	public void removeMessage(Message message) {
 		messages.remove(message);
+	}
+	public void alquilarPelicula(Pelicula pelicula) {
+		peliculas.add(pelicula);
+	}
+
+	public void devolverPelicula(Pelicula pelicula) {
+		peliculas.remove(pelicula);
 	}
 
 	public String getLogin() {
@@ -47,11 +60,22 @@ public class User {
 	
 	 public Set<Message> getMessages() {return this.messages;}
 	 
-	 public String toString() {
+	 
+	 
+	 public List<Pelicula> getPeliculas() {
+		return peliculas;
+	}
+
+
+	public String toString() {
 		StringBuilder messagesStr = new StringBuilder();
 		for (Message message: this.messages) {
 			messagesStr.append(message.toString() + " - ");
 		}
-        return "User: login --> " + this.login + ", password -->  " + this.password + ", messages --> [" + messagesStr + "]";
+		StringBuilder peliculasStr = new StringBuilder();  
+        for (Pelicula pelicula : peliculas) {
+        	peliculasStr.append(pelicula.toString() + " - ");
+		}
+        return "User: login --> " + this.login + ", password -->  " + this.password + ", messages --> [" + messagesStr + "]"+ ", peliculas --> [" + peliculasStr + "]" ;
     }
 }
