@@ -97,10 +97,12 @@ public class Resource {
 			if (user != null) {
 				logger.info("Setting password user: {}", user);
 				user.setPassword(userData.getPassword());
-				logger.info("Password set user: {}", user);
+				logger.info("Setting email user: {}", user);
+				user.setCorreo(userData.getCorreo());
+				logger.info("Password and Email set user: {}", user);
 			} else {
 				logger.info("Creating user: {}", user);
-				user = new User(userData.getLogin(), userData.getPassword());
+				user = new User(userData.getLogin(), userData.getPassword(), userData.getCorreo());
 				pm.makePersistent(user);					 
 				logger.info("User created: {}", user);
 			}

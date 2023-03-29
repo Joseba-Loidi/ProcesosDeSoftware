@@ -4,6 +4,7 @@ public class UserData {
 
     private String login;
     private String password;
+    private String correo;
 
     public UserData() {
         // required by serialization
@@ -25,7 +26,16 @@ public class UserData {
         this.password = password;
     }
 
-    public String toString() {
-        return "[login=" + login + ", password=" + password + "]";
-    }
+    public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	@Override
+	public String toString() {
+		return "UserData [login=" + login + ", password=" + password + ", correo=" + correo + "]";
+	}
 }

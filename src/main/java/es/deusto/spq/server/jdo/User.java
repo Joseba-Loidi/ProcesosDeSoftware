@@ -18,6 +18,7 @@ public class User {
 	@PrimaryKey
 	String login=null;
 	String password=null;
+	String correo=null;
 	
 	@Persistent(mappedBy="user", dependentElement="true")
 	@Join
@@ -26,11 +27,14 @@ public class User {
 	@Join
 	List<Pelicula> peliculas = new ArrayList<>();
 	
-	public User(String login, String password) {
+	public User(String login, String password, String correo) {
 		this.login = login;
 		this.password = password;
+		this.correo = correo;
 	}
 	
+
+
 	public void addMessage(Message message) {
 		messages.add(message);
 	}
@@ -65,7 +69,14 @@ public class User {
 	 public List<Pelicula> getPeliculas() {
 		return peliculas;
 	}
+	 
+	public String getCorreo() {
+		return correo;
+	}
 
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
 
 	public String toString() {
 		StringBuilder messagesStr = new StringBuilder();
@@ -76,6 +87,6 @@ public class User {
         for (Pelicula pelicula : peliculas) {
         	peliculasStr.append(pelicula.toString() + " - ");
 		}
-        return "User: login --> " + this.login + ", password -->  " + this.password + ", messages --> [" + messagesStr + "]"+ ", peliculas --> [" + peliculasStr + "]" ;
+        return "User: login --> " + this.login + ", password -->  " + this.password + ", Correo: "+ this.correo +  ", messages --> [" + messagesStr + "]"+ ", peliculas --> [" + peliculasStr + "]" ;
     }
 }

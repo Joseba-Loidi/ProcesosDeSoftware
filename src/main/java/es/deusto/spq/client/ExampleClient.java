@@ -24,6 +24,7 @@ public class ExampleClient {
 
 	private static final String USER = "dipina";
 	private static final String PASSWORD = "dipina";
+	private static final String CORREO = "dipina@gmail.com";
 	
 	private static final String SUPER_USER = "admin";
 	private static final String S_PASSWORD = "admin";
@@ -36,18 +37,19 @@ public class ExampleClient {
 		webTarget = client.target(String.format("http://%s:%s/rest/resource", hostname, port));
 	}
 
-	public void registerUser(String login, String password) {
+	public void registerUser(String login, String password, String correo) {
 		WebTarget registerUserWebTarget = webTarget.path("register");
 		Invocation.Builder invocationBuilder = registerUserWebTarget.request(MediaType.APPLICATION_JSON);
 		
 		UserData userData = new UserData();
 		userData.setLogin(login);
 		userData.setPassword(password);
+		userData.setCorreo(correo);
 		Response response = invocationBuilder.post(Entity.entity(userData, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());
 		} else {
-			logger.info("User correctly registered");
+			logger.info("User correctly registered" + userData.toString());
 		}
 	}
 	public void registerAdmin(String login, String password) {
@@ -99,7 +101,7 @@ public class ExampleClient {
 		String port = args[1];
 
 		ExampleClient exampleClient = new ExampleClient(hostname, port);
-		exampleClient.registerUser(USER, PASSWORD);
+		exampleClient.registerUser(USER, PASSWORD, CORREO);
 		exampleClient.registerAdmin(SUPER_USER, S_PASSWORD);
 		exampleClient.sayMessage(SUPER_USER, S_PASSWORD, "Prueba Admin");
 		
