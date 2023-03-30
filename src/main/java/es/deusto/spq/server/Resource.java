@@ -9,9 +9,11 @@ import javax.jdo.Transaction;
 import es.deusto.spq.server.jdo.User;
 import es.deusto.spq.server.jdo.Admin;
 import es.deusto.spq.server.jdo.Message;
+import es.deusto.spq.server.jdo.Pelicula;
 import es.deusto.spq.pojo.AdminData;
 import es.deusto.spq.pojo.DirectMessage;
 import es.deusto.spq.pojo.MessageData;
+import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 
 import javax.ws.rs.GET;
@@ -154,6 +156,53 @@ public class Resource {
                 tx.rollback();
             }
       
+		}
+	}
+	
+	////////////AÑADIR PELICULA/////////////
+	@POST
+	@Path("/addPelicula")
+	public Response registerAdmin(PeliculaData peliculaData) {
+		try
+		{
+			tx.begin();
+			logger.info("Checking whether the film already exits or not: '{}'", peliculaData.getCodigo());
+			Pelicula peli = null;
+			try {
+				peli = pm.getObjectById(Pelicula.class, peliculaData.getCodigo());
+			} catch (javax.jdo.JDOObjectNotFoundException jonfe) {
+				logger.info("Exception launched: {}", jonfe.getMessage());
+			}
+			logger.info("Pelicula: {}", peli);
+			if (peli != null) {
+				logger.info("Setting titulo pelicula: {}", peli);
+				peli.setTitulo(peliculaData.getTitulo());
+				logger.info("titulo set pelicula: {}", peli);
+				logger.info("Setting minutos pelicula: {}", peli);
+				peli.setMinutos(peliculaData.getMinutos());
+				logger.info("Minutos set pelicula: {}", peli);
+				logger.info("Setting valoracion pelicula: {}", peli);
+				peli.setValoracion(peliculaData.getValoracion());
+			logger.info("Valoracion set pelicula: {}", peli);
+			logger.info("Setting genero pelicula: {}", peli);
+			peli.setGenero(peliculaData.getGenero());
+			logger.info("Genero set pelicula: {}", peli);
+			} else {
+				logger.info("Creating film: {}", peli);
+				peli = new Pelicula(peliculaData.getCodigo(), peliculaData.getTitulo(), peliculaData.getMinutos(), peliculaData.getValoracion(), peliculaData.getGenero());
+			pm.makePersistent(peli);
+			logger.info("Film created: {}", peli);
+			}
+			tx.commit();
+			return Response.ok().build();
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+
 		}
 	}
 

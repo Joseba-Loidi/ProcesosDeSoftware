@@ -12,7 +12,9 @@ import javax.ws.rs.core.Response.Status;
 
 import es.deusto.spq.pojo.DirectMessage;
 import es.deusto.spq.pojo.MessageData;
+import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
+import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.pojo.AdminData;
 
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +30,12 @@ public class ExampleClient {
 	
 	private static final String SUPER_USER = "admin";
 	private static final String S_PASSWORD = "admin";
+	
+	private static final String CODIGO = "193ja";
+	private static final String TITULO = "Iker y los 7 enenitos";
+	private static final int MINUTOS = 120;
+	private static final int VALORACION = 8;
+	private static final Genero GENERO = Genero.ACCION;
 
 	private Client client;
 	private WebTarget webTarget;
@@ -66,6 +74,25 @@ public class ExampleClient {
 			logger.info("Admin correctly registered");
 		}
 	}
+	public void addPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
+
+		WebTarget registerAdminWebTarget = webTarget.path("addPelicula");
+		Invocation.Builder invocationBuilder = registerAdminWebTarget.request(MediaType.APPLICATION_JSON);
+
+		PeliculaData PeliculaData = new PeliculaData();
+		PeliculaData.setCodigo(codigo);
+		PeliculaData.setTitulo(titulo);
+		PeliculaData.setMinutos(minutos);
+		PeliculaData.setValoracion(valoracion);
+		PeliculaData.setGenero(genero);
+
+		Response response = invocationBuilder.post(Entity.entity(PeliculaData, MediaType.APPLICATION_JSON));
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+		logger.error("Error connecting with the server. Code: {}", response.getStatus());
+		} else {
+		logger.info("Film correctly registered");
+		}
+		}
 
 	public void sayMessage(String login, String password, String message) {
 		WebTarget sayHelloWebTarget = webTarget.path("sayMessage");
@@ -103,7 +130,8 @@ public class ExampleClient {
 		ExampleClient exampleClient = new ExampleClient(hostname, port);
 		exampleClient.registerUser(USER, PASSWORD, CORREO);
 		exampleClient.registerAdmin(SUPER_USER, S_PASSWORD);
-		exampleClient.sayMessage(SUPER_USER, S_PASSWORD, "Prueba Admin");
+		
+		exampleClient.addPelicula(CODIGO, TITULO, MINUTOS, VALORACION, GENERO);
 		
 		exampleClient.sayMessage(USER, PASSWORD, "This is a test!...");
 		exampleClient.sayMessage(USER, PASSWORD, "VIDEOCLUB");
