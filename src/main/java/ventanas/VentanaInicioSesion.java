@@ -5,6 +5,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+
+import es.deusto.spq.client.ExampleClient;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,6 +27,8 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import javax.swing.UIManager;
@@ -33,12 +40,22 @@ public class VentanaInicioSesion extends JFrame {
 	private JTextField contrLoginTxt;
 	private JPanel panelInicio;
 	
+	ExampleClient cliente;
+	
 	//REGISTRO
     private JPanel panelRegistro;
     private JTextField nombreTxt;
-	private JTextField apellidoTxt;
+	private JTextField correoTxt;
     private JTextField contrTxt;
     private JTextField contr2Txt;
+    
+    //CONEXIÓN
+  /*  private Client client;
+	private static WebTarget webTarget;
+	
+	private final AtomicBoolean running = new AtomicBoolean(false);
+
+	private static Connection con =null; */
 
 	/**
 	 * Launch the application.
@@ -54,12 +71,24 @@ public class VentanaInicioSesion extends JFrame {
 				}
 			}
 		});
+		
+		
+		/*String hostname = "127.0.0.1";
+		String port = "8080";	
+		
+		new VentanaInicioSesion();*/
+					
 	}
 
 	/**
 	 * Create the frame.
 	 */
 	public VentanaInicioSesion() {
+		
+		/*client = ClientBuilder.newClient();
+		webTarget = client.target(String.format("http://%s:%s/rest", "127.0.0.1","8080"));*/
+		
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 478);
 		contentPane = new JPanel();
@@ -127,6 +156,7 @@ public class VentanaInicioSesion extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (!usuarioTxt.getText().isEmpty() && !contrLoginTxt.getText().isEmpty()) {	
 					
+					
 						
 					}else {
 						
@@ -162,7 +192,7 @@ public class VentanaInicioSesion extends JFrame {
 		panelRegistro.setLayout(null);
 		panelRegistro.setVisible(false);
 		
-		JLabel labelNombre = new JLabel("Nombre");
+		JLabel labelNombre = new JLabel("Usuario");
 		labelNombre.setForeground(Color.WHITE);
 		labelNombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		labelNombre.setBounds(55, 92, 129, 14);
@@ -173,23 +203,39 @@ public class VentanaInicioSesion extends JFrame {
 		panelRegistro.add(nombreTxt);
 		nombreTxt.setColumns(10);
 		
-		JLabel apellidoLabel = new JLabel("Apellido");
+		JLabel apellidoLabel = new JLabel("Correo");
 		apellidoLabel.setForeground(Color.WHITE);
 		apellidoLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		apellidoLabel.setBounds(55, 153, 129, 14);
 		panelRegistro.add(apellidoLabel);
 		
-		apellidoTxt = new JTextField();
-		apellidoTxt.setBounds(55, 178, 189, 23);
-		panelRegistro.add(apellidoTxt);
-		apellidoTxt.setColumns(10);
+		correoTxt = new JTextField();
+		correoTxt.setBounds(55, 178, 189, 23);
+		panelRegistro.add(correoTxt);
+		correoTxt.setColumns(10);
 		
 		JButton registroBoton = new JButton("Aceptar");
 		registroBoton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				if (!nombreTxt.getText().isEmpty() && !correoTxt.getText().isEmpty() && !contrTxt.getText().isEmpty()) {	
+					
+					try {
+						cliente.registerUser(nombreTxt.getText(), contrTxt.getText(), correoTxt.getText());
+					} catch (Exception e2) {
+						// TODO: handle exception
+					}
+					
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "Debes completar todos los campos obligatorios","ERROR_MESSAGE", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
 				panel_3.setVisible(true);
 				panelRegistro.setVisible(false);
 				panel_2.add(panel_3, BorderLayout.CENTER);
+				
 				
 			}
 		});
@@ -244,4 +290,23 @@ public class VentanaInicioSesion extends JFrame {
 			}
 		});
 	}
+	
+	
+	//PARA RUNNEAR
+	/*public void run() {
+		running.set(true);
+		while(running.get()) {
+			try { 
+				Thread.sleep(2000);
+				System.out.println("Obtaining data from server...");
+			} catch (InterruptedException e){ 
+				Thread.currentThread().interrupt();
+				System.out.println("Thread was interrupted, Failed to complete operation");
+			}
+		}
+	}
+
+	public void stop() {
+		this.running.set(false);
+	}*/
 }

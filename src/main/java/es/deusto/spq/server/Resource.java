@@ -205,6 +205,47 @@ public class Resource {
 
 		}
 	}
+	
+	@POST
+	@Path("/login")
+	public Response login(UserData userData) {
+		logger.info("HOLA SERVER");
+		User user = null;
+		try{
+			tx.begin();
+			logger.info("Creating query ...");
+			
+			try (Query<?> q = pm.newQuery("SELECT FROM " + User.class.getName() + " WHERE login == \"" + userData.getLogin() + "\" &&  password == \"" + userData.getPassword() + "\"")) {
+				q.setUnique(true);
+				user = (User)q.execute();				
+				logger.info("User retrieved: {}", user);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				 tx.rollback();
+				 logger.error("Error while logging in: {}", e.getMessage());
+				 return Response.status(Status.INTERNAL_SERVER_ERROR).entity("An error occurred while logging in").build();
+			}
+			tx.commit();
+			
+		}	finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+
+		}
+		
+		if (user != null) {
+			  logger.info("El usuario existe: {}", user);   
+			return Response.status(Status.OK).entity("Login details supplied are correct").build();
+		} else {
+			 return Response.status(Status.UNAUTHORIZED).entity("Invalid login credentials").build();
+		}
+		
+		
+	}
 
 	@GET
 	@Path("/hello")

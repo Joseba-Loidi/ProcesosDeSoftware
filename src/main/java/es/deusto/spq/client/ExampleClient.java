@@ -60,6 +60,7 @@ public class ExampleClient {
 			logger.info("User correctly registered" + userData.toString());
 		}
 	}
+	
 	public void registerAdmin(String login, String password) {
 		WebTarget registerAdminWebTarget = webTarget.path("adminRegister");
 		Invocation.Builder invocationBuilder = registerAdminWebTarget.request(MediaType.APPLICATION_JSON);
@@ -74,6 +75,27 @@ public class ExampleClient {
 			logger.info("Admin correctly registered");
 		}
 	}
+	public void login(String login, String password) {
+		logger.info("HOLA CLIENTE");
+	    WebTarget registerAdminWebTarget = webTarget.path("login");
+	    //registerAdminWebTarget = registerAdminWebTarget.queryParam(login)
+	    //                                             .queryParam(password);
+	    Invocation.Builder invocationBuilder = registerAdminWebTarget.request(MediaType.APPLICATION_JSON);
+	        
+	    UserData userData = new UserData();
+	    userData.setLogin(login);
+	    userData.setPassword(password);
+		Response response = invocationBuilder.post(Entity.entity(userData, MediaType.APPLICATION_JSON));
+	        
+	   // Response response = invocationBuilder.get();
+
+	    if (response.getStatus() != Status.OK.getStatusCode()) {
+	        logger.error("Error connecting with the server. Code: {}", response.getStatus());
+	    } else {
+	        logger.info("Login de usuario: "+ login+ "realizado correctamente");
+	    }
+	}
+	
 	public void addPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
 
 		WebTarget registerAdminWebTarget = webTarget.path("addPelicula");
@@ -135,5 +157,7 @@ public class ExampleClient {
 		
 		exampleClient.sayMessage(USER, PASSWORD, "This is a test!...");
 		exampleClient.sayMessage(USER, PASSWORD, "VIDEOCLUB");
+		
+		exampleClient.login(USER, PASSWORD);
 	}
 }
