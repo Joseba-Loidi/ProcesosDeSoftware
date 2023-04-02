@@ -15,6 +15,7 @@ import es.deusto.spq.pojo.MessageData;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.jdo.Genero;
+import ventanas.VentanaRegistro;
 import es.deusto.spq.pojo.AdminData;
 
 import org.apache.logging.log4j.LogManager;
@@ -38,14 +39,14 @@ public class ExampleClient {
 	private static final Genero GENERO = Genero.ACCION;
 
 	private Client client;
-	private WebTarget webTarget;
+	private static WebTarget webTarget;
 
 	public ExampleClient(String hostname, String port) {
 		client = ClientBuilder.newClient();
 		webTarget = client.target(String.format("http://%s:%s/rest/resource", hostname, port));
 	}
 
-	public void registerUser(String login, String password, String correo) {
+	public static void registerUser(String login, String password, String correo) {
 		WebTarget registerUserWebTarget = webTarget.path("register");
 		Invocation.Builder invocationBuilder = registerUserWebTarget.request(MediaType.APPLICATION_JSON);
 		
@@ -160,5 +161,8 @@ public class ExampleClient {
 		exampleClient.sayMessage(USER, PASSWORD, "VIDEOCLUB");
 		
 		exampleClient.login(USER, PASSWORD);
+		
+		VentanaRegistro v1 = new VentanaRegistro();
+		v1.setVisible(true);
 	}
 }

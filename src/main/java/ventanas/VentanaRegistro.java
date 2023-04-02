@@ -144,13 +144,8 @@ public class VentanaRegistro extends JFrame {
 				String password = contrTxt.getText();
 				String email = emailTxt.getText();
 				
-
-				System.out.println("LLega 1");
-				ExampleClient instance = new ExampleClient(hostname, port);
-				System.out.println("LLega 2");
-			
 				if (password.equals(contr2Txt.getText())) {
-					instance.registerUser(usuario, password, email);
+					ExampleClient.registerUser(usuario, password, email);
 					JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Registro", JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
