@@ -11,9 +11,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import es.deusto.spq.client.ExampleClient;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
@@ -23,20 +30,33 @@ import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
 
 public class VentanaRegistro extends JFrame {
+	
+	protected static final Logger logger = LogManager.getLogger();
 
 	private JPanel contentPane;
 	private JTextField nombreTxt;
-	private JTextField apellidoTxt;
+	private JTextField emailTxt;
     private JTextField contrTxt;
     private JTextField contr2Txt;
+    private String hostname;
+    private String port;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+//		if (args.length != 2) {
+//			logger.info("Use: java Client.Client [host] [port]");
+//			System.exit(0);
+//		}
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+//					String hostname = args[0];
+//					String port = args[1];
+//					VentanaRegistro frame = new VentanaRegistro(hostname, port);
 					VentanaRegistro frame = new VentanaRegistro();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -49,6 +69,10 @@ public class VentanaRegistro extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+//	public VentanaRegistro(String arg1, String arg2) {
+//		this.hostname = arg1;
+//		this.port = arg2;
+	
 	public VentanaRegistro() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 478);
@@ -102,20 +126,36 @@ public class VentanaRegistro extends JFrame {
 		panelRegistro.add(nombreTxt);
 		nombreTxt.setColumns(10);
 		
-		JLabel apellidoLabel = new JLabel("Apellido");
-		apellidoLabel.setForeground(Color.WHITE);
-		apellidoLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		apellidoLabel.setBounds(55, 153, 129, 14);
-		panelRegistro.add(apellidoLabel);
+		JLabel emailLabel = new JLabel("Email");
+		emailLabel.setForeground(Color.WHITE);
+		emailLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		emailLabel.setBounds(55, 153, 129, 14);
+		panelRegistro.add(emailLabel);
 		
-		apellidoTxt = new JTextField();
-		apellidoTxt.setBounds(55, 178, 189, 23);
-		panelRegistro.add(apellidoTxt);
-		apellidoTxt.setColumns(10);
+		emailTxt = new JTextField();
+		emailTxt.setBounds(55, 178, 189, 23);
+		panelRegistro.add(emailTxt);
+		emailTxt.setColumns(10);
 		
 		JButton registroBoton = new JButton("Aceptar");
 		registroBoton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String usuario = nombreTxt.getText();
+				String password = contrTxt.getText();
+				String email = emailTxt.getText();
+				
+
+				System.out.println("LLega 1");
+				ExampleClient instance = new ExampleClient(hostname, port);
+				System.out.println("LLega 2");
+			
+				if (password.equals(contr2Txt.getText())) {
+					instance.registerUser(usuario, password, email);
+					JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Registro", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+
+				}
 			}
 		});
 		registroBoton.setForeground(Color.WHITE);
@@ -153,6 +193,7 @@ public class VentanaRegistro extends JFrame {
 		contr2Txt.setColumns(10);
 
 	}
+	
 
 
 }

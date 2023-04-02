@@ -148,6 +148,7 @@ public class ExampleClient {
 
 		String hostname = args[0];
 		String port = args[1];
+		
 
 		ExampleClient exampleClient = new ExampleClient(hostname, port);
 		exampleClient.registerUser(USER, PASSWORD, CORREO);
