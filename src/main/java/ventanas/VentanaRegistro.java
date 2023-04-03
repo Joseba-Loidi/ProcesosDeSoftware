@@ -1,4 +1,4 @@
-package ventanas;
+/*package ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -43,7 +43,7 @@ public class VentanaRegistro extends JFrame {
 
 	/**
 	 * Launch the application.
-	 */
+	 */ /*
 	public static void main(String[] args) {
 		
 //		if (args.length != 2) {
@@ -73,7 +73,7 @@ public class VentanaRegistro extends JFrame {
 //		this.hostname = arg1;
 //		this.port = arg2;
 	
-	public VentanaRegistro() {
+/*	public VentanaRegistro() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 478);
 		contentPane = new JPanel();
@@ -191,4 +191,4 @@ public class VentanaRegistro extends JFrame {
 	
 
 
-}
+}*/

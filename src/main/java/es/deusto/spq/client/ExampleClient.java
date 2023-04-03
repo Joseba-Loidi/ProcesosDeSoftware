@@ -10,13 +10,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+
 import es.deusto.spq.pojo.DirectMessage;
 import es.deusto.spq.pojo.MessageData;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.jdo.Genero;
-import ventanas.VentanaRegistro;
+import ventanas.VentanaInicioSesion;
+//import ventanas.VentanaRegistro;
 import es.deusto.spq.pojo.AdminData;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -76,7 +79,8 @@ public class ExampleClient {
 			logger.info("Admin correctly registered");
 		}
 	}
-	public void login(String login, String password) {
+	public static boolean login(String login, String password) {
+		boolean inicio = false;
 		logger.info("HOLA CLIENTE");
 	    WebTarget registerAdminWebTarget = webTarget.path("login");
 	    //registerAdminWebTarget = registerAdminWebTarget.queryParam(login)
@@ -92,9 +96,12 @@ public class ExampleClient {
 
 	    if (response.getStatus() != Status.OK.getStatusCode()) {
 	        logger.error("Error connecting with the server. Code: {}", response.getStatus());
+	        
 	    } else {
-	        logger.info("Login de usuario: "+ login+ "realizado correctamente");
+	        logger.info("Login de usuario: "+ login+ " realizado correctamente");
+	        inicio = true;
 	    }
+	    return inicio;
 	}
 	
 	public void addPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
@@ -162,7 +169,9 @@ public class ExampleClient {
 		
 		exampleClient.login(USER, PASSWORD);
 		
-		VentanaRegistro v1 = new VentanaRegistro();
+//		VentanaRegistro v1 = new VentanaRegistro();S
+//		v1.setVisible(true);
+		VentanaInicioSesion v1 = new VentanaInicioSesion();
 		v1.setVisible(true);
 	}
 }

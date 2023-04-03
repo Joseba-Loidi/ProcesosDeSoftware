@@ -43,11 +43,12 @@ public class VentanaInicioSesion extends JFrame {
 	ExampleClient cliente;
 	
 	//REGISTRO
-    private JPanel panelRegistro;
-    private JTextField nombreTxt;
-	private JTextField correoTxt;
+	private JTextField nombreTxt;
+	private JTextField emailTxt;
     private JTextField contrTxt;
     private JTextField contr2Txt;
+    private String hostname;
+    private String port;
     
     //CONEXIÓN
   /*  private Client client;
@@ -154,12 +155,18 @@ public class VentanaInicioSesion extends JFrame {
 		JButton aceptarLogin = new JButton("Aceptar");
 		aceptarLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!usuarioTxt.getText().isEmpty() && !contrLoginTxt.getText().isEmpty()) {	
+				String usuario = usuarioTxt.getText();
+				String contr = contrLoginTxt.getText();
+				if (!usuario.isEmpty() && !contr.isEmpty()) {	
 					
-					
+					boolean inicio = ExampleClient.login(usuario, contr);
+					if(inicio) {
+						JOptionPane.showMessageDialog(null, "Login realizado correctamente", "Login", JOptionPane.INFORMATION_MESSAGE);
+
+					}
 						
 					}else {
-						
+						JOptionPane.showMessageDialog(null, "Login incorrecto", "Error", JOptionPane.ERROR_MESSAGE);
 						
 					}
 			
@@ -188,11 +195,10 @@ public class VentanaInicioSesion extends JFrame {
 		//PANEL REGISTRO
 		JPanel panelRegistro = new JPanel();
 		panelRegistro.setBackground(Color.DARK_GRAY);
-		//panel_2.add(panelRegistro, BorderLayout.CENTER);
+		panel_2.add(panelRegistro, BorderLayout.CENTER);
 		panelRegistro.setLayout(null);
-		panelRegistro.setVisible(false);
 		
-		JLabel labelNombre = new JLabel("Usuario");
+		JLabel labelNombre = new JLabel("Nombre");
 		labelNombre.setForeground(Color.WHITE);
 		labelNombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		labelNombre.setBounds(55, 92, 129, 14);
@@ -203,40 +209,34 @@ public class VentanaInicioSesion extends JFrame {
 		panelRegistro.add(nombreTxt);
 		nombreTxt.setColumns(10);
 		
-		JLabel apellidoLabel = new JLabel("Correo");
-		apellidoLabel.setForeground(Color.WHITE);
-		apellidoLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		apellidoLabel.setBounds(55, 153, 129, 14);
-		panelRegistro.add(apellidoLabel);
+		JLabel emailLabel = new JLabel("Email");
+		emailLabel.setForeground(Color.WHITE);
+		emailLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		emailLabel.setBounds(55, 153, 129, 14);
+		panelRegistro.add(emailLabel);
 		
-		correoTxt = new JTextField();
-		correoTxt.setBounds(55, 178, 189, 23);
-		panelRegistro.add(correoTxt);
-		correoTxt.setColumns(10);
+		emailTxt = new JTextField();
+		emailTxt.setBounds(55, 178, 189, 23);
+		panelRegistro.add(emailTxt);
+		emailTxt.setColumns(10);
 		
 		JButton registroBoton = new JButton("Aceptar");
 		registroBoton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String usuario = nombreTxt.getText();
+				String password = contrTxt.getText();
+				String email = emailTxt.getText();
 				
-				if (!nombreTxt.getText().isEmpty() && !correoTxt.getText().isEmpty() && !contrTxt.getText().isEmpty()) {	
-					
-					try {
-						cliente.registerUser(nombreTxt.getText(), contrTxt.getText(), correoTxt.getText());
-					} catch (Exception e2) {
-						// TODO: handle exception
-					}
-					
-					
-				}else {
-					JOptionPane.showMessageDialog(null, "Debes completar todos los campos obligatorios","ERROR_MESSAGE", JOptionPane.ERROR_MESSAGE);
+				if (password.equals(contr2Txt.getText())) {
+					ExampleClient.registerUser(usuario, password, email);
+					JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Registro", JOptionPane.INFORMATION_MESSAGE);
+					panelRegistro.setVisible(false);
+					panel_2.add(panel_3, BorderLayout.CENTER);
+					panel_3.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+
 				}
-				
-				
-				panel_3.setVisible(true);
-				panelRegistro.setVisible(false);
-				panel_2.add(panel_3, BorderLayout.CENTER);
-				
-				
 			}
 		});
 		registroBoton.setForeground(Color.WHITE);

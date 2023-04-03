@@ -239,7 +239,9 @@ public class Resource {
 		
 		if (user != null) {
 			  logger.info("El usuario existe: {}", user);   
-			return Response.status(Status.OK).entity("Login details supplied are correct").build();
+			//return Response.status(Status.OK).entity("Login details supplied are correct").build();
+			return Response.ok().build();
+			
 		} else {
 			 return Response.status(Status.UNAUTHORIZED).entity("Invalid login credentials").build();
 		}
