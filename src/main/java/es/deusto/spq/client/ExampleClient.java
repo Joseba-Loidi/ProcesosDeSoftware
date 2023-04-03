@@ -1,11 +1,14 @@
 package es.deusto.spq.client;
 
+import java.util.ArrayList;
+
 import javax.ws.rs.client.Client;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -16,6 +19,7 @@ import es.deusto.spq.pojo.MessageData;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.jdo.Genero;
+import ventanas.VentanaAdmin;
 import ventanas.VentanaInicioSesion;
 //import ventanas.VentanaRegistro;
 import es.deusto.spq.pojo.AdminData;
@@ -118,12 +122,26 @@ public class ExampleClient {
 
 		Response response = invocationBuilder.post(Entity.entity(PeliculaData, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
-		logger.error("Error connecting with the server. Code: {}", response.getStatus());
+			logger.error("Error connecting with the server. Code: {}", response.getStatus());
 		} else {
-		logger.info("Film correctly registered");
+			logger.info("Film correctly registered");
 		}
+	}
+	
+	public static ArrayList<PeliculaData> obtenerPelis() {
+		WebTarget getPeliculaWebTarget = webTarget.path("getPeliculas");
+		Invocation.Builder invocationBuilder = getPeliculaWebTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(null);
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+			return null;
+		} else {
+			GenericType<ArrayList<PeliculaData>> listatype = new GenericType<ArrayList<PeliculaData>>() {};
+			ArrayList<PeliculaData> peliculas = response.readEntity(listatype);
+			logger.info("Film correctly registered"+peliculas.toString());
+			return peliculas;
 		}
-
+	}
 	public void sayMessage(String login, String password, String message) {
 		WebTarget sayHelloWebTarget = webTarget.path("sayMessage");
 		Invocation.Builder invocationBuilder = sayHelloWebTarget.request(MediaType.APPLICATION_JSON);
@@ -173,5 +191,7 @@ public class ExampleClient {
 //		v1.setVisible(true);
 		VentanaInicioSesion v1 = new VentanaInicioSesion();
 		v1.setVisible(true);
+		VentanaAdmin v2 = new VentanaAdmin();
+		v2.setVisible(true);
 	}
 }

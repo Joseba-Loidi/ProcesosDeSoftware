@@ -12,12 +12,17 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import es.deusto.spq.client.ExampleClient;
+import es.deusto.spq.pojo.PeliculaData;
+import es.deusto.spq.server.jdo.Pelicula;
+
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class VentanaAdmin extends JFrame {
 	
@@ -25,7 +30,7 @@ public class VentanaAdmin extends JFrame {
 	private JTable table;
 	private DefaultTableModel modeloTabla;
 	private JScrollPane scrollTabla;
-//	private Object[] columna = new Object[7];
+	private Object[] columna = new Object[5];
 	//private JTable table_1;
 
 	private JPanel contentPane;
@@ -83,6 +88,7 @@ public class VentanaAdmin extends JFrame {
 		modeloTabla.addColumn("Valoración");
 		modeloTabla.addColumn("Género");
 		
+		cargarTabla();
 		
 		// JSCROLLPANE Y A�ADIR LA TABLA
 		scrollTabla = new JScrollPane(table);
@@ -116,4 +122,25 @@ public class VentanaAdmin extends JFrame {
 		setVisible(true);
 	}
 
+	public void cargarTabla() {
+		table.removeAll();
+		try {
+			List<PeliculaData> listaPelis = ExampleClient.obtenerPelis();
+			for (PeliculaData pelicula : listaPelis) {
+				System.out.println(pelicula.toString());
+				columna[0] = pelicula.getCodigo();
+				columna[1] = pelicula.getTitulo();
+				columna[2] = pelicula.getMinutos();
+				columna[3] = pelicula.getValoracion();
+				columna[4] = pelicula.getGenero();
+				modeloTabla.addRow(columna);// agregamos una fila a nuestro modelo de tabla
+			}
+		} catch (Exception e) {
+			System.out.println("No se puede rellenar la tabla");
+			e.printStackTrace();
+		}
+
+	}
+	
+	
 }

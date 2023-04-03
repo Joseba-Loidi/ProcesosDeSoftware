@@ -3,6 +3,11 @@ package es.deusto.spq.server;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.jdo.Extent;
 import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
 
@@ -205,6 +210,33 @@ public class Resource {
 
 		}
 	}
+	@POST
+	@Path("/getPeliculas")
+	public List<Pelicula> obtenerPeliculas() {
+		logger.info("HOLA SERVER!!");
+		List<Pelicula> peliculas = new ArrayList<>();
+		try{
+			tx.begin();
+			logger.info("Creating query ...");
+			Extent<Pelicula> peliExtent = pm.getExtent(Pelicula.class, true);	
+			for (Pelicula peli : peliExtent) {
+				peliculas.add(peli);
+				logger.info("Film retrieved: {}", peli);
+			}			
+			tx.commit();	
+		} catch (Exception ex) {
+			System.out.println("  $ Error querying all films: " + ex.getMessage());
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+
+			pm.close();
+		}
+		return peliculas;
+	}
+
+	
 	
 	@POST
 	@Path("/login")
