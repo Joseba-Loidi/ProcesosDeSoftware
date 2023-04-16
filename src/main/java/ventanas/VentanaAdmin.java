@@ -12,7 +12,7 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import es.deusto.spq.client.ExampleClient;
+import es.deusto.spq.client.Cliente;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.server.jdo.Pelicula;
 
@@ -30,7 +30,7 @@ public class VentanaAdmin extends JFrame {
 	private JTable table;
 	private DefaultTableModel modeloTabla;
 	private JScrollPane scrollTabla;
-	private Object[] columna = new Object[5];
+	private Object[] columna = new Object[7];
 	//private JTable table_1;
 
 	private JPanel contentPane;
@@ -125,8 +125,8 @@ public class VentanaAdmin extends JFrame {
 	public void cargarTabla() {
 		table.removeAll();
 		try {
-			List<PeliculaData> listaPelis = ExampleClient.obtenerPelis();
-			for (PeliculaData pelicula : listaPelis) {
+			List<Pelicula> listaPelis = Cliente.obtenerPelis();
+			for (Pelicula pelicula : listaPelis) {
 				System.out.println(pelicula.toString());
 				columna[0] = pelicula.getCodigo();
 				columna[1] = pelicula.getTitulo();

@@ -6,11 +6,14 @@ import javax.jdo.annotations.PrimaryKey;
 @PersistenceCapable
 public class Pelicula {
 	@PrimaryKey
-	String codigo;
-	String titulo;
-	int minutos;
-	int valoracion;
-	Genero genero;
+	private String codigo;
+	private String titulo;
+	private int minutos;
+	private int valoracion;
+	private Genero genero;
+	
+	public Pelicula() {
+	}
 	
 	public Pelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
 		super();
@@ -20,7 +23,8 @@ public class Pelicula {
 		this.valoracion = valoracion;
 		this.genero = genero;
 	}
-
+	
+	
 	public String getCodigo() {
 		return codigo;
 	}

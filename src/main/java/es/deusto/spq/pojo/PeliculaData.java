@@ -1,14 +1,20 @@
 package es.deusto.spq.pojo;
 
+import java.io.Serializable;
+
 import es.deusto.spq.server.jdo.Genero;
 
-public class PeliculaData {
+public class PeliculaData implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String codigo;
 	private String titulo;
-	private Genero genero;
 	private int minutos;
 	private int valoracion;
+	private Genero genero;
 	
 	
 	public PeliculaData() {

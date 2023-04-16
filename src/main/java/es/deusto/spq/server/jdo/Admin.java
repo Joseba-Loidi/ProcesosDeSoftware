@@ -17,7 +17,6 @@ public class Admin {
 	Set<Message> messages = new HashSet<>();
 	
 	
-	
 	public Admin(String login, String password) {
 		this.login = login;
 		this.password = password;

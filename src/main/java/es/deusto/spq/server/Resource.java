@@ -11,15 +11,7 @@ import javax.jdo.Extent;
 import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
 
-import es.deusto.spq.server.jdo.User;
-import es.deusto.spq.server.jdo.Admin;
-import es.deusto.spq.server.jdo.Message;
-import es.deusto.spq.server.jdo.Pelicula;
-import es.deusto.spq.pojo.AdminData;
-import es.deusto.spq.pojo.DirectMessage;
-import es.deusto.spq.pojo.MessageData;
-import es.deusto.spq.pojo.PeliculaData;
-import es.deusto.spq.pojo.UserData;
+
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -30,6 +22,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.logging.log4j.Logger;
+
+import es.deusto.spq.pojo.AdminData;
+import es.deusto.spq.pojo.DirectMessage;
+import es.deusto.spq.pojo.MessageData;
+import es.deusto.spq.pojo.PeliculaData;
+import es.deusto.spq.pojo.UserData;
+import es.deusto.spq.server.jdo.Admin;
+import es.deusto.spq.server.jdo.Message;
+import es.deusto.spq.server.jdo.Pelicula;
+import es.deusto.spq.server.jdo.User;
+
 import org.apache.logging.log4j.LogManager;
 
 @Path("/resource")
@@ -230,8 +233,6 @@ public class Resource {
 			if (tx != null && tx.isActive()) {
 				tx.rollback();
 			}
-
-			pm.close();
 		}
 		return peliculas;
 	}

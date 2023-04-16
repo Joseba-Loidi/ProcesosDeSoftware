@@ -9,7 +9,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
-import es.deusto.spq.client.ExampleClient;
+import es.deusto.spq.client.Cliente;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -40,7 +40,7 @@ public class VentanaInicioSesion extends JFrame {
 	private JTextField contrLoginTxt;
 	private JPanel panelInicio;
 	
-	ExampleClient cliente;
+	Cliente cliente;
 	
 	//REGISTRO
 	private JTextField nombreTxt;
@@ -159,7 +159,7 @@ public class VentanaInicioSesion extends JFrame {
 				String contr = contrLoginTxt.getText();
 				if (!usuario.isEmpty() && !contr.isEmpty()) {	
 					
-					boolean inicio = ExampleClient.login(usuario, contr);
+					boolean inicio = Cliente.login(usuario, contr);
 					if(inicio) {
 						JOptionPane.showMessageDialog(null, "Login realizado correctamente", "Login", JOptionPane.INFORMATION_MESSAGE);
 
@@ -228,7 +228,7 @@ public class VentanaInicioSesion extends JFrame {
 				String email = emailTxt.getText();
 				
 				if (password.equals(contr2Txt.getText())) {
-					ExampleClient.registerUser(usuario, password, email);
+					Cliente.registerUser(usuario, password, email);
 					JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Registro", JOptionPane.INFORMATION_MESSAGE);
 					panelRegistro.setVisible(false);
 					panel_2.add(panel_3, BorderLayout.CENTER);
