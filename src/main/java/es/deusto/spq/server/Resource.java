@@ -10,12 +10,11 @@ import java.util.List;
 import javax.jdo.Extent;
 import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
-
-
-
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -191,15 +190,15 @@ public class Resource {
 				logger.info("Minutos set pelicula: {}", peli);
 				logger.info("Setting valoracion pelicula: {}", peli);
 				peli.setValoracion(peliculaData.getValoracion());
-			logger.info("Valoracion set pelicula: {}", peli);
-			logger.info("Setting genero pelicula: {}", peli);
-			peli.setGenero(peliculaData.getGenero());
-			logger.info("Genero set pelicula: {}", peli);
+				logger.info("Valoracion set pelicula: {}", peli);
+				logger.info("Setting genero pelicula: {}", peli);
+				peli.setGenero(peliculaData.getGenero());
+				logger.info("Genero set pelicula: {}", peli);
 			} else {
 				logger.info("Creating film: {}", peli);
 				peli = new Pelicula(peliculaData.getCodigo(), peliculaData.getTitulo(), peliculaData.getMinutos(), peliculaData.getValoracion(), peliculaData.getGenero());
-			pm.makePersistent(peli);
-			logger.info("Film created: {}", peli);
+				pm.makePersistent(peli);
+				logger.info("Film created: {}", peli);
 			}
 			tx.commit();
 			return Response.ok().build();
@@ -213,10 +212,43 @@ public class Resource {
 
 		}
 	}
+	
+	@DELETE
+    @Path("/{codigo}")
+    public Response deleteFilm(@PathParam("codigo") String codigo) {
+		try{
+			System.out.println("HOliii");
+			tx.begin();
+			logger.info("Checking whether the film already exits or not: '{}'", codigo);
+			Pelicula peli = null;
+			try {
+				peli = pm.getObjectById(Pelicula.class, codigo);
+			} catch (javax.jdo.JDOObjectNotFoundException jonfe) {
+				logger.info("Exception launched: {}", jonfe.getMessage());
+			}
+			logger.info("Pelicula a eliminar: {}", peli);
+			if (peli == null) {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			} else {
+				logger.info("Deleting user {} ...", peli);
+				pm.deletePersistent(peli);
+				tx.commit();
+			    return Response.status(Response.Status.OK).build();
+			}
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+
+		}
+    }
+	
 	@POST
 	@Path("/getPeliculas")
 	public List<Pelicula> obtenerPeliculas() {
-		logger.info("HOLA SERVER!!");
 		List<Pelicula> peliculas = new ArrayList<>();
 		try{
 			tx.begin();
@@ -242,7 +274,6 @@ public class Resource {
 	@POST
 	@Path("/login")
 	public Response login(UserData userData) {
-		logger.info("HOLA SERVER");
 		User user = null;
 		try{
 			tx.begin();

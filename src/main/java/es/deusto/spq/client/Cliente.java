@@ -121,6 +121,7 @@ public class Cliente {
 		PeliculaData.setValoracion(valoracion);
 		PeliculaData.setGenero(genero);
 
+		
 		Response response = invocationBuilder.post(Entity.entity(PeliculaData, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());
@@ -128,6 +129,26 @@ public class Cliente {
 			logger.info("Film correctly registered");
 		}
 	}
+	
+	public void eliminarPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
+
+		PeliculaData peliculaData = new PeliculaData();
+		peliculaData.setCodigo(codigo);
+		peliculaData.setTitulo(titulo);
+		peliculaData.setMinutos(minutos);
+		peliculaData.setValoracion(valoracion);
+		peliculaData.setGenero(genero);
+
+		System.out.println(peliculaData);
+		Response response1 = webTarget.path(codigo).request(MediaType.APPLICATION_JSON).delete();
+		
+		if (response1.getStatus() != Status.OK.getStatusCode()) {
+			logger.error("Error connecting with the server. Code: {}", response1.getStatus());
+		} else {
+			logger.info("Film correctly deleted");
+		}
+	}
+
 
 	public static List<Pelicula> obtenerPelis() {
 		WebTarget getPeliculaWebTarget = webTarget.path("getPeliculas");
@@ -139,7 +160,6 @@ public class Cliente {
 		} else {
 			GenericType<List<Pelicula>> listType = new GenericType<List<Pelicula>>(){};
             List<Pelicula> pelis = response.readEntity(listType);
-			logger.info("Film correctly registered" + pelis.toString());
 			return pelis;
 		}
 	}
@@ -181,7 +201,7 @@ public class Cliente {
 //		exampleClient.registerUser(USER, PASSWORD, CORREO);
 //		exampleClient.registerAdmin(SUPER_USER, S_PASSWORD);
 //
-//		exampleClient.addPelicula(CODIGO, TITULO, MINUTOS, VALORACION, GENERO);
+//		exampleClient.eliminarPelicula(CODIGO, TITULO, MINUTOS, VALORACION, GENERO);
 //
 //		exampleClient.sayMessage(USER, PASSWORD, "This is a test!...");
 //		exampleClient.sayMessage(USER, PASSWORD, "VIDEOCLUB");
