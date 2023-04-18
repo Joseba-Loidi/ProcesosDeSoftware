@@ -11,15 +11,27 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
 
 public class VentanaPrincipal extends JFrame {
 
 	private JPanel contentPane;
+	private JTextField txtNombre;
+	
+	private JTable table;
+	private DefaultTableModel modeloTabla;
+	private JScrollPane scrollTabla;
+	private Object[] columna = new Object[7];
 
 	/**
 	 * Launch the application.
@@ -120,15 +132,141 @@ public class VentanaPrincipal extends JFrame {
 		
 		JPanel panelPeliculas = new JPanel();
 		panelPeliculas.setBackground(Color.RED);
-		panel_3.add(panelPeliculas, BorderLayout.CENTER);
+		//panel_3.add(panelPeliculas, BorderLayout.CENTER);
 		
 		JPanel panelLista = new JPanel();
 		panelLista.setBackground(Color.pink);
 		//panel_3.add(panelLista, BorderLayout.CENTER);
 		
+		
+		// PANEL FILTRO-----------------------------------------
 		JPanel panelFiltro = new JPanel();
 		panelFiltro.setBackground(Color.green);
-		//panel_3.add(panelFiltro, BorderLayout.CENTER);
+		panel_3.add(panelFiltro, BorderLayout.CENTER);
+		panelFiltro.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_5 = new JPanel();
+		panelFiltro.add(panel_5, BorderLayout.NORTH);
+		panel_5.setLayout(new GridLayout(2, 1));
+		
+		//panel filtro combobox
+		JPanel panel_6 = new JPanel();
+		panel_6.setLayout(new GridLayout(1, 2));
+		panel_5.add(panel_6);
+		
+		JLabel lblNewLabel = new JLabel("Filtrar por...");
+		panel_6.add(lblNewLabel);
+		String[] opciones = {" ", "Título", "Género", "Valoración"};
+        
+        // Creamos un JComboBox y le pasamos las opciones
+		//JComboBox comboBox = new JComboBox<>();
+       JComboBox<String> comboBox = new JComboBox<>(opciones);
+		panel_6.add(comboBox);
+		
+		
+		
+		JPanel panel_7 = new JPanel();
+		panel_7.setBackground(new Color(218, 218, 218));
+		panel_7.setLayout(new GridLayout(1, 2));
+		panel_5.add(panel_7);
+		
+		//Panel titulo
+		JPanel panelTitulo = new JPanel();
+		panelTitulo.setBackground(new Color(218, 218, 218));
+		panelTitulo.setLayout(new GridLayout(1, 2));
+		//panel_7.add(panelTitulo);
+		
+		JLabel lblNewLabelTitulo = new JLabel("Nombre Película");
+		panelTitulo.add(lblNewLabelTitulo);
+		
+		txtNombre = new JTextField();
+		panelTitulo.add(txtNombre, BorderLayout.SOUTH);
+		txtNombre.setColumns(10);
+		
+		//Panel vacío
+		JPanel panelVacio = new JPanel();
+		panelVacio.setBackground(new Color(218, 218, 218));
+		panel_7.add(panelVacio);
+		
+		//Panel Genero
+		JPanel panelGenero = new JPanel();
+		panelGenero.setBackground(new Color(218, 218, 218));
+		panelGenero.setLayout(new GridLayout(1, 2));
+		//panel_7.add(panelTitulo);
+		
+		JLabel lblNewLabelGenero = new JLabel("Género");
+		panelGenero.add(lblNewLabelGenero);
+		String[] opcionesGenero = {"", "Terror", "Comedia", "Ciencia ficcion", "Accion", "Aventura", "Drama", "Musical"};      
+        // Creamos un JComboBox y le pasamos las opciones
+		 JComboBox<String> comboBoxGenero = new JComboBox<>(opcionesGenero);
+       // JComboBox<String> comboBox = new JComboBox<>(opciones);
+		panelGenero.add(comboBoxGenero);
+		
+		txtNombre = new JTextField();
+		panelFiltro.add(txtNombre, BorderLayout.SOUTH);
+		txtNombre.setColumns(10);
+		
+		
+		comboBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String opcionSeleccionada = (String) comboBox.getSelectedItem();
+                if (opcionSeleccionada.equals(" ")) {
+                	panelTitulo.setVisible(false);	
+                    panelGenero.setVisible(false);
+                    panelVacio.setVisible(true);
+                    // Quitamos los paneles del contenedor original antes de agregarlos a panel_7
+                    panel_7.removeAll();
+                    panel_7.add(panelVacio);
+                    panel_7.setVisible(true);
+               
+                }else if(opcionSeleccionada.equals("Título")) {
+                	// Mostramos el panel de título y ocultamos el de género
+                    panelTitulo.setVisible(true);	
+                    panelGenero.setVisible(false);
+                    panelVacio.setVisible(false);
+                    // Quitamos los paneles del contenedor original antes de agregarlos a panel_7
+                    panel_7.removeAll();
+                    panel_7.add(panelTitulo);
+                    panel_7.setVisible(true);
+                	
+                }else if(opcionSeleccionada.equals("Género")) {
+                	// Mostramos el panel de género y ocultamos el de título
+                    panelTitulo.setVisible(false);	
+                    panelGenero.setVisible(true);
+                    panelVacio.setVisible(false);
+                    // Quitamos los paneles del contenedor original antes de agregarlos a panel_7
+                    panel_7.removeAll();
+                    panel_7.add(panelGenero);
+                    panel_7.setVisible(true);
+                	
+                }else if(opcionSeleccionada.equals("Valoración")) {
+                	
+                }
+            }
+        });
+		
+		
+		//Creamos la JTable
+		modeloTabla = new DefaultTableModel();
+		table = new JTable(modeloTabla);
+		//Creamos las columnas
+		modeloTabla.addColumn("Cod");
+		modeloTabla.addColumn("Titulo");
+		modeloTabla.addColumn("Minutos");
+		modeloTabla.addColumn("Valoración");
+		modeloTabla.addColumn("Género");
+
+				
+		// JSCROLLPANE Y A�ADIR LA TABLA
+		scrollTabla = new JScrollPane(table);
+		scrollTabla.setVisible(true);
+		panelFiltro.add(scrollTabla, BorderLayout.CENTER);
+					
+		scrollTabla.getViewport().setBackground(new Color(204,204,204));
+		
+		
+		
+		
 		
 		
 		//BOTON PARA VISUALIZAR PANEL
