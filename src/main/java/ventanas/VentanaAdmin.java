@@ -106,11 +106,18 @@ public class VentanaAdmin extends JFrame {
 		
 		panel.add(panelBtn, BorderLayout.SOUTH);
 		
-		JButton aceptar = new JButton("Aceptar");
-		aceptar.setForeground(Color.WHITE);
-		aceptar.setBackground(SystemColor.activeCaption);
-		aceptar.setBounds(81, 266, 163, 27);
-		panelBtn.add(aceptar);
+		JButton anadir = new JButton("Añadir");
+		anadir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentanaAnadir Vanadir = new VentanaAnadir();
+				setVisible(false);
+				Vanadir.setVisible(true);
+			}
+		});
+		anadir.setForeground(Color.WHITE);
+		anadir.setBackground(SystemColor.activeCaption);
+		anadir.setBounds(81, 266, 163, 27);
+		panelBtn.add(anadir);
 		
 		JButton eliminar = new JButton("Eliminar");
 		eliminar.setForeground(Color.WHITE);

@@ -109,8 +109,8 @@ public class Cliente {
 		return inicio;
 	}
 
-	public void addPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
-
+	public static boolean addPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
+		boolean inicio = false;
 		WebTarget registerAdminWebTarget = webTarget.path("addPelicula");
 		Invocation.Builder invocationBuilder = registerAdminWebTarget.request(MediaType.APPLICATION_JSON);
 
@@ -127,7 +127,9 @@ public class Cliente {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());
 		} else {
 			logger.info("Film correctly registered");
+			inicio = true;
 		}
+		return inicio;
 	}
 	
 	public void eliminarPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
@@ -210,8 +212,8 @@ public class Cliente {
 
 //		VentanaRegistro v1 = new VentanaRegistro();
 //		v1.setVisible(true);
-		VentanaInicioSesion v1 = new VentanaInicioSesion();
-		v1.setVisible(true);
+//		VentanaInicioSesion v1 = new VentanaInicioSesion();
+//		v1.setVisible(true);
 		VentanaAdmin v2 = new VentanaAdmin();
 		v2.setVisible(true);
 	}
