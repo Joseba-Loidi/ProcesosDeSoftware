@@ -132,8 +132,9 @@ public class Cliente {
 		return inicio;
 	}
 	
-	public void eliminarPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
-
+	public static boolean eliminarPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
+		boolean inicio = false;
+		
 		PeliculaData peliculaData = new PeliculaData();
 		peliculaData.setCodigo(codigo);
 		peliculaData.setTitulo(titulo);
@@ -148,7 +149,9 @@ public class Cliente {
 			logger.error("Error connecting with the server. Code: {}", response1.getStatus());
 		} else {
 			logger.info("Film correctly deleted");
+			inicio = true;
 		}
+		return inicio;
 	}
 
 

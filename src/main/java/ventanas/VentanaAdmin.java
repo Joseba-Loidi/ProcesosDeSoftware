@@ -13,25 +13,38 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import es.deusto.spq.client.Cliente;
-import es.deusto.spq.pojo.PeliculaData;
+import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Pelicula;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
+import javax.swing.JTextField;
 
 public class VentanaAdmin extends JFrame {
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTable table;
 	private DefaultTableModel modeloTabla;
 	private JScrollPane scrollTabla;
 	private Object[] columna = new Object[7];
-	//private JTable table_1;
+	private String codigo;
+	private String titulo;
+	private int minutos ;
+	private int valoracion;
+	private Genero genero;
 
 	private JPanel contentPane;
 
@@ -114,18 +127,81 @@ public class VentanaAdmin extends JFrame {
 				Vanadir.setVisible(true);
 			}
 		});
+		
 		anadir.setForeground(Color.WHITE);
 		anadir.setBackground(SystemColor.activeCaption);
 		anadir.setBounds(81, 266, 163, 27);
 		panelBtn.add(anadir);
+		
+		
+		
+		table.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				int selectedRowIndex = table.getSelectedRow();
+				
+				codigo = modeloTabla.getValueAt(selectedRowIndex, 0).toString();
+				titulo = modeloTabla.getValueAt(selectedRowIndex, 1).toString();
+				String min = modeloTabla.getValueAt(selectedRowIndex, 2).toString();
+				minutos = Integer.parseInt(min);
+				String val = modeloTabla.getValueAt(selectedRowIndex, 3).toString();
+				valoracion = Integer.parseInt(val);
+				String gen = modeloTabla.getValueAt(selectedRowIndex, 4).toString();
+				genero = Genero.valueOf(gen);
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+	        
+	        
+	    });
 		
 		JButton eliminar = new JButton("Eliminar");
 		eliminar.setForeground(Color.WHITE);
 		eliminar.setBackground(SystemColor.activeCaption);
 		eliminar.setBounds(81, 266, 163, 27);
 		panelBtn.add(eliminar);
+		eliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					boolean inicio = Cliente.eliminarPelicula(codigo, titulo, minutos, valoracion, genero);
+					if(inicio) {
+						JOptionPane.showMessageDialog(null, "Pelicula eliminada correctamente", "Añadir Pelicula", JOptionPane.INFORMATION_MESSAGE);
+						setVisible(false);
+						VentanaAdmin va = new VentanaAdmin();
+						va.setVisible(true);
+					}else {
+						JOptionPane.showMessageDialog(null, "Error al eliminar la Pelicula", "Añadir Pelicula", JOptionPane.ERROR_MESSAGE);
+						
+					}
+				
+			}
+		});
 		
-
+		
 		setVisible(true);
 	}
 
