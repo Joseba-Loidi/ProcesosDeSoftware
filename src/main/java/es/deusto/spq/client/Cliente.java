@@ -215,9 +215,9 @@ public class Cliente {
 
 //		VentanaRegistro v1 = new VentanaRegistro();
 //		v1.setVisible(true);
-//		VentanaInicioSesion v1 = new VentanaInicioSesion();
-//		v1.setVisible(true);
-		VentanaAdmin v2 = new VentanaAdmin();
-		v2.setVisible(true);
+		VentanaInicioSesion v1 = new VentanaInicioSesion();
+		v1.setVisible(true);
+//		VentanaAdmin v2 = new VentanaAdmin();
+	//	v2.setVisible(true);
 	}
 }

@@ -162,7 +162,9 @@ public class VentanaInicioSesion extends JFrame {
 					boolean inicio = Cliente.login(usuario, contr);
 					if(inicio) {
 						JOptionPane.showMessageDialog(null, "Login realizado correctamente", "Login", JOptionPane.INFORMATION_MESSAGE);
-
+						VentanaPrincipal VP = new VentanaPrincipal();
+						VP.setVisible(true);
+						setVisible(false);
 					}
 						
 					}else {
