@@ -160,20 +160,26 @@ public class VentanaInicioSesion extends JFrame {
 				if (!usuario.isEmpty() && !contr.isEmpty()) {	
 					
 					boolean inicio = Cliente.login(usuario, contr);
+					boolean inicioAdmin = Cliente.loginAdmin(usuario, contr);
 					if(inicio) {
 						JOptionPane.showMessageDialog(null, "Login realizado correctamente", "Login", JOptionPane.INFORMATION_MESSAGE);
 						VentanaPrincipal VP = new VentanaPrincipal();
 						VP.setVisible(true);
 						setVisible(false);
-					}
+					}else if (inicioAdmin) {
+						JOptionPane.showMessageDialog(null, "Login realizado correctamente", "Login", JOptionPane.INFORMATION_MESSAGE);
+						VentanaAdmin VA = new VentanaAdmin();
+						VA.setVisible(true);
+						setVisible(false);
 						
-					}else {
+					}
+					else {
 						JOptionPane.showMessageDialog(null, "Login incorrecto", "Error", JOptionPane.ERROR_MESSAGE);
 						
 					}
 			
 			}
-		});
+			}});
 		aceptarLogin.setForeground(Color.WHITE);
 		aceptarLogin.setBackground(SystemColor.activeCaption);
 		aceptarLogin.setBounds(81, 266, 163, 27);

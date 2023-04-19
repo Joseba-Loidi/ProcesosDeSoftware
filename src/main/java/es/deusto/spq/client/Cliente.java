@@ -107,6 +107,32 @@ public class Cliente {
 			inicio = true;
 		}
 		return inicio;
+			
+	}
+	
+	public static boolean loginAdmin(String login, String password) {
+		boolean inicio = false;
+		logger.info("HOLA CLIENTE");
+		WebTarget registerAdminWebTarget = webTarget.path("loginAdmin");
+
+		Invocation.Builder invocationBuilder = registerAdminWebTarget.request(MediaType.APPLICATION_JSON);
+
+		AdminData adminData = new AdminData();
+		adminData.setLogin(login);
+		adminData.setPassword(password);
+		Response response = invocationBuilder.post(Entity.entity(adminData, MediaType.APPLICATION_JSON));
+
+		// Response response = invocationBuilder.get();
+
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+
+		} else {
+			logger.info("Login de admin: " + login + " realizado correctamente");
+			inicio = true;
+		}
+		return inicio;
+			
 	}
 
 	public static boolean addPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
@@ -203,7 +229,7 @@ public class Cliente {
 		String port = args[1];
 
 		Cliente exampleClient = new Cliente(hostname, port);
-//		exampleClient.registerUser(USER, PASSWORD, CORREO);
+		exampleClient.registerUser(USER, PASSWORD, CORREO);
 //		exampleClient.registerAdmin(SUPER_USER, S_PASSWORD);
 //
 //		exampleClient.eliminarPelicula(CODIGO, TITULO, MINUTOS, VALORACION, GENERO);
@@ -211,7 +237,7 @@ public class Cliente {
 //		exampleClient.sayMessage(USER, PASSWORD, "This is a test!...");
 //		exampleClient.sayMessage(USER, PASSWORD, "VIDEOCLUB");
 //
-//		exampleClient.login(USER, PASSWORD);
+		exampleClient.login(USER, PASSWORD);
 
 //		VentanaRegistro v1 = new VentanaRegistro();
 //		v1.setVisible(true);
