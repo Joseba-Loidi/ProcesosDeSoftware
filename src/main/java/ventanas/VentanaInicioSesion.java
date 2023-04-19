@@ -181,7 +181,7 @@ public class VentanaInicioSesion extends JFrame {
 		
 		JLabel lblNewLabel_3 = new JLabel("¿No tiene cuenta en DeustoPrime?");
 		lblNewLabel_3.setForeground(Color.LIGHT_GRAY);
-		lblNewLabel_3.setBounds(10, 334, 203, 14);
+		lblNewLabel_3.setBounds(81, 324, 203, 26);
 		panel_3.add(lblNewLabel_3);
 		
 	
@@ -197,7 +197,7 @@ public class VentanaInicioSesion extends JFrame {
 		//PANEL REGISTRO
 		JPanel panelRegistro = new JPanel();
 		panelRegistro.setBackground(Color.DARK_GRAY);
-		panel_2.add(panelRegistro, BorderLayout.CENTER);
+		//panel_2.add(panelRegistro, BorderLayout.CENTER);
 		panelRegistro.setLayout(null);
 		
 		JLabel labelNombre = new JLabel("Nombre");
@@ -228,22 +228,23 @@ public class VentanaInicioSesion extends JFrame {
 				String usuario = nombreTxt.getText();
 				String password = contrTxt.getText();
 				String email = emailTxt.getText();
-				
-				if (password.equals(contr2Txt.getText())) {
-					Cliente.registerUser(usuario, password, email);
-					JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Registro", JOptionPane.INFORMATION_MESSAGE);
-					panelRegistro.setVisible(false);
-					panel_2.add(panel_3, BorderLayout.CENTER);
-					panel_3.setVisible(true);
-				} else {
-					JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+				if(!usuario.isEmpty() && !password.isEmpty() && !email.isEmpty()) {
+					if (password.equals(contr2Txt.getText())) {
+						Cliente.registerUser(usuario, password, email);
+						JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Registro", JOptionPane.INFORMATION_MESSAGE);
+						panelRegistro.setVisible(false);
+						panel_2.add(panel_3, BorderLayout.CENTER);
+						panel_3.setVisible(true);
+					} else {
+						JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
 
+					}
 				}
 			}
 		});
 		registroBoton.setForeground(Color.WHITE);
 		registroBoton.setBackground(SystemColor.activeCaption);
-		registroBoton.setBounds(81, 356, 163, 27);
+		registroBoton.setBounds(188, 359, 108, 27);
 		panelRegistro.add(registroBoton);
 		
 		JLabel registroLabel = new JLabel("REGISTRO");
@@ -275,10 +276,25 @@ public class VentanaInicioSesion extends JFrame {
 		panelRegistro.add(contr2Txt);
 		contr2Txt.setColumns(10);
 		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				panelRegistro.setVisible(false);
+				panel_2.add(panel_3, BorderLayout.CENTER);
+				panel_3.setVisible(true);
+				
+			}
+		});	
+		btnVolver.setForeground(Color.WHITE);
+		btnVolver.setBackground(SystemColor.activeCaption);
+		btnVolver.setBounds(57, 359, 108, 27);
+		panelRegistro.add(btnVolver);
+		
 		
 		JButton btnNewButton_1 = new JButton("Registrarse");
 		btnNewButton_1.setBackground(SystemColor.activeCaption);
-		btnNewButton_1.setBounds(196, 330, 89, 23);
+		btnNewButton_1.setBounds(114, 369, 104, 23);
 		panel_3.add(btnNewButton_1);
 		
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -292,23 +308,4 @@ public class VentanaInicioSesion extends JFrame {
 			}
 		});
 	}
-	
-	
-	//PARA RUNNEAR
-	/*public void run() {
-		running.set(true);
-		while(running.get()) {
-			try { 
-				Thread.sleep(2000);
-				System.out.println("Obtaining data from server...");
-			} catch (InterruptedException e){ 
-				Thread.currentThread().interrupt();
-				System.out.println("Thread was interrupted, Failed to complete operation");
-			}
-		}
-	}
-
-	public void stop() {
-		this.running.set(false);
-	}*/
 }
