@@ -6,20 +6,28 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import es.deusto.spq.client.Cliente;
+import es.deusto.spq.server.jdo.Genero;
+import es.deusto.spq.server.jdo.Pelicula;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
@@ -126,20 +134,25 @@ public class VentanaPrincipal extends JFrame {
 		panel_4.setLayout(new GridLayout(1, 5));
 		
 		//PANELES
+		//---------------- PANEL FAVORITO-----------------------------------------
 		JPanel panelFavorito = new JPanel();
 		panelFavorito.setBackground(Color.CYAN);
-		//panel_3.add(panelFavorito, BorderLayout.CENTER);		
+		//panel_3.add(panelFavorito, BorderLayout.CENTER);	
+		
+		//---------------- PANEL PELICULAS-----------------------------------------
 		
 		JPanel panelPeliculas = new JPanel();
 		panelPeliculas.setBackground(Color.RED);
 		//panel_3.add(panelPeliculas, BorderLayout.CENTER);
+		
+		//---------------- PANEL LISTA-----------------------------------------
 		
 		JPanel panelLista = new JPanel();
 		panelLista.setBackground(Color.pink);
 		//panel_3.add(panelLista, BorderLayout.CENTER);
 		
 		
-		// PANEL FILTRO-----------------------------------------
+		//---------------- PANEL FILTRO-----------------------------------------
 		JPanel panelFiltro = new JPanel();
 		panelFiltro.setBackground(Color.green);
 		panel_3.add(panelFiltro, BorderLayout.CENTER);
@@ -196,9 +209,9 @@ public class VentanaPrincipal extends JFrame {
 		
 		JLabel lblNewLabelGenero = new JLabel("Género");
 		panelGenero.add(lblNewLabelGenero);
-		String[] opcionesGenero = {"", "Terror", "Comedia", "Ciencia ficcion", "Accion", "Aventura", "Drama", "Musical"};      
+		//String[] opcionesGenero = {Genero.val};      
         // Creamos un JComboBox y le pasamos las opciones
-		 JComboBox<String> comboBoxGenero = new JComboBox<>(opcionesGenero);
+		 JComboBox<Genero> comboBoxGenero = new JComboBox<>(Genero.values());
        // JComboBox<String> comboBox = new JComboBox<>(opciones);
 		panelGenero.add(comboBoxGenero);
 		
@@ -206,6 +219,43 @@ public class VentanaPrincipal extends JFrame {
 		panelFiltro.add(txtNombre, BorderLayout.SOUTH);
 		txtNombre.setColumns(10);
 		
+		//Panel valoración
+		JPanel panelValoración = new JPanel();
+		panelValoración.setBackground(new Color(218, 218, 218));
+		panelValoración.setLayout(new GridLayout(1, 2));
+		//panel_7.add(panelTitulo);
+		
+		JLabel lblValoracion = new JLabel("Valoración");
+		panelValoración.add(lblValoracion);
+		
+	
+		JPanel panelRadio = new JPanel();
+		panelRadio.setBackground(new Color(218, 218, 218));
+		panelRadio.setLayout(new GridLayout(1, 5));
+		
+		// Creamos los JRadioButton
+		JRadioButton radio1 = new JRadioButton("1");
+		JRadioButton radio2 = new JRadioButton("2");
+		JRadioButton radio3 = new JRadioButton("3");
+		JRadioButton radio4 = new JRadioButton("4");
+		JRadioButton radio5 = new JRadioButton("5");
+
+        // Creamos un grupo para los JRadioButton
+		ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(radio1);
+        buttonGroup.add(radio2);
+        buttonGroup.add(radio3);
+        buttonGroup.add(radio4);
+        buttonGroup.add(radio5);
+
+        // Añadimos los JRadioButton a la ventana
+        panelValoración.add(radio1);
+        panelValoración.add(radio2);
+        panelValoración.add(radio3);
+        panelValoración.add(radio4);
+        panelValoración.add(radio5);
+        
+        panelGenero.add(panelValoración);
 		
 		comboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -214,6 +264,7 @@ public class VentanaPrincipal extends JFrame {
                 	panelTitulo.setVisible(false);	
                     panelGenero.setVisible(false);
                     panelVacio.setVisible(true);
+                    panelValoración.setVisible(false);
                     // Quitamos los paneles del contenedor original antes de agregarlos a panel_7
                     panel_7.removeAll();
                     panel_7.add(panelVacio);
@@ -224,6 +275,7 @@ public class VentanaPrincipal extends JFrame {
                     panelTitulo.setVisible(true);	
                     panelGenero.setVisible(false);
                     panelVacio.setVisible(false);
+                    panelValoración.setVisible(false);
                     // Quitamos los paneles del contenedor original antes de agregarlos a panel_7
                     panel_7.removeAll();
                     panel_7.add(panelTitulo);
@@ -234,13 +286,22 @@ public class VentanaPrincipal extends JFrame {
                     panelTitulo.setVisible(false);	
                     panelGenero.setVisible(true);
                     panelVacio.setVisible(false);
+                    panelValoración.setVisible(false);
                     // Quitamos los paneles del contenedor original antes de agregarlos a panel_7
                     panel_7.removeAll();
                     panel_7.add(panelGenero);
                     panel_7.setVisible(true);
                 	
                 }else if(opcionSeleccionada.equals("Valoración")) {
-                	
+                	// Mostramos el panel de género y ocultamos el de título
+                    panelTitulo.setVisible(false);	
+                    panelGenero.setVisible(false);
+                    panelVacio.setVisible(false);
+                    panelValoración.setVisible(true);
+                    // Quitamos los paneles del contenedor original antes de agregarlos a panel_7
+                    panel_7.removeAll();
+                    panel_7.add(panelValoración);
+                    panel_7.setVisible(true);
                 }
             }
         });
@@ -265,7 +326,33 @@ public class VentanaPrincipal extends JFrame {
 		scrollTabla.getViewport().setBackground(new Color(204,204,204));
 		
 		
+		JPanel panelBotonFiltro = new JPanel();
+		panelFiltro.add(panelBotonFiltro, BorderLayout.SOUTH);
+		panel_5.setLayout(new GridLayout(1, 1));
 		
+		JButton filtrarBoton = new JButton("Filtrar");
+		panelBotonFiltro.add(filtrarBoton);
+		panelBotonFiltro.add(filtrarBoton);
+		
+		filtrarBoton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(panelTitulo.isVisible()) { 
+					table.removeAll();
+					String nombre = txtNombre.getText();
+					cargarTablaNombre(nombre);
+					repaint();
+				} else if (panelGenero.isVisible()){
+					Genero genero = (Genero) comboBoxGenero.getSelectedItem();
+					cargarTablaGenero(genero);
+
+				}
+				
+			}
+		});
+		
+		//--------------------------------------------------------------
 		
 		
 		
@@ -373,5 +460,47 @@ public class VentanaPrincipal extends JFrame {
 		
 		
 	}
+	
+	
+	//METODOS PARA VISUALIZAR FILTRADO EN LA TABLA
+	public void cargarTablaNombre(String nombre) {
+		modeloTabla.setRowCount(0);
+		try {
+			List<Pelicula> listaPelis = Cliente.filtrarNombre(nombre);
+			for (Pelicula pelicula : listaPelis) {
+				System.out.println(pelicula.toString());
+				columna[0] = pelicula.getCodigo();
+				columna[1] = pelicula.getTitulo();
+				columna[2] = pelicula.getMinutos();
+				columna[3] = pelicula.getValoracion();
+				columna[4] = pelicula.getGenero();
+				modeloTabla.addRow(columna);// agregamos una fila a nuestro modelo de tabla
+			}
+		
+		} catch (Exception e) {
+			System.out.println("No se puede rellenar la tabla");
+			e.printStackTrace();
+		}
+		
+	}
+		public void cargarTablaGenero(Genero genero) {
+			 modeloTabla.setRowCount(0);
+			try {
+				List<Pelicula> listaPelis = Cliente.filtrarGenero(genero);
+				for (Pelicula pelicula : listaPelis) {
+					System.out.println(pelicula.toString());
+					columna[0] = pelicula.getCodigo();
+					columna[1] = pelicula.getTitulo();
+					columna[2] = pelicula.getMinutos();
+					columna[3] = pelicula.getValoracion();
+					columna[4] = pelicula.getGenero();
+					modeloTabla.addRow(columna);// agregamos una fila a nuestro modelo de tabla
+				}
+			repaint();
+			} catch (Exception e) {
+				System.out.println("No se puede rellenar la tabla");
+				e.printStackTrace();
+			}
 
+}
 }

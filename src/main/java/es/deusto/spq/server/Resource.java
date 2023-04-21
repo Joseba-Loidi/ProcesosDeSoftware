@@ -28,6 +28,7 @@ import es.deusto.spq.pojo.MessageData;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.jdo.Admin;
+import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Message;
 import es.deusto.spq.server.jdo.Pelicula;
 import es.deusto.spq.server.jdo.User;
@@ -353,6 +354,58 @@ public class Resource {
 		}
 		
 		
+	}
+	
+	@POST
+	@Path("/filtrarNombre")
+	public List<Pelicula> filtrarNombre(String nombre) {
+		List<Pelicula> peliculas = new ArrayList<>();
+		try{
+			tx.begin();
+			logger.info("Filtrar Pelicula por nombre ...");
+			Extent<Pelicula> peliExtent = pm.getExtent(Pelicula.class, true);	
+			for (Pelicula peli : peliExtent) {
+				if(peli.getTitulo().equals(nombre)) {
+					peliculas.add(peli);
+					logger.info("Film retrieved: {}", peli); 
+				}
+			}
+			
+			tx.commit();	
+		} catch (Exception ex) {
+			System.out.println("  $ Error querying all films: " + ex.getMessage());
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return peliculas;
+	}
+	
+	@POST
+	@Path("/filtrarGenero")
+	public List<Pelicula> filtrarGenero(Genero genero) {
+		List<Pelicula> peliculas = new ArrayList<>();
+		try{
+			tx.begin();
+			logger.info("Filtrar Pelicula por Genero ...");
+			Extent<Pelicula> peliExtent = pm.getExtent(Pelicula.class, true);	
+			for (Pelicula peli : peliExtent) {
+				if(peli.getGenero().equals(genero)) {
+					peliculas.add(peli);
+					logger.info("Film retrieved: {}", peli); 
+				}
+			}
+			
+			tx.commit();	
+		} catch (Exception ex) {
+			System.out.println("  $ Error querying all films: " + ex.getMessage());
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return peliculas;
 	}
 
 	@GET

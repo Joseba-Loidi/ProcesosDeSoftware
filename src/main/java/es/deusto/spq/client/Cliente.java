@@ -218,6 +218,37 @@ public class Cliente {
 			logger.info("* Message coming from the server: '{}'", responseMessage);
 		}
 	}
+	
+	public static List<Pelicula> filtrarNombre(String nombre) {
+		WebTarget getFiltrarNombre = webTarget.path("filtrarNombre");
+		Invocation.Builder invocationBuilder = getFiltrarNombre.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(Entity.entity(nombre, MediaType.TEXT_PLAIN)); // Agregar el parámetro al cuerpo de la petición
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+			return null;
+		} else {
+			GenericType<List<Pelicula>> listType = new GenericType<List<Pelicula>>(){};
+            List<Pelicula> pelis = response.readEntity(listType);
+			return pelis;
+		}
+	}
+	
+	public static List<Pelicula> filtrarGenero(Genero genero) {
+		WebTarget getFiltrarNombre = webTarget.path("filtrarGenero");
+		Invocation.Builder invocationBuilder = getFiltrarNombre.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(Entity.entity(genero, MediaType.TEXT_PLAIN)); // Agregar el parámetro al cuerpo de la petición
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+			return null;
+		} else {
+			GenericType<List<Pelicula>> listType = new GenericType<List<Pelicula>>(){};
+            List<Pelicula> pelis = response.readEntity(listType);
+			return pelis;
+		}
+	}
+	
+	
+	
 
 	public static void main(String[] args) {
 		if (args.length != 2) {
