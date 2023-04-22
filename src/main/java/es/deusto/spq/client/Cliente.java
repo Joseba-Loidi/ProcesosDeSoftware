@@ -219,7 +219,7 @@ public class Cliente {
 		}
 	}
 	
-	public static List<Pelicula> filtrarNombre(String nombre) {
+	public static Pelicula filtrarNombre(String nombre) {
 		WebTarget getFiltrarNombre = webTarget.path("filtrarNombre");
 		Invocation.Builder invocationBuilder = getFiltrarNombre.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.post(Entity.entity(nombre, MediaType.TEXT_PLAIN)); // Agregar el parámetro al cuerpo de la petición
@@ -227,9 +227,9 @@ public class Cliente {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());
 			return null;
 		} else {
-			GenericType<List<Pelicula>> listType = new GenericType<List<Pelicula>>(){};
-            List<Pelicula> pelis = response.readEntity(listType);
-			return pelis;
+			GenericType<Pelicula> listType = new GenericType<Pelicula>(){};
+            Pelicula peli = response.readEntity(listType);
+			return peli;
 		}
 	}
 	
@@ -247,7 +247,19 @@ public class Cliente {
 		}
 	}
 	
-	
+	public static List<Pelicula> filtrarValoracion(int valoracion) {
+		WebTarget getFiltrarValoracion = webTarget.path("filtrarValoracion");
+		Invocation.Builder invocationBuilder = getFiltrarValoracion.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(Entity.entity(valoracion, MediaType.TEXT_PLAIN)); // Agregar el parámetro al cuerpo de la petición
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+			return null;
+		} else {
+			GenericType<List<Pelicula>> listType = new GenericType<List<Pelicula>>(){};
+            List<Pelicula> pelis = response.readEntity(listType);
+			return pelis;
+		}
+	}
 	
 
 	public static void main(String[] args) {

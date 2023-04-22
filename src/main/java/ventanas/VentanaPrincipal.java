@@ -40,6 +40,8 @@ public class VentanaPrincipal extends JFrame {
 	private DefaultTableModel modeloTabla;
 	private JScrollPane scrollTabla;
 	private Object[] columna = new Object[7];
+	
+	int numValoracion;
 
 	/**
 	 * Launch the application.
@@ -192,9 +194,9 @@ public class VentanaPrincipal extends JFrame {
 		JLabel lblNewLabelTitulo = new JLabel("Nombre Película");
 		panelTitulo.add(lblNewLabelTitulo);
 		
-		txtNombre = new JTextField();
-		panelTitulo.add(txtNombre, BorderLayout.SOUTH);
-		txtNombre.setColumns(10);
+		JTextField txtNombreFiltro = new JTextField();
+		panelTitulo.add(txtNombreFiltro, BorderLayout.SOUTH);
+		txtNombreFiltro.setColumns(10);
 		
 		//Panel vacío
 		JPanel panelVacio = new JPanel();
@@ -215,10 +217,7 @@ public class VentanaPrincipal extends JFrame {
        // JComboBox<String> comboBox = new JComboBox<>(opciones);
 		panelGenero.add(comboBoxGenero);
 		
-		txtNombre = new JTextField();
-		panelFiltro.add(txtNombre, BorderLayout.SOUTH);
-		txtNombre.setColumns(10);
-		
+	
 		//Panel valoración
 		JPanel panelValoración = new JPanel();
 		panelValoración.setBackground(new Color(218, 218, 218));
@@ -256,6 +255,48 @@ public class VentanaPrincipal extends JFrame {
         panelValoración.add(radio5);
         
         panelGenero.add(panelValoración);
+        
+        radio1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				numValoracion = 1;
+				
+			}
+		});
+        radio2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				numValoracion = 2;
+				
+			}
+		});
+        radio3.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				numValoracion = 3;
+				
+			}
+		});
+       radio4.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				numValoracion = 4;
+				
+			}
+		});
+       radio5.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				numValoracion = 5;
+				
+			}
+		});
+
 		
 		comboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -339,14 +380,17 @@ public class VentanaPrincipal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(panelTitulo.isVisible()) { 
-					table.removeAll();
-					String nombre = txtNombre.getText();
+					//table.removeAll();
+					String nombre = txtNombreFiltro.getText();
 					cargarTablaNombre(nombre);
-					repaint();
+					//repaint();
 				} else if (panelGenero.isVisible()){
 					Genero genero = (Genero) comboBoxGenero.getSelectedItem();
 					cargarTablaGenero(genero);
 
+				}else if(panelValoración.isVisible()) {
+					System.out.println(numValoracion);
+					cargarTablaValoracion(numValoracion);
 				}
 				
 			}
@@ -466,8 +510,8 @@ public class VentanaPrincipal extends JFrame {
 	public void cargarTablaNombre(String nombre) {
 		modeloTabla.setRowCount(0);
 		try {
-			List<Pelicula> listaPelis = Cliente.filtrarNombre(nombre);
-			for (Pelicula pelicula : listaPelis) {
+			Pelicula pelicula = Cliente.filtrarNombre(nombre);
+
 				System.out.println(pelicula.toString());
 				columna[0] = pelicula.getCodigo();
 				columna[1] = pelicula.getTitulo();
@@ -475,7 +519,7 @@ public class VentanaPrincipal extends JFrame {
 				columna[3] = pelicula.getValoracion();
 				columna[4] = pelicula.getGenero();
 				modeloTabla.addRow(columna);// agregamos una fila a nuestro modelo de tabla
-			}
+			
 		
 		} catch (Exception e) {
 			System.out.println("No se puede rellenar la tabla");
@@ -503,4 +547,28 @@ public class VentanaPrincipal extends JFrame {
 			}
 
 }
+		
+		public void cargarTablaValoracion(int valoracion) {
+			 modeloTabla.setRowCount(0);
+			try {
+				List<Pelicula> listaPelis = Cliente.filtrarValoracion(valoracion);
+				for (Pelicula pelicula : listaPelis) {
+					System.out.println(pelicula.toString());
+					columna[0] = pelicula.getCodigo();
+					columna[1] = pelicula.getTitulo();
+					columna[2] = pelicula.getMinutos();
+					columna[3] = pelicula.getValoracion();
+					columna[4] = pelicula.getGenero();
+					modeloTabla.addRow(columna);// agregamos una fila a nuestro modelo de tabla
+				}
+			repaint();
+			} catch (Exception e) {
+				System.out.println("No se puede rellenar la tabla");
+				e.printStackTrace();
+			}
+
+}
+		
+		
+		
 }

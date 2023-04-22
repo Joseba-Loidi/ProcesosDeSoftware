@@ -358,14 +358,46 @@ public class Resource {
 	
 	@POST
 	@Path("/filtrarNombre")
-	public List<Pelicula> filtrarNombre(String nombre) {
-		List<Pelicula> peliculas = new ArrayList<>();
+	public Pelicula filtrarNombre(String nombre) {
+		Pelicula pelicula = null;
+		//List<Pelicula> peliculas = new ArrayList<>();
 		try{
 			tx.begin();
 			logger.info("Filtrar Pelicula por nombre ...");
+			try (Query<?> q = pm.newQuery("SELECT FROM " + Pelicula.class.getName() + " WHERE titulo == \"" + nombre + "\"")) {
+				q.setUnique(true);
+				pelicula = (Pelicula)q.execute();				
+				logger.info("Pelicula retrieved: {}", pelicula);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				 tx.rollback();
+				 logger.error("Error while logging in: {}", e.getMessage());
+				// return Response.status(Status.INTERNAL_SERVER_ERROR).entity("An error occurred while logging in").build();
+			}
+			
+			tx.commit();	
+		} catch (Exception ex) {
+			System.out.println("  $ Error querying all films: " + ex.getMessage());
+		} finally {
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+		}
+		return pelicula;
+	}
+	
+	@POST
+	@Path("/filtrarGenero")
+	public List<Pelicula> filtrarGenero(Genero genero) {
+		List<Pelicula> peliculas = new ArrayList<>();
+		try{
+			tx.begin();
+			logger.info("Filtrar Pelicula por Genero ...");
 			Extent<Pelicula> peliExtent = pm.getExtent(Pelicula.class, true);	
 			for (Pelicula peli : peliExtent) {
-				if(peli.getTitulo().equals(nombre)) {
+				if(peli.getGenero().equals(genero)) {
 					peliculas.add(peli);
 					logger.info("Film retrieved: {}", peli); 
 				}
@@ -383,15 +415,15 @@ public class Resource {
 	}
 	
 	@POST
-	@Path("/filtrarGenero")
-	public List<Pelicula> filtrarGenero(Genero genero) {
+	@Path("/filtrarValoracion")
+	public List<Pelicula> filtrarValoracion(int valoracion) {
 		List<Pelicula> peliculas = new ArrayList<>();
 		try{
 			tx.begin();
-			logger.info("Filtrar Pelicula por Genero ...");
+			logger.info("Filtrar Pelicula por Valoracion ...");
 			Extent<Pelicula> peliExtent = pm.getExtent(Pelicula.class, true);	
 			for (Pelicula peli : peliExtent) {
-				if(peli.getGenero().equals(genero)) {
+				if(peli.getValoracion()==(valoracion)) {
 					peliculas.add(peli);
 					logger.info("Film retrieved: {}", peli); 
 				}
