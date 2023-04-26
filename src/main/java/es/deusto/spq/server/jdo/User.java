@@ -33,6 +33,11 @@ public class User {
 		this.correo = correo;
 	}
 	
+	public User() {
+		this.login = "";
+		this.password = "";
+		this.correo = "";
+	}
 
 
 	public void addMessage(Message message) {

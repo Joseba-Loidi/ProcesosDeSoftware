@@ -10,6 +10,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import es.deusto.spq.client.Cliente;
+import es.deusto.spq.server.jdo.User;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -162,8 +163,9 @@ public class VentanaInicioSesion extends JFrame {
 					boolean inicio = Cliente.login(usuario, contr);
 					boolean inicioAdmin = Cliente.loginAdmin(usuario, contr);
 					if(inicio) {
+						User u = Cliente.getLogin(usuario);
 						JOptionPane.showMessageDialog(null, "Login realizado correctamente", "Login", JOptionPane.INFORMATION_MESSAGE);
-						VentanaPrincipal VP = new VentanaPrincipal();
+						VentanaPrincipal VP = new VentanaPrincipal(u);
 						VP.setVisible(true);
 						setVisible(false);
 					}else if (inicioAdmin) {

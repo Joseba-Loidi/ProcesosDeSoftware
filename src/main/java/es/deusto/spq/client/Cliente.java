@@ -20,6 +20,7 @@ import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Pelicula;
+import es.deusto.spq.server.jdo.User;
 import ventanas.VentanaAdmin;
 import ventanas.VentanaInicioSesion;
 //import ventanas.VentanaRegistro;
@@ -109,6 +110,21 @@ public class Cliente {
 		return inicio;
 			
 	}
+	
+	public static User getLogin(String nombre) {
+		WebTarget getLogin = webTarget.path("getLogin");
+		Invocation.Builder invocationBuilder = getLogin.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(Entity.entity(nombre, MediaType.TEXT_PLAIN)); // Agregar el parámetro al cuerpo de la petición
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+			return null;
+		} else {
+			GenericType<User> listType = new GenericType<User>(){};
+            User user = response.readEntity(listType);
+			return user;
+		}
+	}		
+	
 	
 	public static boolean loginAdmin(String login, String password) {
 		boolean inicio = false;

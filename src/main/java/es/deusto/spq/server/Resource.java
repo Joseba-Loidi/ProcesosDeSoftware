@@ -389,6 +389,38 @@ public class Resource {
 	}
 	
 	@POST
+	@Path("/getLogin")
+	public User getLogin(String nombre) {
+		User u = null;
+		try{
+			tx.begin();
+			logger.info("Buscando Usuario ...");
+			try (Query<?> q = pm.newQuery("SELECT FROM " + User.class.getName() + " WHERE login == \"" + nombre + "\"")) {
+				q.setUnique(true);
+				u = (User)q.execute();				
+				logger.info("User retrieved: {}", u);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				tx.rollback();
+				logger.error("Error while logging in: {}", e.getMessage());
+				
+			}
+			
+			tx.commit();	
+		} catch (Exception ex) {
+			System.out.println("  $ Error querying all films: " + ex.getMessage());
+		} finally {
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+		}
+		return u;
+	}
+	
+	
+	@POST
 	@Path("/filtrarGenero")
 	public List<Pelicula> filtrarGenero(Genero genero) {
 		List<Pelicula> peliculas = new ArrayList<>();

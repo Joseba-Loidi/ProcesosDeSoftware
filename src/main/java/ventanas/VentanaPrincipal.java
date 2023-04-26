@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import es.deusto.spq.client.Cliente;
 import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Pelicula;
+import es.deusto.spq.server.jdo.User;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -50,7 +51,8 @@ public class VentanaPrincipal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaPrincipal frame = new VentanaPrincipal();
+					User u1 = new User();
+					VentanaPrincipal frame = new VentanaPrincipal(u1);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,7 +64,7 @@ public class VentanaPrincipal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaPrincipal() {
+	public VentanaPrincipal(User user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 478);
 		contentPane = new JPanel();
@@ -115,8 +117,9 @@ public class VentanaPrincipal extends JFrame {
 		//ImageIcon imageIcon = new ImageIcon("/ProcesosDeSoftware/src/main/java/imgs/fondo_inicio2.jpg");
 		panel_2.setPreferredSize(new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight()));
 
+		String nombreUsuario = user.getLogin() ;
 		
-		JButton bienvenido = new JButton("Usuario");
+		JButton bienvenido = new JButton(nombreUsuario);
 		bienvenido.setBackground(Color.DARK_GRAY);
 		bienvenido.setBorderPainted(false); 
 		bienvenido.setContentAreaFilled(false); 
