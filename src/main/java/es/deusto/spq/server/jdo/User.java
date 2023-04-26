@@ -22,9 +22,6 @@ public class User {
 	
 	@Persistent(mappedBy="user", dependentElement="true")
 	@Join
-	Set<Message> messages = new HashSet<>();
-	
-	@Join
 	List<Pelicula> peliculas = new ArrayList<>();
 	
 	public User(String login, String password, String correo) {
@@ -39,14 +36,6 @@ public class User {
 		this.correo = "";
 	}
 
-
-	public void addMessage(Message message) {
-		messages.add(message);
-	}
-
-	public void removeMessage(Message message) {
-		messages.remove(message);
-	}
 	public void alquilarPelicula(Pelicula pelicula) {
 		peliculas.add(pelicula);
 	}
@@ -67,9 +56,6 @@ public class User {
 		this.password = password;
 	}
 	
-	 public Set<Message> getMessages() {return this.messages;}
-	 
-	 
 	 
 	 public List<Pelicula> getPeliculas() {
 		return peliculas;
@@ -83,15 +69,10 @@ public class User {
 		this.correo = correo;
 	}
 
+	@Override
 	public String toString() {
-		StringBuilder messagesStr = new StringBuilder();
-		for (Message message: this.messages) {
-			messagesStr.append(message.toString() + " - ");
-		}
-		StringBuilder peliculasStr = new StringBuilder();  
-        for (Pelicula pelicula : peliculas) {
-        	peliculasStr.append(pelicula.toString() + " - ");
-		}
-        return "User: login --> " + this.login + ", password -->  " + this.password + ", Correo: "+ this.correo +  ", messages --> [" + messagesStr + "]"+ ", peliculas --> [" + peliculasStr + "]" ;
-    }
+		return "User [login=" + login + ", password=" + password + ", correo=" + correo + ", peliculas=" + peliculas
+				+ "]";
+	}
+
 }

@@ -13,8 +13,6 @@ public class Admin {
 	String login=null;
 	String password=null;
 	
-	@Join
-	Set<Message> messages = new HashSet<>();
 	
 	
 	public Admin(String login, String password) {
@@ -22,14 +20,6 @@ public class Admin {
 		this.password = password;
 	}
 	
-	public void addMessage(Message message) {
-		messages.add(message);
-	}
-
-	public void removeMessage(Message message) {
-		messages.remove(message);
-	}
-
 	public String getLogin() {
 		return this.login;
 	}
@@ -41,14 +31,11 @@ public class Admin {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	@Override
+	public String toString() {
+		return "Admin [login=" + login + ", password=" + password + "]";
+	}
 	
-	 public Set<Message> getMessages() {return this.messages;}
 	 
-	 public String toString() {
-		StringBuilder messagesStr = new StringBuilder();
-		for (Message message: this.messages) {
-			messagesStr.append(message.toString() + " - ");
-		}
-        return "Admin: login --> " + this.login + ", password -->  " + this.password + ", messages --> [" + messagesStr + "]";
-	 }
 }

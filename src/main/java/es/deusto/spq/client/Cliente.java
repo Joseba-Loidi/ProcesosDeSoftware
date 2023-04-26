@@ -14,8 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import es.deusto.spq.pojo.DirectMessage;
-import es.deusto.spq.pojo.MessageData;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.jdo.Genero;
@@ -208,30 +206,6 @@ public class Cliente {
 			GenericType<List<Pelicula>> listType = new GenericType<List<Pelicula>>(){};
             List<Pelicula> pelis = response.readEntity(listType);
 			return pelis;
-		}
-	}
-
-	public void sayMessage(String login, String password, String message) {
-		WebTarget sayHelloWebTarget = webTarget.path("sayMessage");
-		Invocation.Builder invocationBuilder = sayHelloWebTarget.request(MediaType.APPLICATION_JSON);
-
-		DirectMessage directMessage = new DirectMessage();
-		UserData userData = new UserData();
-		userData.setLogin(login);
-		userData.setPassword(password);
-
-		directMessage.setUserData(userData);
-
-		MessageData messageData = new MessageData();
-		messageData.setMessage(message);
-		directMessage.setMessageData(messageData);
-
-		Response response = invocationBuilder.post(Entity.entity(directMessage, MediaType.APPLICATION_JSON));
-		if (response.getStatus() != Status.OK.getStatusCode()) {
-			logger.error("Error connecting with the server. Code: {}", response.getStatus());
-		} else {
-			String responseMessage = response.readEntity(String.class);
-			logger.info("* Message coming from the server: '{}'", responseMessage);
 		}
 	}
 	
