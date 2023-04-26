@@ -126,7 +126,16 @@ public class VentanaPrincipal extends JFrame {
 		bienvenido.setOpaque(true); 
 		bienvenido.setForeground(Color.WHITE); 
 		bienvenido.setFont(new Font("Arial", Font.BOLD, 14)); 
-		panel_2.add(bienvenido)
+		panel_2.add(bienvenido);
+		bienvenido.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VentanaPerfil VPerfil = new VentanaPerfil(user);
+				 VPerfil.setVisible(true);
+				
+			}
+		})
 ;		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(Color.DARK_GRAY);
