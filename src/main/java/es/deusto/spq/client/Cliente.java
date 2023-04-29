@@ -223,6 +223,8 @@ public class Cliente {
 		}
 	}
 	
+	
+	
 	public static List<Pelicula> filtrarGenero(Genero genero) {
 		WebTarget getFiltrarNombre = webTarget.path("filtrarGenero");
 		Invocation.Builder invocationBuilder = getFiltrarNombre.request(MediaType.APPLICATION_JSON);
@@ -251,6 +253,26 @@ public class Cliente {
 		}
 	}
 	
+	public static List<Pelicula> filtrarUsuario(String user) {
+		System.out.println("He llegado a filtrar usuario");
+		WebTarget getFiltrarUsuario = webTarget.path("filtrarUsuario");
+		System.out.println("He llegado a filtrar usuario2");
+		Invocation.Builder invocationBuilder = getFiltrarUsuario.request(MediaType.APPLICATION_JSON);
+		System.out.println("He llegado a filtrar usuario3---");
+		System.out.println(user.toString());
+		Response response = invocationBuilder.post(Entity.entity(user, MediaType.TEXT_PLAIN)); // Agregar el parámetro al cuerpo de la petición
+		System.out.println("He llegado a filtrar usuario4");
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			System.out.println("Estamos en este error");
+			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+			return null;
+		} else {
+			System.out.println("He llegado a filtrar usuario5");
+			GenericType<List<Pelicula>> listType = new GenericType<List<Pelicula>>(){};
+            List<Pelicula> pelis = response.readEntity(listType);
+			return pelis;
+		}
+	}
 
 	public static void main(String[] args) {
 		if (args.length != 2) {

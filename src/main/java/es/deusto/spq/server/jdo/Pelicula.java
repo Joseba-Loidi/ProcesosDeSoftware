@@ -1,6 +1,7 @@
 package es.deusto.spq.server.jdo;
 
 import javax.jdo.annotations.PersistenceCapable;
+
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable

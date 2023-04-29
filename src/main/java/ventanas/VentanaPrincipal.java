@@ -42,6 +42,11 @@ public class VentanaPrincipal extends JFrame {
 	private JScrollPane scrollTabla;
 	private Object[] columna = new Object[7];
 	
+	private JTable table2;
+	private DefaultTableModel modeloTabla2;
+	private JScrollPane scrollTabla2;
+	private Object[] columna2 = new Object[7];
+	
 	int numValoracion;
 
 	/**
@@ -361,9 +366,11 @@ public class VentanaPrincipal extends JFrame {
         });
 		
 		
-		//Creamos la JTable
+		//Creamos las JTable
 		modeloTabla = new DefaultTableModel();
+		modeloTabla2 = new DefaultTableModel();
 		table = new JTable(modeloTabla);
+		table2 = new JTable(modeloTabla2);
 		//Creamos las columnas
 		modeloTabla.addColumn("Cod");
 		modeloTabla.addColumn("Titulo");
@@ -371,11 +378,21 @@ public class VentanaPrincipal extends JFrame {
 		modeloTabla.addColumn("Valoración");
 		modeloTabla.addColumn("Género");
 
+		modeloTabla2.addColumn("Cod");
+		modeloTabla2.addColumn("Titulo");
+		modeloTabla2.addColumn("Minutos");
+		modeloTabla2.addColumn("Valoración");
+		modeloTabla2.addColumn("Género");
 				
 		// JSCROLLPANE Y A�ADIR LA TABLA
 		scrollTabla = new JScrollPane(table);
 		scrollTabla.setVisible(true);
+		
+		scrollTabla2 = new JScrollPane(table2);
+		scrollTabla2.setVisible(true);
+		
 		panelFiltro.add(scrollTabla, BorderLayout.CENTER);
+		panelLista.add(scrollTabla2);
 					
 		scrollTabla.getViewport().setBackground(new Color(204,204,204));
 		
@@ -460,6 +477,7 @@ public class VentanaPrincipal extends JFrame {
 				
 				panel_3.add(panelLista, BorderLayout.CENTER);
 				panelLista.setVisible(true);
+				cargarTablaUsuario(user);
 				
 			}
 		});
@@ -581,6 +599,33 @@ public class VentanaPrincipal extends JFrame {
 			}
 
 }
+		
+		public void cargarTablaUsuario(User user) {
+			System.out.println("he llegado1 ");
+			modeloTabla2.setRowCount(0);
+			System.out.println("he llegado2 ");
+			try {
+				System.out.println("he llegado3 ---- ");
+				System.out.println(user.toString());
+				List<Pelicula> listaPelis = Cliente.filtrarUsuario(user.getLogin());
+				System.out.println("he llegado4 ");
+				for (Pelicula pelicula : listaPelis) {
+					System.out.println(pelicula.toString());
+					columna2[0] = pelicula.getCodigo();
+					columna2[1] = pelicula.getTitulo();
+					columna2[2] = pelicula.getMinutos();
+					columna2[3] = pelicula.getValoracion();
+					columna2[4] = pelicula.getGenero();
+					modeloTabla2.addRow(columna2);// agregamos una fila a nuestro modelo de tabla
+				}
+			repaint();
+			} catch (Exception e) {
+				System.out.println("No se puede rellenar la tabla");
+				e.printStackTrace();
+			}
+
+}
+
 		
 		
 		

@@ -5,6 +5,7 @@ import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jdo.Extent;
@@ -26,6 +27,7 @@ import es.deusto.spq.pojo.AdminData;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.jdo.Admin;
+import es.deusto.spq.server.jdo.Alquiler;
 import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Pelicula;
 import es.deusto.spq.server.jdo.User;
@@ -416,6 +418,46 @@ public class Resource {
 				if(peli.getValoracion()==(valoracion)) {
 					peliculas.add(peli);
 					logger.info("Film retrieved: {}", peli); 
+				}
+			}
+			
+			tx.commit();	
+		} catch (Exception ex) {
+			System.out.println("  $ Error querying all films: " + ex.getMessage());
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return peliculas;
+	}
+	
+	@POST
+	@Path("/filtrarUsuario")
+	public List<Pelicula> filtrarUsuario(String user) {
+		logger.info("Vamos a empezar el filtro usuario");
+		
+		List<Pelicula> peliculas = new ArrayList<>();
+		List<String> codigosPeliculas = new ArrayList<>();
+		
+		
+		try{
+			tx.begin();
+			logger.info("Filtrar Pelicula por Usuario ...");
+			Extent<Pelicula> peliExtent = pm.getExtent(Pelicula.class, true);
+			Extent<Alquiler> alquilerExtent = pm.getExtent(Alquiler.class, true);
+			for (Alquiler alquiler : alquilerExtent) {
+				if (alquiler.getLoginUser().equals(user)) {
+					codigosPeliculas.add(alquiler.getCodPelicula());
+				}
+			}
+			
+			for (String c : codigosPeliculas) {
+				for (Pelicula pelicula : peliExtent) {
+					if (c.equals(pelicula.getCodigo())) {
+						peliculas.add(pelicula);
+						logger.info("Film retrieved: {}", pelicula);
+					}
 				}
 			}
 			

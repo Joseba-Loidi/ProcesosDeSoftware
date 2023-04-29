@@ -20,9 +20,6 @@ public class User {
 	String password=null;
 	String correo=null;
 	
-	//@Persistent(mappedBy="user", dependentElement="true")
-	@Join
-	List<Pelicula> peliculas = new ArrayList<>();
 	
 	public User(String login, String password, String correo) {
 		this.login = login;
@@ -36,13 +33,6 @@ public class User {
 		this.correo = "";
 	}
 
-	public void alquilarPelicula(Pelicula pelicula) {
-		peliculas.add(pelicula);
-	}
-
-	public void devolverPelicula(Pelicula pelicula) {
-		peliculas.remove(pelicula);
-	}
 
 	public String getLogin() {
 		return this.login;
@@ -57,10 +47,6 @@ public class User {
 	}
 	
 	 
-	 public List<Pelicula> getPeliculas() {
-		return peliculas;
-	}
-	 
 	public String getCorreo() {
 		return correo;
 	}
@@ -71,8 +57,9 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [login=" + login + ", password=" + password + ", correo=" + correo + ", peliculas=" + peliculas
-				+ "]";
+		return "User [login=" + login + ", password=" + password + ", correo=" + correo + "]";
 	}
+
+
 
 }
