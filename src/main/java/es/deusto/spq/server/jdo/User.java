@@ -20,7 +20,7 @@ public class User {
 	String password=null;
 	String correo=null;
 	
-	@Persistent(mappedBy="user", dependentElement="true")
+	//@Persistent(mappedBy="user", dependentElement="true")
 	@Join
 	List<Pelicula> peliculas = new ArrayList<>();
 	

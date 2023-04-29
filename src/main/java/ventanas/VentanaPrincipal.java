@@ -131,8 +131,9 @@ public class VentanaPrincipal extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				VentanaPerfil VPerfil = new VentanaPerfil(user);
-				 VPerfil.setVisible(true);
+				VentanaPerfil VPerfil = new VentanaPerfil(user);	
+				VPerfil.setVp(VentanaPrincipal.this);
+				VPerfil.setVisible(true);
 				
 			}
 		})

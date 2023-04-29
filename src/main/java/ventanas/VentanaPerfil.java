@@ -17,9 +17,12 @@ import es.deusto.spq.server.jdo.User;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class VentanaPerfil extends JFrame {
-
+	
+	private VentanaPrincipal vp;
 	private JPanel contentPane;
 
 	/**
@@ -38,10 +41,13 @@ public class VentanaPerfil extends JFrame {
 //		});
 //	}
 
+	
 	/**
 	 * Create the frame.
 	 */
 	public VentanaPerfil(User user) {
+		
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 259, 285);
 		contentPane = new JPanel();
@@ -102,6 +108,32 @@ public class VentanaPerfil extends JFrame {
 		cerrarSesion.setFont(new Font("Arial", Font.BOLD, 14)); 
 		panel_1.add(cerrarSesion);
 		
+		cerrarSesion.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				
+				try {
+					vp.dispose();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				
+				VentanaInicioSesion vi = new VentanaInicioSesion();
+				vi.setVisible(true);
+				
+			}
+		});
+		
+	}
+
+	public VentanaPrincipal getVp() {
+		return vp;
+	}
+
+	public void setVp(VentanaPrincipal vp) {
+		this.vp = vp;
 	}
 
 }
