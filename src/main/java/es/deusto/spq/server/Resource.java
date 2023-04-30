@@ -471,6 +471,24 @@ public class Resource {
 		}
 		return peliculas;
 	}
+	
+	@POST
+	@Path("/deleteUser")
+	public Response deleteUser(String login) {
+		
+		try {
+		    tx.begin();
+		    User user = pm.getObjectById(User.class, login);
+		    pm.deletePersistent(user);
+		    tx.commit();
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    tx.rollback();
+		    return Response.status(Status.INTERNAL_SERVER_ERROR).entity("An error occurred while deleting user").build();
+		}
+		return Response.ok().build();
+		
+	}
 
 	@GET
 	@Path("/hello")
@@ -478,4 +496,5 @@ public class Resource {
 	public Response sayHello() {
 		return Response.ok("Hello world!").build();
 	}
+	
 }

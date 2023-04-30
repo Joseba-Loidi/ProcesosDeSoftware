@@ -9,10 +9,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import es.deusto.spq.client.Cliente;
 import es.deusto.spq.server.jdo.User;
 
 import java.awt.BorderLayout;
@@ -95,6 +97,27 @@ public class VentanaPerfil extends JFrame {
 		eliminarCuenta.setForeground(Color.WHITE); 
 		eliminarCuenta.setFont(new Font("Arial", Font.BOLD, 14)); 
 		panel_1.add(eliminarCuenta);
+		
+		eliminarCuenta.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean cuentaBorrada = Cliente.deleteUser(user.getLogin());
+				if (cuentaBorrada) {
+					dispose();
+					try {
+						vp.dispose();
+						VentanaInicioSesion vi = new VentanaInicioSesion();
+						vi.setVisible(true);
+					} catch (Exception e2) {
+						// TODO: handle exception
+					}
+				}else {
+					JOptionPane.showMessageDialog(null, "No se ha podido eliminar la cuenta", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
 		
 		JLabel labelVacio = new JLabel(" ");
 		panel_1.add(labelVacio);

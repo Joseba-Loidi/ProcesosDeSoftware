@@ -82,6 +82,22 @@ public class Cliente {
 			logger.info("Admin correctly registered");
 		}
 	}
+	
+	public static boolean deleteUser(String login) {
+		boolean b = false;
+		WebTarget deleteUserWebTarget = webTarget.path("deleteUser");
+		Invocation.Builder invocationBuilder = deleteUserWebTarget.request(MediaType.APPLICATION_JSON);
+
+		
+		Response response = invocationBuilder.post(Entity.entity(login, MediaType.APPLICATION_JSON));
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+		} else {
+			logger.info("User correctly deleted");
+			b = true;
+		}
+		return b;
+	}
 
 	public static boolean login(String login, String password) {
 		boolean inicio = false;
