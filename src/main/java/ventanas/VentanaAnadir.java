@@ -152,10 +152,6 @@ public class VentanaAnadir extends JFrame{
 		
 		JLabel lblGenero = new JLabel("Género");
 		lblGenero.setBounds(98, 267, 49, 14);
-		panel_2.add(lblGenero);
-		
-		
-		
-		
+		panel_2.add(lblGenero);	
 	}
 }

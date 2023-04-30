@@ -46,10 +46,6 @@ public class Alquiler {
 		return "Alquiler [codAlquiler=" + codAlquiler + ", codPelicula=" + codPelicula + ", LoginUser=" + LoginUser
 				+ "]";
 	}
-
-
-
-	
 	
 }
 

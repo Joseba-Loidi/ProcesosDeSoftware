@@ -601,14 +601,10 @@ public class VentanaPrincipal extends JFrame {
 }
 		
 		public void cargarTablaUsuario(User user) {
-			System.out.println("he llegado1 ");
 			modeloTabla2.setRowCount(0);
-			System.out.println("he llegado2 ");
 			try {
-				System.out.println("he llegado3 ---- ");
 				System.out.println(user.toString());
 				List<Pelicula> listaPelis = Cliente.filtrarUsuario(user.getLogin());
-				System.out.println("he llegado4 ");
 				for (Pelicula pelicula : listaPelis) {
 					System.out.println(pelicula.toString());
 					columna2[0] = pelicula.getCodigo();
@@ -616,7 +612,7 @@ public class VentanaPrincipal extends JFrame {
 					columna2[2] = pelicula.getMinutos();
 					columna2[3] = pelicula.getValoracion();
 					columna2[4] = pelicula.getGenero();
-					modeloTabla2.addRow(columna2);// agregamos una fila a nuestro modelo de tabla
+					modeloTabla2.addRow(columna2);
 				}
 			repaint();
 			} catch (Exception e) {
