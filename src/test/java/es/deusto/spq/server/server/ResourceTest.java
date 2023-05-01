@@ -10,6 +10,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import javax.ws.rs.core.Response.Status;
 import java.util.ArrayList;
 
 import javax.jdo.Extent;
@@ -287,13 +288,26 @@ public class ResourceTest {
         assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
     }
     
-    
-    
-    
-    
-    
-    
-    
+    @Test
+    public void testFiltrarNombre() throws Exception {
+        // prepare mock Persistence Manager to return Pelicula instances
+        Pelicula pelicula = new Pelicula("COD-001", "The_Matrix", 136, 8, Genero.ACCION);
+
+        Query<?> query = mock(Query.class);
+        when(persistenceManager.newQuery("SELECT FROM " + Pelicula.class.getName() + " WHERE titulo == \"" + pelicula.getTitulo() + "\"")).thenReturn(query);
+       // when(query.setUnique(true)).thenReturn(query);
+        when(query.execute()).thenReturn(pelicula);
+
+        // call tested method
+        Pelicula result = resource.filtrarNombre("The_Matrix");
+
+        // check that the result contains the expected Pelicula instance
+        assertEquals(pelicula.getCodigo(), result.getCodigo());
+        assertEquals(pelicula.getTitulo(), result.getTitulo());
+        assertEquals(pelicula.getMinutos(), result.getMinutos());
+        assertEquals(pelicula.getValoracion(), result.getValoracion());
+        assertEquals(pelicula.getGenero(), result.getGenero());
+    }
     
     
     
@@ -321,6 +335,67 @@ public class ResourceTest {
 //        assertEquals(8, result.getValoracion());
 //        assertEquals(Genero.ACCION, result.getGenero());
 //
+//    }
+    
+    @Test
+    public void testLoginAdmin() {
+        // Crea un objeto UserData con datos de usuario válidos
+        AdminData adminData = new AdminData("admin1", "admin1");
+        
+        // Crea un usuario mock
+        Admin adminMock = mock(Admin.class);
+        
+        // Configura el comportamiento del usuario mock
+        when(adminMock.getLogin()).thenReturn("admin1");
+        when(adminMock.getPassword()).thenReturn("admin1");
+        
+        // Crea un objeto Query mock
+        Query<?> queryMock = mock(Query.class);
+        
+        // Configura el comportamiento del Query mock
+//        when(queryMock.setUnique(true)).thenReturn(queryMock);
+        when(queryMock.execute()).thenReturn(adminMock);
+        
+        // Crea un objeto PersistenceManager mock
+        PersistenceManager pmMock = mock(PersistenceManager.class);
+        
+        // Configura el comportamiento del PersistenceManager mock
+        when(pmMock.newQuery(anyString())).thenReturn(queryMock);
+        
+        // Crea un objeto Transaction mock
+        Transaction txMock = mock(Transaction.class);
+        
+        // Crea un objeto Resource con los mocks creados
+        Resource resource = new Resource();
+        
+        // Llama al método login con el objeto UserData creado
+        Response response = resource.loginAdmin(adminData);
+
+        // Comprueba que la respuesta es OK
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+    }
+    
+//    @Test
+//    public void testLoginAdmin() {
+//        // Crea un objeto AdminData con datos de administrador válidos
+//        AdminData adminData = new AdminData("admin", "password");
+//
+//        // Prepara los mocks
+//        Admin admin = new Admin("admin", "password");
+//        when(persistenceManager.newQuery(Admin.class, "login == :login && password == :password")).thenReturn(query);
+//        when(query.setParameters(adminData.getLogin(), adminData.getPassword())).thenReturn(query);
+//        when(query.executeUnique()).thenReturn(admin);
+//
+//        // Llama al método loginAdmin con el objeto AdminData creado
+//        Response response = resource.loginAdmin(adminData);
+//
+//        // Comprueba que la respuesta es OK
+//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+//
+//        // Comprueba que se han llamado a los métodos correspondientes del PersistenceManager y el Query
+//        verify(persistenceManager).newQuery(Admin.class, "login == :login && password == :password");
+//        verify(query).setParameters(adminData.getLogin(), adminData.getPassword());
+//        verify(query).executeUnique();
 //    }
     
     
@@ -351,6 +426,44 @@ public class ResourceTest {
 //        // Comprueba que la respuesta es OK
 //        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 //    }
+    @Test
+    public void testLogin() {
+        // Crea un objeto UserData con datos de usuario válidos
+        UserData userData = new UserData("paula", "paula", "paula.asua1@opendeusto.es");
+        
+        // Crea un usuario mock
+        User userMock = mock(User.class);
+        
+        // Configura el comportamiento del usuario mock
+        when(userMock.getLogin()).thenReturn("paula");
+        when(userMock.getPassword()).thenReturn("paula");
+        
+        // Crea un objeto Query mock
+        Query<?> queryMock = mock(Query.class);
+        
+        // Configura el comportamiento del Query mock
+//        when(queryMock.setUnique(true)).thenReturn(queryMock);
+        when(queryMock.execute()).thenReturn(userMock);
+        
+        // Crea un objeto PersistenceManager mock
+        PersistenceManager pmMock = mock(PersistenceManager.class);
+        
+        // Configura el comportamiento del PersistenceManager mock
+        when(pmMock.newQuery(anyString())).thenReturn(queryMock);
+        
+        // Crea un objeto Transaction mock
+        Transaction txMock = mock(Transaction.class);
+        
+        // Crea un objeto Resource con los mocks creados
+        Resource resource = new Resource();
+        
+        // Llama al método login con el objeto UserData creado
+        Response response = resource.login(userData);
+
+        // Comprueba que la respuesta es OK
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+    }
+    
 //    @Test
 //    public void testFiltrarNombre() {
 //        // Crea un objeto Pelicula con un título válido

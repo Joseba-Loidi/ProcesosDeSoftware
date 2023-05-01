@@ -17,15 +17,12 @@ import javax.ws.rs.core.Response.Status;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import es.deusto.spq.pojo.AdminData;
-import es.deusto.spq.pojo.UserData;
-import es.deusto.spq.server.jdo.User;
+import org.mockito.Mockito;
 
 
 
 public class ClienteTest {
-
+	
     private Client client;
     private WebTarget webTarget;
 
@@ -61,8 +58,7 @@ public class ClienteTest {
 //        // Then
 //        assertEquals(Status.OK.getStatusCode(), response.getStatus());
 //    }
-    
-    
+
     
 }
 
