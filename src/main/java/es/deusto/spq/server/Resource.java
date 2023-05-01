@@ -489,20 +489,20 @@ public class Resource {
 		
 	}
 
-	@GET
-	@Path("/hello")
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response sayHello() {
-		return Response.ok("Hello world!").build();
-	}
-
-	public void setPersistenceManager(PersistenceManager pm2) {
-		this.pm = pm2;
-		
-	}
-	public PersistenceManager getPersistenceManager() {
-	    return pm;
-	}
+//	@GET
+//	@Path("/hello")
+//	@Produces(MediaType.TEXT_PLAIN)
+//	public Response sayHello() {
+//		return Response.ok("Hello world!").build();
+//	}
+//
+//	public void setPersistenceManager(PersistenceManager pm2) {
+//		this.pm = pm2;
+//		
+//	}
+//	public PersistenceManager getPersistenceManager() {
+//	    return pm;
+//	}
 
 
 	

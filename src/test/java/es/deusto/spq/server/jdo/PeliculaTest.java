@@ -59,4 +59,6 @@ public class PeliculaTest {
 		assertNotNull(pelicula2);
 		assertNotNull(pelicula3);
 	}
+	
+	
 }

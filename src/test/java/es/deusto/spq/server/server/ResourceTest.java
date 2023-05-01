@@ -1,4 +1,4 @@
-package es.deusto.spq.server.jdo;
+package es.deusto.spq.server.server;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -21,7 +21,6 @@ import javax.jdo.Query;
 import javax.jdo.Transaction;
 import javax.ws.rs.core.Response;
 
-import org.datanucleus.store.types.wrappers.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -34,6 +33,10 @@ import es.deusto.spq.pojo.AdminData;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.Resource;
+import es.deusto.spq.server.jdo.Admin;
+import es.deusto.spq.server.jdo.Genero;
+import es.deusto.spq.server.jdo.Pelicula;
+import es.deusto.spq.server.jdo.User;
 
 
 public class ResourceTest {
@@ -270,6 +273,20 @@ public class ResourceTest {
 
     }
     
+    @Test
+    public void testDeleteUser() {
+        // prepare mock Persistence Manager to return User instance
+        User user = new User("testUser", "testPassword", "testEmail");
+        when(persistenceManager.getObjectById(User.class, "testUser")).thenReturn(user);
+
+        // call tested method
+        Response result = resource.deleteUser("testUser");
+
+        // check that the user has been deleted
+        verify(persistenceManager).deletePersistent(user);
+        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
+    }
+    
     
     
     
@@ -305,17 +322,6 @@ public class ResourceTest {
 //        assertEquals(Genero.ACCION, result.getGenero());
 //
 //    }
-    
-
-
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 //    @Test
