@@ -5,6 +5,12 @@ public class UserData {
     private String login;
     private String password;
     private String correo;
+    
+    public UserData(String login, String password, String correo) {
+        this.login = login;
+        this.password = password;
+        this.correo = correo;
+    }
 
     public UserData() {
         // required by serialization

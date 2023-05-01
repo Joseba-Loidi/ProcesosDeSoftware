@@ -3,8 +3,16 @@ package es.deusto.spq.pojo;
 public class AdminData {
     private String login;
     private String password;
+    
+    
 
-    public AdminData() {
+    public AdminData(String login, String password) {
+		super();
+		this.login = login;
+		this.password = password;
+	}
+
+	public AdminData() {
         // required by serialization
     }
 

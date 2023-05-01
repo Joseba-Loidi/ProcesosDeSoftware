@@ -3,6 +3,7 @@ package es.deusto.spq.pojo;
 import java.io.Serializable;
 
 import es.deusto.spq.server.jdo.Genero;
+import es.deusto.spq.server.jdo.Pelicula;
 
 public class PeliculaData implements Serializable{
 	
@@ -17,6 +18,17 @@ public class PeliculaData implements Serializable{
 	private Genero genero;
 	
 	
+	
+	public PeliculaData(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
+		super();
+		this.codigo = codigo;
+		this.titulo = titulo;
+		this.minutos = minutos;
+		this.valoracion = valoracion;
+		this.genero = genero;
+	}
+
+
 	public PeliculaData() {
 		
 	}
@@ -70,6 +82,13 @@ public class PeliculaData implements Serializable{
 	public void setValoracion(int valoracion) {
 		this.valoracion = valoracion;
 	}
+	
+	public static Pelicula toPelicula(PeliculaData peliculaData) {
+	    Genero genero = Genero.valueOf(peliculaData.getGenero().name());
+	    Pelicula pelicula = new Pelicula(peliculaData.getCodigo(), peliculaData.getTitulo(), peliculaData.getMinutos(),
+	            peliculaData.getValoracion(), genero);
+	    return pelicula;
+	}
 
 
 	@Override
@@ -77,8 +96,5 @@ public class PeliculaData implements Serializable{
 		return "PeliculaData [codigo=" + codigo + ", titulo=" + titulo + ", genero=" + genero + ", minutos=" + minutos
 				+ ", valoracion=" + valoracion + "]";
 	}
-	
-	
-
 	
 }

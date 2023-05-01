@@ -130,7 +130,7 @@ public class Resource {
 	////////////AÑADIR PELICULA/////////////
 	@POST
 	@Path("/addPelicula")
-	public Response registerAdmin(PeliculaData peliculaData) {
+	public Response addPelicula(PeliculaData peliculaData) {
 		try
 		{
 			tx.begin();
@@ -178,7 +178,6 @@ public class Resource {
     @Path("/{codigo}")
     public Response deleteFilm(@PathParam("codigo") String codigo) {
 		try{
-			System.out.println("HOliii");
 			tx.begin();
 			logger.info("Checking whether the film already exits or not: '{}'", codigo);
 			Pelicula peli = null;
@@ -496,5 +495,15 @@ public class Resource {
 	public Response sayHello() {
 		return Response.ok("Hello world!").build();
 	}
+
+	public void setPersistenceManager(PersistenceManager pm2) {
+		this.pm = pm2;
+		
+	}
+	public PersistenceManager getPersistenceManager() {
+	    return pm;
+	}
+
+
 	
 }
