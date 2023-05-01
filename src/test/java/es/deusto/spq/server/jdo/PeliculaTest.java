@@ -59,6 +59,37 @@ public class PeliculaTest {
 		assertNotNull(pelicula2);
 		assertNotNull(pelicula3);
 	}
+	  @Test
+	  public void testConstructor() {
+	    Pelicula pelicula = new Pelicula("001", "El Padrino", 175, 9, Genero.DRAMA);
+	    assertEquals("001", pelicula.getCodigo());
+	    assertEquals("El Padrino", pelicula.getTitulo());
+	    assertEquals(175, pelicula.getMinutos());
+	    assertEquals(9, pelicula.getValoracion());
+	    assertEquals(Genero.DRAMA, pelicula.getGenero());
+	  }
+	  
+	  @Test
+	  public void testSetters() {
+	    Pelicula pelicula = new Pelicula();
+	    pelicula.setCodigo("002");
+	    pelicula.setTitulo("La La Land");
+	    pelicula.setMinutos(128);
+	    pelicula.setValoracion(8);
+	    pelicula.setGenero(Genero.MUSICAL);
+	    assertEquals("002", pelicula.getCodigo());
+	    assertEquals("La La Land", pelicula.getTitulo());
+	    assertEquals(128, pelicula.getMinutos());
+	    assertEquals(8, pelicula.getValoracion());
+	    assertEquals(Genero.MUSICAL, pelicula.getGenero());
+	  }
+	  
+	  @Test
+	  public void testToString() {
+	    Pelicula pelicula = new Pelicula("003", "Interestellar", 169, 9, Genero.CIENCIA_FICCION);
+	    String expectedString = "Pelicula [codigo=003, titulo=Interestellar, minutos=169, valoracion=9, genero=CIENCIA_FICCION]";
+	    assertEquals(expectedString, pelicula.toString());
+	  }
 	
 	
 }

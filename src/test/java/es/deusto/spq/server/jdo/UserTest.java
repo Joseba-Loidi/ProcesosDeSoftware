@@ -46,4 +46,39 @@ public class UserTest {
 		assertNotNull(user2);
 		assertNotNull(user3);
 	}
+	   // Test constructor vacío
+    @Test
+    public void testConstructorVacio() {
+        User user = new User();
+        assertNotNull(user);
+        assertEquals("", user.getLogin());
+        assertEquals("", user.getPassword());
+        assertEquals("", user.getCorreo());
+    }
+    
+    // Test constructor con parámetros
+    @Test
+    public void testConstructorConParametros() {
+        User user = new User("usuario1", "pass123", "usuario1@example.com");
+        assertNotNull(user);
+        assertEquals("usuario1", user.getLogin());
+        assertEquals("pass123", user.getPassword());
+        assertEquals("usuario1@example.com", user.getCorreo());
+    }
+    
+    // Test getter y setter de password
+    @Test
+    public void testGetSetPassword() {
+        User user = new User();
+        user.setPassword("pass456");
+        assertEquals("pass456", user.getPassword());
+    }
+    
+    // Test getter y setter de correo
+    @Test
+    public void testGetSetCorreo() {
+        User user = new User();
+        user.setCorreo("usuario2@example.com");
+        assertEquals("usuario2@example.com", user.getCorreo());
+    }
 }

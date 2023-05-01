@@ -7,34 +7,32 @@ import org.junit.Test;
 
 public class AdminTest {
 
-	private Admin admin1;
-	private Admin admin2;
-	private Admin admin3;
+	private Admin admin;
 	
 	@Before
 	public void setUp() throws Exception {
-		admin1= new Admin("juan", "juan");
-		admin2= new Admin("pedro", "pedro");
-		admin3= new Admin("amaia", "amaia");
-	}
-
-	@Test
-	public void testgetLogin() {
-		assertEquals(admin1.getLogin(), "juan");
-		assertEquals(admin2.getLogin(), "pedro");
-		assertEquals(admin3.getLogin(), "amaia");
+		admin = new Admin("admin", "1234");
 	}
 	
 	@Test
-	public void testgetPassword() {
-		assertEquals(admin1.getPassword(), "juan");
-		assertEquals(admin2.getPassword(), "pedro");
-		assertEquals(admin3.getPassword(), "amaia");
+	public void testGetLogin() {
+		assertEquals("admin", admin.getLogin());
 	}
+	
 	@Test
-	public void testNotNull() {
-		assertNotNull(admin1);
-		assertNotNull(admin2);
-		assertNotNull(admin3);
+	public void testGetPassword() {
+		assertEquals("1234", admin.getPassword());
+	}
+	
+	@Test
+	public void testSetPassword() {
+		admin.setPassword("5678");
+		assertEquals("5678", admin.getPassword());
+	}
+	
+	@Test
+	public void testToString() {
+		String expected = "Admin [login=admin, password=1234]";
+		assertEquals(expected, admin.toString());
 	}
 }
