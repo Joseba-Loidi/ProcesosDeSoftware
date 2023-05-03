@@ -1,35 +1,38 @@
 Jersey + DataNucleus + MySQL
 ============================
 
-This example relies on the DataNucleus Maven plugin. Check the database configuration in the *datanucleus.properties* file and the JDBC driver dependency specified in the *pom.xml* file. In addition, the project contains the server and client example codes.
 
-Run the following command to build everything and enhance the DB classes:
+Ejecute el siguiente comando para compilar todo y mejorar las clases de base de datos:
 
       mvn clean compile
 
-Run the following command to create database schema for this sample.
+Ejecute el siguiente comando para crear un esquema de base de datos:
 
       mvn datanucleus:schema-create
 
-To launch the server run the command
+Para lanzar el servidor:
 
     mvn jetty:run
 
-Now, the client sample code can be executed in a new command window with
+Para lanzar el cliente debemos de ejecutar este comando en otra ventana:
 
     mvn exec:java -Pclient
 
 JUnit
 ============================
 
-To launch the JUnit tests use:
+Para compilar y ejecutar las pruebas unitarias:
 
     mvn test
 
-Launch tests verifying that they match the coverage requirements:
+Limpiar el directorio, compilar y ejecutar todos los teses unitarios, además de actualizar JaCoCo:
+    
+    mvn clean test
+
+Para realizar verificaciones adicionales en el artefacto construido:
 
     mvn verify
 
-Execute reporting plugins and generate project site:
+Para generar documentación e informes sobre el proyecto:
 
     mvn site

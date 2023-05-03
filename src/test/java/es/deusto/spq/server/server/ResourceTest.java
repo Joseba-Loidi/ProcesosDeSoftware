@@ -187,7 +187,6 @@ public class ResourceTest {
     public void testDeleteFilm() {
         // prepare mock Persistence Manager to return Pelicula
         Pelicula pelicula = new Pelicula("1", "The Godfather", 175, 9, Genero.DRAMA);
-        // Simulamos que el Persistence Manager devuelve una Pelicula para el código "1", lo que significa que la película existe en la base de datos. 
         when(persistenceManager.getObjectById(Pelicula.class, "1")).thenReturn(pelicula);
 
         // prepare mock transaction behaviour
