@@ -425,43 +425,43 @@ public class ResourceTest {
 //        // Comprueba que la respuesta es OK
 //        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 //    }
-//    @Test
-//    public void testLogin() {
-//        // Crea un objeto UserData con datos de usuario válidos
-//        UserData userData = new UserData("paula", "paula", "paula.asua1@opendeusto.es");
-//        
-//        // Crea un usuario mock
-//        User userMock = mock(User.class);
-//        
-//        // Configura el comportamiento del usuario mock
-//        when(userMock.getLogin()).thenReturn("paula");
-//        when(userMock.getPassword()).thenReturn("paula");
-//        
-//        // Crea un objeto Query mock
-//        Query<?> queryMock = mock(Query.class);
-//        
-//        // Configura el comportamiento del Query mock
-////        when(queryMock.setUnique(true)).thenReturn(queryMock);
-//        when(queryMock.execute()).thenReturn(userMock);
-//        
-//        // Crea un objeto PersistenceManager mock
-//        PersistenceManager pmMock = mock(PersistenceManager.class);
-//        
-//        // Configura el comportamiento del PersistenceManager mock
-//        when(pmMock.newQuery(anyString())).thenReturn(queryMock);
-//        
-//        // Crea un objeto Transaction mock
-//        Transaction txMock = mock(Transaction.class);
-//        
-//        // Crea un objeto Resource con los mocks creados
-//        Resource resource = new Resource();
-//        
-//        // Llama al método login con el objeto UserData creado
-//        Response response = resource.login(userData);
-//
-//        // Comprueba que la respuesta es OK
-//        assertEquals(Status.OK.getStatusCode(), response.getStatus());
-//    }
+    @Test
+    public void testLogin() {
+        // Crea un objeto UserData con datos de usuario válidos
+        UserData userData = new UserData("paula", "paula", "paula.asua1@opendeusto.es");
+        
+        // Crea un usuario mock
+        User userMock = mock(User.class);
+        
+        // Configura el comportamiento del usuario mock
+        when(userMock.getLogin()).thenReturn("paula");
+        when(userMock.getPassword()).thenReturn("paula");
+        
+        // Crea un objeto Query mock
+        Query<?> queryMock = mock(Query.class);
+        
+        // Configura el comportamiento del Query mock
+//        when(queryMock.setUnique(true)).thenReturn(queryMock);
+        when(queryMock.execute()).thenReturn(userMock);
+        
+        // Crea un objeto PersistenceManager mock
+        PersistenceManager pmMock = mock(PersistenceManager.class);
+        
+        // Configura el comportamiento del PersistenceManager mock
+        when(pmMock.newQuery(anyString())).thenReturn(queryMock);
+        
+        // Crea un objeto Transaction mock
+        Transaction txMock = mock(Transaction.class);
+        
+        // Crea un objeto Resource con los mocks creados
+        Resource resource = new Resource();
+        
+        // Llama al método login con el objeto UserData creado
+        Response response = resource.login(userData);
+
+        // Comprueba que la respuesta es OK
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+    }
     
 //    @Test
 //    public void testFiltrarNombre() {
