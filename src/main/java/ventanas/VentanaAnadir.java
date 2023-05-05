@@ -71,7 +71,7 @@ public class VentanaAnadir extends JFrame{
 		contentPane.add(panel_2, BorderLayout.CENTER);
 		panel_2.setLayout(null);
 		
-		
+		System.out.println("a");
 		JComboBox<Genero> comboBox = new JComboBox<Genero>();
 		for (Genero td : Genero.values()) {
 			comboBox.addItem(td);
