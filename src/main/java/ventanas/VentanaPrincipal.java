@@ -42,6 +42,11 @@ public class VentanaPrincipal extends JFrame {
 	private JScrollPane scrollTabla;
 	private Object[] columna = new Object[7];
 	
+	private JTable tablePelicula;
+	private DefaultTableModel modeloTablaPelicula;
+	private JScrollPane scrollTablaPelicula;
+	private Object[] columnaPelicula = new Object[7];
+	
 	private JTable table2;
 	private DefaultTableModel modeloTabla2;
 	private JScrollPane scrollTabla2;
@@ -164,6 +169,26 @@ public class VentanaPrincipal extends JFrame {
 		JPanel panelPeliculas = new JPanel();
 		panelPeliculas.setBackground(Color.RED);
 		//panel_3.add(panelPeliculas, BorderLayout.CENTER);
+		
+		//Creamos la JTable
+		modeloTablaPelicula = new DefaultTableModel();
+		tablePelicula = new JTable(modeloTablaPelicula);
+		//Creamos las columnas
+		modeloTablaPelicula.addColumn("Cod");
+		modeloTablaPelicula.addColumn("Titulo");
+		modeloTablaPelicula.addColumn("Minutos");
+		modeloTablaPelicula.addColumn("Valoración");
+		modeloTablaPelicula.addColumn("Género");
+				
+		cargarTabla();
+				
+		// JSCROLLPANE Y A�ADIR LA TABLA
+		scrollTablaPelicula = new JScrollPane(tablePelicula);
+		scrollTablaPelicula.setVisible(true);
+		panelPeliculas.add(scrollTablaPelicula, BorderLayout.CENTER);
+				
+			
+		//scrollTablaPelicula.getViewport().setBackground(new Color(204,204,204));
 		
 		//---------------- PANEL LISTA-----------------------------------------
 		
@@ -621,6 +646,26 @@ public class VentanaPrincipal extends JFrame {
 			}
 
 }
+		
+		public void cargarTabla() {
+			tablePelicula.removeAll();
+			try {
+				List<Pelicula> listaPelis = Cliente.obtenerPelis();
+				for (Pelicula pelicula : listaPelis) {
+					System.out.println(pelicula.toString());
+					columnaPelicula[0] = pelicula.getCodigo();
+					columnaPelicula[1] = pelicula.getTitulo();
+					columnaPelicula[2] = pelicula.getMinutos();
+					columnaPelicula[3] = pelicula.getValoracion();
+					columnaPelicula[4] = pelicula.getGenero();
+					modeloTablaPelicula.addRow(columnaPelicula);// agregamos una fila a nuestro modelo de tabla
+				}
+			} catch (Exception e) {
+				System.out.println("No se puede rellenar la tabla");
+				e.printStackTrace();
+			}
+
+		}
 
 		
 		
