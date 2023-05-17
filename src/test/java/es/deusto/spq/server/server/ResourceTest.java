@@ -466,33 +466,33 @@ public class ResourceTest {
         assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), response.getStatus());
     }
     
-//    @Test
-//    public void testObtenerPeliculas() {
-//        // Crear una lista de películas simulada
-//        List<Pelicula> peliculasSimuladas = new ArrayList<>();
-//        peliculasSimuladas.add(new Pelicula("Pelicula 1", null, 0, 0, null));
-//        peliculasSimuladas.add(new Pelicula("Pelicula 2", null, 0, 0, null));
-//
-//        // Configurar comportamiento simulado para el PersistenceManager
-//        Extent<Pelicula> peliculaExtent = mock(Extent.class);
-//        when(persistenceManager.getExtent(Pelicula.class, true)).thenReturn(peliculaExtent);
-//        when(peliculaExtent.iterator()).thenReturn(peliculasSimuladas.iterator());
-//
-//        // Llamar al método obtenerPeliculas
-//        List<Pelicula> peliculasObtenidas = resource.obtenerPeliculas();
-//
-//        // Verificar que se haya llamado a los métodos necesarios
-//        verify(transaction).begin();
-//        verify(persistenceManager).getExtent(Pelicula.class, true);
-//        verify(peliculaExtent).iterator();
-//        verify(transaction).commit();
-//
-//        // Verificar el resultado de las películas obtenidas
-//        assertEquals(peliculasSimuladas.size(), peliculasObtenidas.size());
-//        assertEquals(peliculasSimuladas.get(0), peliculasObtenidas.get(0));
-//        assertEquals(peliculasSimuladas.get(1), peliculasObtenidas.get(1));
-//    }
-//    
+    @Test
+    public void testObtenerPeliculas() {
+        // Crear una lista de películas simulada
+        List<Pelicula> peliculasSimuladas = new ArrayList<>();
+        peliculasSimuladas.add(new Pelicula("Pelicula 1", null, 0, 0, null));
+        peliculasSimuladas.add(new Pelicula("Pelicula 2", null, 0, 0, null));
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        Extent<Pelicula> peliculaExtent = mock(Extent.class);
+        when(persistenceManager.getExtent(Pelicula.class, true)).thenReturn(peliculaExtent);
+        when(peliculaExtent.iterator()).thenReturn(peliculasSimuladas.iterator());
+
+        // Llamar al método obtenerPeliculas
+        List<Pelicula> peliculasObtenidas = resource.obtenerPeliculas();
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(transaction).begin();
+        verify(persistenceManager).getExtent(Pelicula.class, true);
+        verify(peliculaExtent).iterator();
+        verify(transaction).commit();
+
+        // Verificar el resultado de las películas obtenidas
+        assertEquals(peliculasSimuladas.size(), peliculasObtenidas.size());
+        assertEquals(peliculasSimuladas.get(0), peliculasObtenidas.get(0));
+        assertEquals(peliculasSimuladas.get(1), peliculasObtenidas.get(1));
+    }
+    
 //    @Test
 //    public void testGetLogin() {
 //        // Nombre de usuario simulado
