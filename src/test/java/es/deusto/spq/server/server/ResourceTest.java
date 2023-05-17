@@ -140,9 +140,31 @@ public class ResourceTest {
         // check expected response
         assertEquals(Response.Status.OK, response.getStatusInfo());
     }
-    
     @Test
     public void testRegisterAdmin() {
+        // prepare mock Persistence Manager to return User
+        AdminData adminData = new AdminData();
+        adminData.setLogin("test-login");
+        adminData.setPassword("passwd");
+       
+
+        // simulate that 
+        Admin admin = spy(Admin.class);
+        when(persistenceManager.getObjectById(Admin.class, adminData.getLogin())).thenReturn(admin);
+
+        // call tested method
+        Response response = resource.registerAdmin(adminData);
+
+        // check that the user is set by the code with the password
+        ArgumentCaptor<String> passwordCaptor = ArgumentCaptor.forClass(String.class);
+        verify(admin).setPassword(passwordCaptor.capture());
+        assertEquals("passwd", passwordCaptor.getValue());
+
+        // check expected response
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testRegisterAdminNotFound() {
         // prepare mock Persistence Manager to return User
         AdminData adminData = new AdminData();
         adminData.setLogin("adminL");
