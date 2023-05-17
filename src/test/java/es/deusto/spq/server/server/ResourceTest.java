@@ -406,37 +406,37 @@ public class ResourceTest {
         // Verificar el resultado de la respuesta
         assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), response.getStatus());
     }
-//    
-//    @Test
-//    public void testLoginAdmin() {
-//    	// Crear un objeto UserData simulado con los datos de inicio de sesión
-//        AdminData adminData = new AdminData();
-//        adminData.setLogin("username");
-//        adminData.setPassword("password");
-//
-//
-//        // Crear un objeto User simulado
-//        Admin mockUser = mock(Admin.class);
-//        when(mockUser.getLogin()).thenReturn("username");
-//        when(mockUser.getPassword()).thenReturn("password");
-//
-//        // Configurar comportamiento simulado para el PersistenceManager
-//        when(persistenceManager.newQuery(anyString())).thenReturn(query);
-//      //  when(query.setUnique(true)).thenReturn(query);
-//        when(query.execute()).thenReturn(mockUser);
-//
-//        // Llamar al método de login
-//        Response response = resource.loginAdmin(adminData);
-//
-//        // Verificar que se haya llamado a los métodos necesarios
-//        verify(persistenceManager).newQuery(anyString());
-//        verify(query).setUnique(true);
-//        verify(query).execute();
-//        verify(transaction).commit();
-//
-//        // Verificar el resultado de la respuesta
-//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//    }
+    
+    @Test
+    public void testLoginAdmin() {
+    	// Crear un objeto UserData simulado con los datos de inicio de sesión
+        AdminData adminData = new AdminData();
+        adminData.setLogin("username");
+        adminData.setPassword("password");
+
+
+        // Crear un objeto User simulado
+        Admin mockUser = mock(Admin.class);
+        when(mockUser.getLogin()).thenReturn("username");
+        when(mockUser.getPassword()).thenReturn("password");
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        when(persistenceManager.newQuery(anyString())).thenReturn(query);
+      //  when(query.setUnique(true)).thenReturn(query);
+        when(query.execute()).thenReturn(mockUser);
+
+        // Llamar al método de login
+        Response response = resource.loginAdmin(adminData);
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(persistenceManager).newQuery(anyString());
+        verify(query).setUnique(true);
+        verify(query).execute();
+        verify(transaction).commit();
+
+        // Verificar el resultado de la respuesta
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
 //    
 //    @Test
 //    public void testLoginAdminIncorrecto() {
