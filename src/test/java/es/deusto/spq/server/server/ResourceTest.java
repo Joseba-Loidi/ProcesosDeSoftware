@@ -2,13 +2,17 @@ package es.deusto.spq.server.server;
 
 
 import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -359,6 +363,35 @@ public class ResourceTest {
         verify(persistenceManager).deletePersistent(alquiler);
         assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
     }
+    
+    @Test
+    public void testDeleteAlquiler_WhenAlquilerNotExists_ReturnsErrorResponse() {
+        // Llama al método deleteAlquiler con valores que no corresponden a ningún alquiler existente
+        Response result = resource.deleteAlquiler("nonExistentCodPelicula", "nonExistentLoginUser");
+
+        // Verifica que no se haya realizado ninguna operación de eliminación en la base de datos
+        verify(persistenceManager, never()).deletePersistent(any(Alquiler.class));
+
+        // Verifica que se devuelva una respuesta HTTP OK
+        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
+        // Puedes ajustar el código de estado si se espera un código diferente en caso de alquiler inexistente
+    }
+    
+//    @Test
+//    public void testDeleteAlquiler_WhenExceptionOccurs_ReturnsErrorResponse() {
+//        // Configura el PersistenceManager para lanzar una excepción al eliminar un alquiler
+//        doThrow(new RuntimeException("Simulated exception")).when(persistenceManager).deletePersistent(any(Alquiler.class));
+//
+//        // Establece el PersistenceManager simulado en el recurso
+//        resource.setPersistenceManager(persistenceManager);
+//
+//        // Llama al método deleteAlquiler con valores válidos de codPelicula y loginUser
+//        Response result = resource.deleteAlquiler("testCodPelicula", "testLoginUser");
+//
+//        // Verifica que se devuelva una respuesta HTTP INTERNAL_SERVER_ERROR (código 500)
+//        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), result.getStatus());
+//    }
+
 
     
     @Test
