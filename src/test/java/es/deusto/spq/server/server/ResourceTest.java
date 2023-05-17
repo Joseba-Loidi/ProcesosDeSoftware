@@ -437,35 +437,35 @@ public class ResourceTest {
         // Verificar el resultado de la respuesta
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
-//    
-//    @Test
-//    public void testLoginAdminIncorrecto() {
-//    	// Crear un objeto UserData simulado con los datos de inicio de sesión incorrectos
-//        AdminData adminData = new AdminData();
-//        adminData.setLogin("username");
-//        adminData.setPassword("passwordError");
-//
-//        // Configurar comportamiento simulado para el PersistenceManager
-//        when(persistenceManager.newQuery(anyString())).thenReturn(query);
-//       // when(query.setUnique(true)).thenReturn(query);
-//        when(query.execute()).thenReturn(null);
-//        
-//     // Configurar comportamiento simulado para el Transaction
-//        when(transaction.isActive()).thenReturn(true);
-//
-//        // Llamar al método de login
-//        Response response = resource.loginAdmin(adminData);
-//
-//        // Verificar que se haya llamado a los métodos necesarios
-//        verify(persistenceManager).newQuery(anyString());
-//        verify(query).setUnique(true);
-//        verify(query).execute();
-//        verify(transaction).rollback();
-//
-//        // Verificar el resultado de la respuesta
-//        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), response.getStatus());
-//    }
-//    
+    
+    @Test
+    public void testLoginAdminIncorrecto() {
+    	// Crear un objeto UserData simulado con los datos de inicio de sesión incorrectos
+        AdminData adminData = new AdminData();
+        adminData.setLogin("username");
+        adminData.setPassword("passwordError");
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        when(persistenceManager.newQuery(anyString())).thenReturn(query);
+       // when(query.setUnique(true)).thenReturn(query);
+        when(query.execute()).thenReturn(null);
+        
+     // Configurar comportamiento simulado para el Transaction
+        when(transaction.isActive()).thenReturn(true);
+
+        // Llamar al método de login
+        Response response = resource.loginAdmin(adminData);
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(persistenceManager).newQuery(anyString());
+        verify(query).setUnique(true);
+        verify(query).execute();
+        verify(transaction).rollback();
+
+        // Verificar el resultado de la respuesta
+        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), response.getStatus());
+    }
+    
 //    @Test
 //    public void testObtenerPeliculas() {
 //        // Crear una lista de películas simulada
