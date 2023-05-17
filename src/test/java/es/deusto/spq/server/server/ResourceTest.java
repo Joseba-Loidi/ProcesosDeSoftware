@@ -345,38 +345,38 @@ public class ResourceTest {
     }
     
     
-//    
-//    @Test
-//    public void testLogin() {
-//    	// Crear un objeto UserData simulado con los datos de inicio de sesión
-//        UserData userData = new UserData();
-//        userData.setLogin("username");
-//        userData.setPassword("password");
-//        userData.setCorreo("email");
-//
-//        // Crear un objeto User simulado
-//        User mockUser = mock(User.class);
-//        when(mockUser.getLogin()).thenReturn("username");
-//        when(mockUser.getPassword()).thenReturn("password");
-//        when(mockUser.getCorreo()).thenReturn("email");
-//
-//        // Configurar comportamiento simulado para el PersistenceManager
-//        when(persistenceManager.newQuery(anyString())).thenReturn(query);
-//      //  when(query.setUnique(true)).thenReturn(query);
-//        when(query.execute()).thenReturn(mockUser);
-//
-//        // Llamar al método de login
-//        Response response = resource.login(userData);
-//
-//        // Verificar que se haya llamado a los métodos necesarios
-//        verify(persistenceManager).newQuery(anyString());
-//        verify(query).setUnique(true);
-//        verify(query).execute();
-//        verify(transaction).commit();
-//
-//        // Verificar el resultado de la respuesta
-//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//    }
+    
+    @Test
+    public void testLogin() {
+    	// Crear un objeto UserData simulado con los datos de inicio de sesión
+        UserData userData = new UserData();
+        userData.setLogin("username");
+        userData.setPassword("password");
+        userData.setCorreo("email");
+
+        // Crear un objeto User simulado
+        User mockUser = mock(User.class);
+        when(mockUser.getLogin()).thenReturn("username");
+        when(mockUser.getPassword()).thenReturn("password");
+        when(mockUser.getCorreo()).thenReturn("email");
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        when(persistenceManager.newQuery(anyString())).thenReturn(query);
+      //  when(query.setUnique(true)).thenReturn(query);
+        when(query.execute()).thenReturn(mockUser);
+
+        // Llamar al método de login
+        Response response = resource.login(userData);
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(persistenceManager).newQuery(anyString());
+        verify(query).setUnique(true);
+        verify(query).execute();
+        verify(transaction).commit();
+
+        // Verificar el resultado de la respuesta
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
 //    
 //    @Test
 //    public void testLoginIncorrecto() {
