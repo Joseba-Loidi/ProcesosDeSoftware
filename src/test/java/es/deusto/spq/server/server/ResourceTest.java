@@ -225,6 +225,7 @@ public class ResourceTest {
         assertEquals(Response.Status.OK, response.getStatusInfo());
     }
     
+    
     @Test
     public void testDeleteFilm() {
         // prepare mock Persistence Manager to return Pelicula
@@ -616,6 +617,91 @@ public class ResourceTest {
         assertEquals(0, result.size());
 
     }
+    
+//    @Test
+//    public void testFiltrarUsuario_ReturnsListOfMovies() {
+//        // Simula la existencia de alquileres relacionados con el usuario
+//        Alquiler alquiler1 = new Alquiler("ABC123", "user123");
+//        Alquiler alquiler2 = new Alquiler("XYZ789", "user123");
+//        List<Alquiler> alquileres = new ArrayList<>();
+//        alquileres.add(alquiler1);
+//        alquileres.add(alquiler2);
+//
+//        // Simula la existencia de películas relacionadas con los alquileres
+//        Pelicula pelicula1 = new Pelicula("ABC123", "Peli1", 0, 0, Genero.ACCION);
+//        Pelicula pelicula2 = new Pelicula("XYZ789", "Peli2", 0, 0, Genero.DRAMA);
+//        List<Pelicula> peliculas = new ArrayList<>();
+//        peliculas.add(pelicula1);
+//        peliculas.add(pelicula2);
+//
+//        // Configura el PersistenceManager simulado para devolver los alquileres
+//        Extent<Alquiler> alquilerExtent = mock(Extent.class);
+//        when(persistenceManager.getExtent(Alquiler.class, true)).thenReturn(alquilerExtent);
+//        when(alquilerExtent.iterator()).thenReturn(alquileres.iterator());
+//
+//        // Configura el PersistenceManager simulado para devolver las películas
+//        Extent<Pelicula> peliExtent = mock(Extent.class);
+//        when(persistenceManager.getExtent(Pelicula.class, true)).thenReturn(peliExtent);
+//        when(peliExtent.iterator()).thenReturn(peliculas.iterator());
+//
+//        // Llama al método filtrarUsuario con el usuario "user123"
+//        List<Pelicula> result = resource.filtrarUsuario("user123");
+//
+//        // Verifica que la lista de películas devuelta contenga los elementos esperados
+//        assertEquals(2, result.size());
+//        assertTrue(result.contains(pelicula1));
+//        assertTrue(result.contains(pelicula2));
+//    }
+
+    @Test
+    public void testFiltrarUsuario_WhenNoMatchingUser_ReturnsEmptyList() {
+        // Simula la ausencia de alquileres relacionados con el usuario
+        List<Alquiler> alquileres = new ArrayList<>();
+
+        // Configura el PersistenceManager simulado para devolver una lista vacía de alquileres
+        Extent<Alquiler> alquilerExtent = mock(Extent.class);
+        when(persistenceManager.getExtent(Alquiler.class, true)).thenReturn(alquilerExtent);
+        when(alquilerExtent.iterator()).thenReturn(alquileres.iterator());
+
+        // Llama al método filtrarUsuario con un usuario no existente
+        List<Pelicula> result = resource.filtrarUsuario("nonexistentuser");
+
+        // Verifica que la lista de películas devuelta esté vacía
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testDeleteUser_WhenUserExists_DeletesUserAndReturnsOkResponse() {
+        // Simula la existencia de un usuario con el login "user123"
+        User user = new User("user123", "password", "email");
+
+        // Configura el PersistenceManager simulado para devolver el usuario
+        when(persistenceManager.getObjectById(User.class, "user123")).thenReturn(user);
+
+        // Llama al método deleteUser con el login "user123"
+        Response response = resource.deleteUser("user123");
+
+        // Verifica que el usuario haya sido eliminado correctamente
+        verify(persistenceManager).deletePersistent(user);
+
+        // Verifica que se haya devuelto una respuesta HTTP OK (código 200)
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    public void testDeleteUser_WhenUserDoesNotExist_ReturnsErrorResponse() {
+        // Configura el PersistenceManager simulado para lanzar una excepción al buscar el usuario
+        when(persistenceManager.getObjectById(User.class, "nonexistentuser")).thenThrow(new JDOObjectNotFoundException());
+
+        // Llama al método deleteUser con un login de usuario inexistente
+        Response response = resource.deleteUser("nonexistentuser");
+
+        // Verifica que se haya devuelto una respuesta HTTP INTERNAL_SERVER_ERROR (código 500)
+        assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+    }
+
+
+
 //    @Test
 //    public void testSetPersistenceManager() {
 //        // Create a mock PersistenceManager
