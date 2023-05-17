@@ -324,6 +324,22 @@ public class ResourceTest {
     }
     
     @Test
+    public void testDeleteAlquiler() {
+        // prepare mock Persistence Manager to return Alquiler instance
+        Alquiler alquiler = new Alquiler("testCodPelicula", "testLoginUser");
+        Object[] primaryKey = { "testCodPelicula", "testLoginUser" };
+        when(persistenceManager.getObjectById(Alquiler.class, primaryKey)).thenReturn(alquiler);
+
+        // call tested method
+        Response result = resource.deleteAlquiler("testCodPelicula", "testLoginUser");
+
+        // check that the alquiler has been deleted
+        verify(persistenceManager).deletePersistent(alquiler);
+        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
+    }
+
+    
+    @Test
     public void testFiltrarNombre() throws Exception {
         // prepare mock Persistence Manager to return Pelicula instances
         Pelicula pelicula = new Pelicula("COD-001", "The_Matrix", 136, 8, Genero.ACCION);

@@ -13,8 +13,8 @@ insert into pelicula values('122hv', 'AVENTURA', '90', 'Super Mario Bros: La pel
 insert into pelicula values('1228z', 'AVENTURA', '90', 'El rey Leon', '5');
 insert into pelicula values('1567j', 'TERROR', '120', 'Smile', '3');
 
-insert into alquiler values(0, 'joseba','1228z');
-insert into alquiler values(1, 'paula','122hv');
-insert into alquiler values(2, 'iker','1282h');
+insert into alquiler values('joseba','1228z');
+insert into alquiler values('paula','122hv');
+insert into alquiler values('iker','1282h');
 
 select * from pelicula;

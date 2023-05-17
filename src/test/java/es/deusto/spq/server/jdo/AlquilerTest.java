@@ -38,8 +38,8 @@ public class AlquilerTest {
 	
 	@Test
 	public void testToString() {
-		String expectedString = "Alquiler [codAlquiler=0, codPelicula=ABC123, LoginUser=user123]";
-		assertEquals(expectedString, alquiler.toString());
+	    String expectedString = "Alquiler [codPelicula=ABC123, loginUser=user123]";
+	    assertEquals(expectedString, alquiler.toString());
 	}
 }
 
