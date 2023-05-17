@@ -1,65 +1,244 @@
-//package es.deusto.spq.client;
+package es.deusto.spq.client;
+
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Resources;
+import javax.jdo.JDOHelper;
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Query;
+import javax.jdo.Transaction;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Answers;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import es.deusto.spq.pojo.UserData;
+import es.deusto.spq.server.Resource;
+import es.deusto.spq.server.jdo.Genero;
+import es.deusto.spq.server.jdo.Pelicula;
+import es.deusto.spq.server.jdo.User;
+import junit.framework.Assert;
+
+
+public class ClienteTest {
+	
+	@Mock
+    private Client clientMock;
+
+	@Mock(answer=Answers.RETURNS_DEEP_STUBS)
+    private WebTarget webTarget;
+
+    @Mock
+    private Resource resourceMock;
+    
+    @Mock
+    private Invocation.Builder invocationBuilderMock;
+
+    @Mock
+    private Response responseMock;
+    
+    @Captor
+    private ArgumentCaptor<Entity<UserData>> userDataEntityCaptor;
+    
+    private Cliente cliente;
+
+    @Before
+    public void setup() {
+    	MockitoAnnotations.openMocks(this);
+    	
+        try (MockedStatic<ClientBuilder> clientBuilder = Mockito.mockStatic(ClientBuilder.class)) {
+            clientBuilder.when(ClientBuilder::newClient).thenReturn(clientMock);
+            when(clientMock.target("http://localhost:8080/rest/resource")).thenReturn(webTarget);
+
+            cliente = new Cliente("localhost", "8080");
+        }
+    }
+    
+    @Test
+  public void testRegister() {
+    	when(webTarget.path("register")).thenReturn(webTarget);
+
+        Response response = Response.ok().build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+        assertTrue(cliente.registerUser("test-login", "passwd", "email"));
+
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(userDataEntityCaptor.capture());
+        assertEquals("test-login", userDataEntityCaptor.getValue().getEntity().getLogin());
+        assertEquals("passwd", userDataEntityCaptor.getValue().getEntity().getPassword());
+        assertEquals("email", userDataEntityCaptor.getValue().getEntity().getCorreo());
+  }
+    
+    
+//    @Test
+//    public void testFiltrarNombre() {
+//        // create input for the method
+//        String nombre = "Toy Story";
+//        Pelicula pelicula = new Pelicula();
+//        pelicula.setTitulo(nombre);
+//        
+//        when(webTargetMock.path("filtrarNombre")).thenReturn(webTargetMock);
+//        // configure mock objects
+//        when(resourceMock.filtrarNombre(nombre)).thenReturn(pelicula);
 //
+//        // Act
+//        Pelicula resultado = cliente.filtrarNombre(nombre);
 //
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertNotNull;
-//import static org.junit.Assert.assertTrue;
-//import static org.junit.Assert.fail;
-//
-//import javax.ws.rs.client.Client;
-//import javax.ws.rs.client.ClientBuilder;
-//import javax.ws.rs.client.Entity;
-//import javax.ws.rs.client.Invocation;
-//import javax.ws.rs.client.WebTarget;
-//import javax.ws.rs.core.MediaType;
-//import javax.ws.rs.core.Response;
-//import javax.ws.rs.core.Response.Status;
-//
-//import org.junit.Before;
-//import org.junit.Test;
-//import org.mockito.Mockito;
-//
-//
-//
-//public class ClienteTest {
-//	
-//    private Client client;
-//    private WebTarget webTarget;
-//
-//    @Before
-//    public void setUp() {
-//        String hostname = "localhost";
-//        String port = "8080";
-//        client = ClientBuilder.newClient();
-//        webTarget = client.target(String.format("http://%s:%s/rest/resource", hostname, port));
+//        // Assert
+//        assertEquals(nombre, resultado.getTitulo());
 //    }
+    
+//    @Test
+//    public void testFiltrarNombre() {
+//    	// create input for the method
+//        String nombre = "Toy Story";
+//        Pelicula pelicula = new Pelicula();
+//        pelicula.setTitulo(nombre);
 //
+//        // configure mock objects
+//        when(webTargetMock.path("filtrarNombre")).thenReturn(webTargetMock);
+//        when(webTargetMock.request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilderMock);
+//        when(invocationBuilderMock.post(any(Entity.class))).thenReturn(responseMock);
+//        when(responseMock.getStatus()).thenReturn(Response.Status.OK.getStatusCode());
+//        when(responseMock.readEntity(Pelicula.class)).thenReturn(pelicula);
+//
+//        // Act
+//        Pelicula resultado = cliente.filtrarNombre(nombre);
+//
+//        // Assert
+//        assertEquals(nombre, resultado.getTitulo());
+//    }
+   
 //    @Test
 //    public void testConstructor() {
 //        assertNotNull(client);
 //        assertNotNull(webTarget);
 //    }
 //    
-////    @Test
-////    public void testRegisterAdmin() {
-////        // Given
-////        String login = "admin";
-////        String password = "password";
-////        WebTarget registerAdminWebTarget = webTarget.path("adminRegister");
-////        Invocation.Builder invocationBuilder = registerAdminWebTarget.request(MediaType.APPLICATION_JSON);
-////
-////        AdminData adminData = new AdminData();
-////        adminData.setLogin(login);
-////        adminData.setPassword(password);
-////
-////        // When
-////        Response response = invocationBuilder.post(Entity.entity(adminData, MediaType.APPLICATION_JSON));
-////
-////        // Then
-////        assertEquals(Status.OK.getStatusCode(), response.getStatus());
-////    }
+
+    
+    
+//    @Test
+//    public void testFiltrarNombre() {
+//        // create input for the method
+//    	 String nombre = "Toy Story";
+//         Pelicula pelicula = new Pelicula();
+//         pelicula.setTitulo(nombre);
 //
+//         Response response = mock(Response.class);
+//         when(response.getStatus()).thenReturn(Response.Status.OK.getStatusCode());
+//         when(response.readEntity(Pelicula.class)).thenReturn(pelicula);
+//
+//         Invocation.Builder invocationBuilder = mock(Invocation.Builder.class);
+//         when(webTarget.path("filtrarNombre")).thenReturn(webTarget);
+//         when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilder);
+//         when(invocationBuilder.post(any(Entity.class))).thenReturn(response);
+//
+//         // Act
+//         Pelicula resultado = cliente.filtrarNombre(nombre);
+//
+//         // Assert
+//         assertEquals(nombre, resultado.getTitulo());
+//    }
+//
+//    @Test
+//    public void testFiltrarGenero() {
+//        // create input for the method
+//    	Genero genero = Genero.ACCION;
+//
+//        // configure mock objects
+//        when(webTarget.path("filtrarGenero")).thenReturn(webTarget);
+//        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilder);
+//        when(invocationBuilder.post(Entity.entity(genero, MediaType.TEXT_PLAIN))).thenReturn(response);
+//        when(response.getStatus()).thenReturn(Response.Status.OK.getStatusCode());
+//
+//        // create expected output
+//        List<Pelicula> expectedPelis = new ArrayList<>();
+//        expectedPelis.add(new Pelicula("1", "pelicula1", 0, 0, Genero.ACCION));
+//        expectedPelis.add(new Pelicula("2", "pelicula2", 0, 0, Genero.ACCION));
+//
+//        // configure response body
+//        when(response.readEntity(new GenericType<List<Pelicula>>() {})).thenReturn(expectedPelis);
+//
+//        // call the method and check the output
+//        List<Pelicula> pelis = cliente.filtrarGenero(genero);
+//        assertEquals(expectedPelis, pelis);
+//    }
 //    
-//}
+//    @Test
+//    public void testFiltrarValoracion() {
+//        // create input for the method
+//        int valoracion = 4;
 //
+//        // configure mock objects
+//        when(webTarget.path("filtrarValoracion")).thenReturn(webTarget);
+//        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilder);
+//        when(invocationBuilder.post(Entity.entity(valoracion, MediaType.TEXT_PLAIN))).thenReturn(response);
+//        when(response.getStatus()).thenReturn(Response.Status.OK.getStatusCode());
 //
+//        // create expected output
+//        List<Pelicula> expectedPelis = new ArrayList<>();
+//        expectedPelis.add(new Pelicula("1", "pelicula1", 0, 4, Genero.ACCION));
+//        expectedPelis.add(new Pelicula("2", "pelicula2", 0, 4, Genero.ACCION));
+//
+//        // configure response body
+//        when(response.readEntity(new GenericType<List<Pelicula>>() {})).thenReturn(expectedPelis);
+//
+//        // call the method and check the output
+//        List<Pelicula> pelis = cliente.filtrarValoracion(valoracion);
+//        assertEquals(expectedPelis, pelis);
+//    }
+    
+//    @Test
+//    public void testRegisterAdmin() {
+//        // Given
+//        String login = "admin";
+//        String password = "password";
+//        WebTarget registerAdminWebTarget = webTarget.path("adminRegister");
+//        Invocation.Builder invocationBuilder = registerAdminWebTarget.request(MediaType.APPLICATION_JSON);
+//
+//        AdminData adminData = new AdminData();
+//        adminData.setLogin(login);
+//        adminData.setPassword(password);
+//
+//        // When
+//        Response response = invocationBuilder.post(Entity.entity(adminData, MediaType.APPLICATION_JSON));
+//
+//        // Then
+//        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+//    }
+
+    
+}
+
+

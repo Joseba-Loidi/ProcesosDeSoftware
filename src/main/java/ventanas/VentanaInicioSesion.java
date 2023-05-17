@@ -238,11 +238,13 @@ public class VentanaInicioSesion extends JFrame {
 				String email = emailTxt.getText();
 				if(!usuario.isEmpty() && !password.isEmpty() && !email.isEmpty()) {
 					if (password.equals(contr2Txt.getText())) {
-						Cliente.registerUser(usuario, password, email);
-						JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Registro", JOptionPane.INFORMATION_MESSAGE);
-						panelRegistro.setVisible(false);
-						panel_2.add(panel_3, BorderLayout.CENTER);
-						panel_3.setVisible(true);
+						if(cliente.registerUser(usuario, password, email)) {
+							JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Registro", JOptionPane.INFORMATION_MESSAGE);
+							panelRegistro.setVisible(false);
+							panel_2.add(panel_3, BorderLayout.CENTER);
+							panel_3.setVisible(true);
+						}
+						
 					} else {
 						JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
 

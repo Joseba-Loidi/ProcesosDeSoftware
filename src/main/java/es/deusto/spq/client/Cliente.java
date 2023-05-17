@@ -63,7 +63,7 @@ public class Cliente {
 		webTarget = client.target(String.format("http://%s:%s/rest/resource", hostname, port));
 	}
 
-	public static void registerUser(String login, String password, String correo) {
+	public boolean registerUser(String login, String password, String correo) {
 		WebTarget registerUserWebTarget = webTarget.path("register");
 		Invocation.Builder invocationBuilder = registerUserWebTarget.request(MediaType.APPLICATION_JSON);
 
@@ -74,8 +74,10 @@ public class Cliente {
 		Response response = invocationBuilder.post(Entity.entity(userData, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+			return false;
 		} else {
 			logger.info("User correctly registered" + userData.toString());
+			return true;
 		}
 	}
 
@@ -89,6 +91,7 @@ public class Cliente {
 		Response response = invocationBuilder.post(Entity.entity(AdminData, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+		
 		} else {
 			logger.info("Admin correctly registered");
 		}
