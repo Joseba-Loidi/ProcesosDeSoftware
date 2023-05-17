@@ -520,31 +520,31 @@ public class ResourceTest {
         // Verificar el resultado del usuario obtenido
         assertEquals(mockUser, userObtenido);
     }
-// 
-//    @Test
-//    public void testFiltrarUsuario() {
-//        // prepare mock Persistence Manager to return Pelicula instances
-//        ArrayList<User> usuarios = new ArrayList<User>();
-//        User u1 = new  User("1", "pass", "email");
-//        User u2 = new  User("2", "pass", "email");
-//        User u3 = new  User("3", "pass", "email");
-//        Alquiler alquilerU1 = new Alquiler("1", "1");
-//        Pelicula peli = new Pelicula("1", "Peli", 0, 0, Genero.ACCION);
-//        usuarios.add(u1);
-//        usuarios.add(u2);
-//        usuarios.add(u3);
-//
-//        Extent<User> peliExtent = mock(Extent.class);
-//        when(persistenceManager.getExtent(User.class, true)).thenReturn(peliExtent);
-//        when(peliExtent.iterator()).thenReturn(usuarios.iterator());
-//
-//        // call tested method
-//        java.util.List<Pelicula> result = resource.filtrarUsuario("1");
-//
-//        // check expected result
-//        assertEquals(0, result.size());
-//
-//    }
+ 
+    @Test
+    public void testFiltrarUsuario() {
+        // prepare mock Persistence Manager to return Pelicula instances
+        ArrayList<User> usuarios = new ArrayList<User>();
+        User u1 = new  User("1", "pass", "email");
+        User u2 = new  User("2", "pass", "email");
+        User u3 = new  User("3", "pass", "email");
+        Alquiler alquilerU1 = new Alquiler("1", "1");
+        Pelicula peli = new Pelicula("1", "Peli", 0, 0, Genero.ACCION);
+        usuarios.add(u1);
+        usuarios.add(u2);
+        usuarios.add(u3);
+
+        Extent<User> peliExtent = mock(Extent.class);
+        when(persistenceManager.getExtent(User.class, true)).thenReturn(peliExtent);
+        when(peliExtent.iterator()).thenReturn(usuarios.iterator());
+
+        // call tested method
+        java.util.List<Pelicula> result = resource.filtrarUsuario("1");
+
+        // check expected result
+        assertEquals(0, result.size());
+
+    }
 //    @Test
 //    public void testSetPersistenceManager() {
 //        // Create a mock PersistenceManager
