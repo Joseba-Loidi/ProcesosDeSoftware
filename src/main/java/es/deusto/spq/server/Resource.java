@@ -43,6 +43,12 @@ public class Resource {
 	private int cont = 0;
 	private PersistenceManager pm=null;
 	private Transaction tx=null;
+	
+	private PersistenceManager persistenceManager;
+
+    public void setPersistenceManager(PersistenceManager persistenceManager) {
+        this.persistenceManager = persistenceManager;
+    }
 
 	public Resource() {
 		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
@@ -487,8 +493,10 @@ public class Resource {
 		}
 		return Response.ok().build();
 		
+		
+		
 	}
-
+	
 //	@GET
 //	@Path("/hello")
 //	@Produces(MediaType.TEXT_PLAIN)

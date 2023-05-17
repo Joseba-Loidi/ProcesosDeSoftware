@@ -1,9 +1,12 @@
 package es.deusto.spq.server.server;
 
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -12,6 +15,8 @@ import static org.mockito.Mockito.when;
 
 import javax.ws.rs.core.Response.Status;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.jdo.Extent;
 import javax.jdo.JDOHelper;
@@ -35,6 +40,7 @@ import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.Resource;
 import es.deusto.spq.server.jdo.Admin;
+import es.deusto.spq.server.jdo.Alquiler;
 import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Pelicula;
 import es.deusto.spq.server.jdo.User;
@@ -43,6 +49,8 @@ import es.deusto.spq.server.jdo.User;
 public class ResourceTest {
 	
     private Resource resource;
+    
+    private User mockUser;
 
     @Mock
     private PersistenceManager persistenceManager;
@@ -67,6 +75,14 @@ public class ResourceTest {
             // instantiate tested object with mock dependencies
             resource = new Resource();
         }
+        //creamos un usuario
+     // Create a mock user for testing
+        mockUser = mock(User.class);
+        when(mockUser.getLogin()).thenReturn("username");
+        when(mockUser.getPassword()).thenReturn("password");
+        when(mockUser.getCorreo()).thenReturn("correo");
+        
+        resource.setPersistenceManager(persistenceManager);
     }
     @Test
     public void testRegisterUser() {
@@ -274,6 +290,26 @@ public class ResourceTest {
     }
     
     @Test
+    public void testFiltrarGeneroError() {
+        // prepare mock Persistence Manager to return Pelicula instances
+        ArrayList<Pelicula> peliculas = new ArrayList<Pelicula>();
+        peliculas.add(new Pelicula("COD-001", "The Matrix", 136, 8, Genero.ACCION));
+        peliculas.add(new Pelicula("COD-002", "Pulp Fiction", 154, 9, Genero.ACCION));
+        peliculas.add(new Pelicula("COD-003", "Forrest Gump", 142, 9, Genero.DRAMA));
+
+        Extent<Pelicula> peliExtent = mock(Extent.class);
+        when(persistenceManager.getExtent(Pelicula.class, true)).thenReturn(peliExtent);
+        when(peliExtent.iterator()).thenReturn(peliculas.iterator());
+
+        // call tested method
+        java.util.List<Pelicula> result = resource.filtrarGenero(Genero.COMEDIA);
+
+        // check expected result
+        assertEquals(0, result.size());
+    }
+    
+    
+    @Test
     public void testDeleteUser() {
         // prepare mock Persistence Manager to return User instance
         User user = new User("testUser", "testPassword", "testEmail");
@@ -310,176 +346,231 @@ public class ResourceTest {
     
     
     
-//    @Test
-//    public void testFiltrarNombre() {
-//        // prepare mock Persistence Manager to return Pelicula instances
-//        ArrayList<Pelicula> peliculas = new ArrayList<Pelicula>();
-//        peliculas.add(new Pelicula("COD-001", "The_Matrix", 136, 8, Genero.ACCION));
-//        peliculas.add(new Pelicula("COD-002", "Pulp Fiction", 154, 9, Genero.ACCION));
-//        peliculas.add(new Pelicula("COD-003", "Forrest Gump", 142, 9, Genero.DRAMA));
-//
-//        Extent<Pelicula> peliExtent = mock(Extent.class);
-//        when(persistenceManager.getExtent(Pelicula.class, true)).thenReturn(peliExtent);
-//        when(peliExtent.iterator()).thenReturn(peliculas.iterator());
-//
-//        // call tested method
-//        Pelicula result = resource.filtrarNombre("The_Matrix");
-//
-//
-//        // check that the result contains the expected Pelicula instances
-//        
-//        assertEquals("COD-001", result.getCodigo());
-//        assertEquals("The_Matrix", result.getTitulo());
-//        assertEquals(136, result.getMinutos());
-//        assertEquals(8, result.getValoracion());
-//        assertEquals(Genero.ACCION, result.getGenero());
-//
-//    }
-//    
-//    @Test
-//    public void testLoginAdmin() {
-//        // Crea un objeto UserData con datos de usuario válidos
-//        AdminData adminData = new AdminData("admin1", "admin1");
-//        
-//        // Crea un usuario mock
-//        Admin adminMock = mock(Admin.class);
-//        
-//        // Configura el comportamiento del usuario mock
-//        when(adminMock.getLogin()).thenReturn("admin1");
-//        when(adminMock.getPassword()).thenReturn("admin1");
-//        
-//        // Crea un objeto Query mock
-//        Query<?> queryMock = mock(Query.class);
-//        
-//        // Configura el comportamiento del Query mock
-////        when(queryMock.setUnique(true)).thenReturn(queryMock);
-//        when(queryMock.execute()).thenReturn(adminMock);
-//        
-//        // Crea un objeto PersistenceManager mock
-//        PersistenceManager pmMock = mock(PersistenceManager.class);
-//        
-//        // Configura el comportamiento del PersistenceManager mock
-//        when(pmMock.newQuery(anyString())).thenReturn(queryMock);
-//        
-//        // Crea un objeto Transaction mock
-//        Transaction txMock = mock(Transaction.class);
-//        
-//        // Crea un objeto Resource con los mocks creados
-//        Resource resource = new Resource();
-//        
-//        // Llama al método login con el objeto UserData creado
-//        Response response = resource.loginAdmin(adminData);
-//
-//        // Comprueba que la respuesta es OK
-//        assertEquals(Status.OK.getStatusCode(), response.getStatus());
-//    }
-//    
-//    @Test
-//    public void testLoginAdmin() {
-//        // Crea un objeto AdminData con datos de administrador válidos
-//        AdminData adminData = new AdminData("admin", "password");
-//
-//        // Prepara los mocks
-//        Admin admin = new Admin("admin", "password");
-//        when(persistenceManager.newQuery(Admin.class, "login == :login && password == :password")).thenReturn(query);
-//        when(query.setParameters(adminData.getLogin(), adminData.getPassword())).thenReturn(query);
-//        when(query.executeUnique()).thenReturn(admin);
-//
-//        // Llama al método loginAdmin con el objeto AdminData creado
-//        Response response = resource.loginAdmin(adminData);
-//
-//        // Comprueba que la respuesta es OK
-//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//
-//        // Comprueba que se han llamado a los métodos correspondientes del PersistenceManager y el Query
-//        verify(persistenceManager).newQuery(Admin.class, "login == :login && password == :password");
-//        verify(query).setParameters(adminData.getLogin(), adminData.getPassword());
-//        verify(query).executeUnique();
-//    }
-    
-    
-//    @Test
-//    public void testLoginAdmin() {
-//        // Crea un objeto AdminData con datos de administrador válidos
-//        AdminData adminData = new AdminData("admin", "password");
-//
-//        // Llama al método loginAdmin con el objeto AdminData creado
-//        Response response = resource.loginAdmin(adminData);
-//
-//        // Comprueba que la respuesta es OK
-//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//    }
-//
-//    
-//    @Test
-//    public void testLogin() {
-//        // Crea un objeto UserData con datos de usuario válidos
-//        UserData userData = new UserData("usuario", "password", "email");
-//
-//        // Agrega el usuario a la base de datos
-//        resource.registerUser(userData);
-//
-//        // Llama al método login con el objeto UserData creado
-//        Response response = resource.login(userData);
-//
-//        // Comprueba que la respuesta es OK
-//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//    }
-//    @Test
-//    public void testLogin() {
-//        // Crea un objeto UserData con datos de usuario válidos
-//        UserData userData = new UserData("paula", "paula", "paula.asua1@opendeusto.es");
-//        
-//        // Crea un usuario mock
-//        User userMock = mock(User.class);
-//        
-//        // Configura el comportamiento del usuario mock
-//        when(userMock.getLogin()).thenReturn("paula");
-//        when(userMock.getPassword()).thenReturn("paula");
-//        
-//        // Crea un objeto Query mock
-//        Query<?> queryMock = mock(Query.class);
-//        
-//        // Configura el comportamiento del Query mock
-////        when(queryMock.setUnique(true)).thenReturn(queryMock);
-//        when(queryMock.execute()).thenReturn(userMock);
-//        
-//        // Crea un objeto PersistenceManager mock
-//        PersistenceManager pmMock = mock(PersistenceManager.class);
-//        
-//        // Configura el comportamiento del PersistenceManager mock
-//        when(pmMock.newQuery(anyString())).thenReturn(queryMock);
-//        
-//        // Crea un objeto Transaction mock
-//        Transaction txMock = mock(Transaction.class);
-//        
-//        // Crea un objeto Resource con los mocks creados
-//        Resource resource = new Resource();
-//        
-//        // Llama al método login con el objeto UserData creado
-//        Response response = resource.login(userData);
-//
-//        // Comprueba que la respuesta es OK
-//        assertEquals(Status.OK.getStatusCode(), response.getStatus());
-//    }
-//    
-//    @Test
-//    public void testFiltrarNombre() {
-//        // Crea un objeto Pelicula con un título válido
-//        String titulo = "Matrix";
-//        Pelicula pelicula = new Pelicula();
-//        pelicula.setTitulo(titulo);
-//
-//        // Inserta la Pelicula en la base de datos
-//        persistenceManager.makePersistent(pelicula);
-//
-//        // Llama al método filtrarNombre con el título de la película creada
-//        Pelicula peliculaFiltrada = resource.filtrarNombre(titulo);
-//
-//        // Comprueba que la Pelicula devuelta no es null y que tiene el título correcto
-//        assertNotNull(peliculaFiltrada);
-//        assertEquals(titulo, peliculaFiltrada.getTitulo());
-//    }
+    @Test
+    public void testLogin() {
+    	// Crear un objeto UserData simulado con los datos de inicio de sesión
+        UserData userData = new UserData();
+        userData.setLogin("username");
+        userData.setPassword("password");
+        userData.setCorreo("email");
 
+        // Crear un objeto User simulado
+        User mockUser = mock(User.class);
+        when(mockUser.getLogin()).thenReturn("username");
+        when(mockUser.getPassword()).thenReturn("password");
+        when(mockUser.getCorreo()).thenReturn("email");
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        when(persistenceManager.newQuery(anyString())).thenReturn(query);
+      //  when(query.setUnique(true)).thenReturn(query);
+        when(query.execute()).thenReturn(mockUser);
+
+        // Llamar al método de login
+        Response response = resource.login(userData);
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(persistenceManager).newQuery(anyString());
+        verify(query).setUnique(true);
+        verify(query).execute();
+        verify(transaction).commit();
+
+        // Verificar el resultado de la respuesta
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+    
+    @Test
+    public void testLoginIncorrecto() {
+    	// Crear un objeto UserData simulado con los datos de inicio de sesión incorrectos
+        UserData userData = new UserData();
+        userData.setLogin("username");
+        userData.setPassword("passwordError");
+        userData.setCorreo("email");
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        when(persistenceManager.newQuery(anyString())).thenReturn(query);
+       // when(query.setUnique(true)).thenReturn(query);
+        when(query.execute()).thenReturn(null);
+        
+     // Configurar comportamiento simulado para el Transaction
+        when(transaction.isActive()).thenReturn(true);
+
+        // Llamar al método de login
+        Response response = resource.login(userData);
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(persistenceManager).newQuery(anyString());
+        verify(query).setUnique(true);
+        verify(query).execute();
+        verify(transaction).rollback();
+
+        // Verificar el resultado de la respuesta
+        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), response.getStatus());
+    }
+    
+    @Test
+    public void testLoginAdmin() {
+    	// Crear un objeto UserData simulado con los datos de inicio de sesión
+        AdminData adminData = new AdminData();
+        adminData.setLogin("username");
+        adminData.setPassword("password");
+
+
+        // Crear un objeto User simulado
+        Admin mockUser = mock(Admin.class);
+        when(mockUser.getLogin()).thenReturn("username");
+        when(mockUser.getPassword()).thenReturn("password");
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        when(persistenceManager.newQuery(anyString())).thenReturn(query);
+      //  when(query.setUnique(true)).thenReturn(query);
+        when(query.execute()).thenReturn(mockUser);
+
+        // Llamar al método de login
+        Response response = resource.loginAdmin(adminData);
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(persistenceManager).newQuery(anyString());
+        verify(query).setUnique(true);
+        verify(query).execute();
+        verify(transaction).commit();
+
+        // Verificar el resultado de la respuesta
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+    
+    @Test
+    public void testLoginAdminIncorrecto() {
+    	// Crear un objeto UserData simulado con los datos de inicio de sesión incorrectos
+        AdminData adminData = new AdminData();
+        adminData.setLogin("username");
+        adminData.setPassword("passwordError");
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        when(persistenceManager.newQuery(anyString())).thenReturn(query);
+       // when(query.setUnique(true)).thenReturn(query);
+        when(query.execute()).thenReturn(null);
+        
+     // Configurar comportamiento simulado para el Transaction
+        when(transaction.isActive()).thenReturn(true);
+
+        // Llamar al método de login
+        Response response = resource.loginAdmin(adminData);
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(persistenceManager).newQuery(anyString());
+        verify(query).setUnique(true);
+        verify(query).execute();
+        verify(transaction).rollback();
+
+        // Verificar el resultado de la respuesta
+        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), response.getStatus());
+    }
+    
+    @Test
+    public void testObtenerPeliculas() {
+        // Crear una lista de películas simulada
+        List<Pelicula> peliculasSimuladas = new ArrayList<>();
+        peliculasSimuladas.add(new Pelicula("Pelicula 1", null, 0, 0, null));
+        peliculasSimuladas.add(new Pelicula("Pelicula 2", null, 0, 0, null));
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        Extent<Pelicula> peliculaExtent = mock(Extent.class);
+        when(persistenceManager.getExtent(Pelicula.class, true)).thenReturn(peliculaExtent);
+        when(peliculaExtent.iterator()).thenReturn(peliculasSimuladas.iterator());
+
+        // Llamar al método obtenerPeliculas
+        List<Pelicula> peliculasObtenidas = resource.obtenerPeliculas();
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(transaction).begin();
+        verify(persistenceManager).getExtent(Pelicula.class, true);
+        verify(peliculaExtent).iterator();
+        verify(transaction).commit();
+
+        // Verificar el resultado de las películas obtenidas
+        assertEquals(peliculasSimuladas.size(), peliculasObtenidas.size());
+        assertEquals(peliculasSimuladas.get(0), peliculasObtenidas.get(0));
+        assertEquals(peliculasSimuladas.get(1), peliculasObtenidas.get(1));
+    }
+    
+    @Test
+    public void testGetLogin() {
+        // Nombre de usuario simulado
+        String nombreUsuario = "username";
+
+        // Crear un objeto User simulado
+        User mockUser = mock(User.class);
+        when(mockUser.getLogin()).thenReturn(nombreUsuario);
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        when(persistenceManager.newQuery(anyString())).thenReturn(query);
+      //  when(query.setUnique(true)).thenReturn(query);
+        when(query.execute()).thenReturn(mockUser);
+
+        // Llamar al método getLogin
+        User userObtenido = resource.getLogin(nombreUsuario);
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(transaction).begin();
+        verify(persistenceManager).newQuery(anyString());
+        verify(query).setUnique(true);
+        verify(query).execute();
+        verify(transaction).commit();
+
+        // Verificar el resultado del usuario obtenido
+        assertEquals(mockUser, userObtenido);
+    }
+ 
+    @Test
+    public void testFiltrarUsuario() {
+        // prepare mock Persistence Manager to return Pelicula instances
+        ArrayList<User> usuarios = new ArrayList<User>();
+        User u1 = new  User("1", "pass", "email");
+        User u2 = new  User("2", "pass", "email");
+        User u3 = new  User("3", "pass", "email");
+        Alquiler alquilerU1 = new Alquiler("1", "1");
+        Pelicula peli = new Pelicula("1", "Peli", 0, 0, Genero.ACCION);
+        usuarios.add(u1);
+        usuarios.add(u2);
+        usuarios.add(u3);
+
+        Extent<User> peliExtent = mock(Extent.class);
+        when(persistenceManager.getExtent(User.class, true)).thenReturn(peliExtent);
+        when(peliExtent.iterator()).thenReturn(usuarios.iterator());
+
+        // call tested method
+        java.util.List<Pelicula> result = resource.filtrarUsuario("1");
+
+        // check expected result
+        assertEquals(0, result.size());
+
+    }
+//    @Test
+//    public void testSetPersistenceManager() {
+//        // Create a mock PersistenceManager
+//        PersistenceManager customPersistenceManager = mock(PersistenceManager.class);
+//
+//        // Call the method to set the custom PersistenceManager
+//        resource.setPersistenceManager(customPersistenceManager);
+//
+//        // Verify that the custom PersistenceManager is set
+//        assertEquals(customPersistenceManager, resource.getPersistenceManager());
+//    }
+//
+//    @Test
+//    public void testConstructor() {
+//        // Verify that the PersistenceManagerFactory and PersistenceManager are obtained
+//        assertEquals(persistenceManager, resource.getPersistenceManager());
+//        assertEquals(transaction, resource.getTransaction());
+//    }
+//    
+//    @Test
+//    public void testGetTransaction() {
+//        // Call the tested method
+//        Transaction result = resource.getTransaction();
+//
+//        // Verify that the result is the mock transaction
+//        assertEquals(transaction, result);
+//    }
 
 }

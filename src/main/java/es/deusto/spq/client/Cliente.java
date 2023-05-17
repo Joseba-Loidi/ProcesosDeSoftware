@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response.Status;
 
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
+import es.deusto.spq.server.Resource;
 import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Pelicula;
 import es.deusto.spq.server.jdo.User;
@@ -46,8 +47,18 @@ public class Cliente {
 
 	private Client client;
 	private static WebTarget webTarget;
+	
+	private Resource resource;
+	
+	public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+	public void setWebTarget(WebTarget web) {
+        webTarget = web;
+    }
 
 	public Cliente(String hostname, String port) {
+		
 		client = ClientBuilder.newClient();
 		webTarget = client.target(String.format("http://%s:%s/rest/resource", hostname, port));
 	}
@@ -226,8 +237,8 @@ public class Cliente {
 	}
 	
 	public static Pelicula filtrarNombre(String nombre) {
-		WebTarget getFiltrarNombre = webTarget.path("filtrarNombre");
-		Invocation.Builder invocationBuilder = getFiltrarNombre.request(MediaType.APPLICATION_JSON);
+		 webTarget = webTarget.path("filtrarNombre");
+		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.post(Entity.entity(nombre, MediaType.TEXT_PLAIN)); // Agregar el parámetro al cuerpo de la petición
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());

@@ -225,5 +225,9 @@ public class VentanaAdmin extends JFrame {
 
 	}
 	
+	public DefaultTableModel getModeloTabla() {
+	    return modeloTabla;
+	}
 	
+
 }
