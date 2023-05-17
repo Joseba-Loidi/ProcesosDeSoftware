@@ -14,6 +14,10 @@ public class Alquiler {
         this.codPelicula = codPelicula;
         this.loginUser = loginUser;
     }
+    
+    public Alquiler() {
+        
+    }
 
     public String getCodPelicula() {
         return codPelicula;

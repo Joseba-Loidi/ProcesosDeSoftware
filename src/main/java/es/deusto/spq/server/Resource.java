@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.logging.log4j.Logger;
 
 import es.deusto.spq.pojo.AdminData;
+import es.deusto.spq.pojo.AlquilerData;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.jdo.Admin;
@@ -495,22 +496,24 @@ public class Resource {
 			
 	}
 	
-	@POST
-	@Path("/deleteAlquiler")
-	public Response deleteAlquiler(String codPelicula, String loginUser) {
-	    try {
-	        tx.begin();
-	        Object[] primaryKey = { codPelicula, loginUser };
-	        Alquiler rental = pm.getObjectById(Alquiler.class, primaryKey);
-	        pm.deletePersistent(rental);
-	        tx.commit();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        tx.rollback();
-	        return Response.status(Status.INTERNAL_SERVER_ERROR).entity("An error occurred while deleting rental").build();
-	    }
-	    return Response.ok().build();
-	}
+//	@POST
+//	@Path("/deleteAlquiler")
+//	public Response deleteAlquiler(String codPelicula, String loginUser) {
+//	    try {
+//	        tx.begin();
+//	        Object[] primaryKey = { codPelicula, loginUser };
+//	        Alquiler rental = pm.getObjectById(Alquiler.class, primaryKey);
+//	        pm.deletePersistent(rental);
+//	        tx.commit();
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	        tx.rollback();
+//	        return Response.status(Status.INTERNAL_SERVER_ERROR).entity("An error occurred while deleting rental").build();
+//	    }
+//	    return Response.ok().build();
+//	}
+	
+	
 //	@GET
 //	@Path("/hello")
 //	@Produces(MediaType.TEXT_PLAIN)
@@ -526,6 +529,44 @@ public class Resource {
 //	    return pm;
 //	}
 
+	@POST
+	@Path("/crearAlquiler")
+	public Response crearAlquiler(AlquilerData alquilerData) {
+	   try {
+	       tx.begin();
+	       logger.info("Checking whether the alquiler already exists or not: '{}'", alquilerData.getCodPelicula() + alquilerData.getLoginUser());
+	       Alquiler alquiler = null;
+	       try {
+	           Query query = pm.newQuery(Alquiler.class);
+	           query.setFilter("codPelicula == pelicula && loginUser == usuario");
+	           query.declareParameters("String pelicula, String usuario");
+	           List<Alquiler> resultados = (List<Alquiler>) query.execute(alquilerData.getCodPelicula(), alquilerData.getLoginUser());
+	           if (resultados.size() > 0) {
+	               alquiler = resultados.get(0);
+	           }
+	       } catch (Exception e) {
+	           logger.info("Exception launched: {}", e.getMessage());
+	       }
+	       logger.info("Alquiler: {}", alquiler);
+	       if (alquiler != null) {
+	           logger.info("Updating alquiler: {}", alquiler);
+	           alquiler.setLoginUser(alquilerData.getLoginUser());
+	           alquiler.setCodPelicula(alquilerData.getCodPelicula());
+	           logger.info("Alquiler updated: {}", alquiler);
+	       } else {
+	           logger.info("Creating alquiler: {}", alquiler);
+	           alquiler = new Alquiler(alquilerData.getCodPelicula(), alquilerData.getLoginUser());
+	           pm.makePersistent(alquiler);
+	           logger.info("Alquiler created: {}", alquiler);
+	       }
+	       tx.commit();
+	       return Response.ok().build();
+	   } finally {
+	       if (tx.isActive()) {
+	           tx.rollback();
+	       }
+	   }
+	}
 
 	
 }
