@@ -493,33 +493,33 @@ public class ResourceTest {
         assertEquals(peliculasSimuladas.get(1), peliculasObtenidas.get(1));
     }
     
-//    @Test
-//    public void testGetLogin() {
-//        // Nombre de usuario simulado
-//        String nombreUsuario = "username";
-//
-//        // Crear un objeto User simulado
-//        User mockUser = mock(User.class);
-//        when(mockUser.getLogin()).thenReturn(nombreUsuario);
-//
-//        // Configurar comportamiento simulado para el PersistenceManager
-//        when(persistenceManager.newQuery(anyString())).thenReturn(query);
-//      //  when(query.setUnique(true)).thenReturn(query);
-//        when(query.execute()).thenReturn(mockUser);
-//
-//        // Llamar al método getLogin
-//        User userObtenido = resource.getLogin(nombreUsuario);
-//
-//        // Verificar que se haya llamado a los métodos necesarios
-//        verify(transaction).begin();
-//        verify(persistenceManager).newQuery(anyString());
-//        verify(query).setUnique(true);
-//        verify(query).execute();
-//        verify(transaction).commit();
-//
-//        // Verificar el resultado del usuario obtenido
-//        assertEquals(mockUser, userObtenido);
-//    }
+    @Test
+    public void testGetLogin() {
+        // Nombre de usuario simulado
+        String nombreUsuario = "username";
+
+        // Crear un objeto User simulado
+        User mockUser = mock(User.class);
+        when(mockUser.getLogin()).thenReturn(nombreUsuario);
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        when(persistenceManager.newQuery(anyString())).thenReturn(query);
+      //  when(query.setUnique(true)).thenReturn(query);
+        when(query.execute()).thenReturn(mockUser);
+
+        // Llamar al método getLogin
+        User userObtenido = resource.getLogin(nombreUsuario);
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(transaction).begin();
+        verify(persistenceManager).newQuery(anyString());
+        verify(query).setUnique(true);
+        verify(query).execute();
+        verify(transaction).commit();
+
+        // Verificar el resultado del usuario obtenido
+        assertEquals(mockUser, userObtenido);
+    }
 // 
 //    @Test
 //    public void testFiltrarUsuario() {
