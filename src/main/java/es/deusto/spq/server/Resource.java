@@ -506,19 +506,11 @@ public class Resource {
 	        tx.commit();
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        if (tx.isActive()) {
-	            try {
-	                tx.rollback();
-	            } catch (Exception rollbackException) {
-	                rollbackException.printStackTrace();
-	            }
-	        }
+	        tx.rollback();
 	        return Response.status(Status.INTERNAL_SERVER_ERROR).entity("An error occurred while deleting rental").build();
 	    }
 	    return Response.ok().build();
 	}
-
-	
 //	@GET
 //	@Path("/hello")
 //	@Produces(MediaType.TEXT_PLAIN)
