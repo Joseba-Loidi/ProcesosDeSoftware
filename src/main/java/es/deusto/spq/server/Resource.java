@@ -492,9 +492,24 @@ public class Resource {
 		    return Response.status(Status.INTERNAL_SERVER_ERROR).entity("An error occurred while deleting user").build();
 		}
 		return Response.ok().build();
-		
-		
-		
+			
+	}
+	
+	@POST
+	@Path("/deleteAlquiler")
+	public Response deleteAlquiler(String codPelicula, String loginUser) {
+	    try {
+	        tx.begin();
+	        Object[] primaryKey = { codPelicula, loginUser };
+	        Alquiler rental = pm.getObjectById(Alquiler.class, primaryKey);
+	        pm.deletePersistent(rental);
+	        tx.commit();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        tx.rollback();
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).entity("An error occurred while deleting rental").build();
+	    }
+	    return Response.ok().build();
 	}
 	
 //	@GET

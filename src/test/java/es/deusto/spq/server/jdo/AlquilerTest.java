@@ -35,10 +35,6 @@ public class AlquilerTest {
 		assertEquals("user456", alquiler.getLoginUser());
 	}
 	
-	@Test
-	public void testGetCodAlquiler() {
-		assertEquals(0, alquiler.getCodAlquiler()); // el valor por defecto es 0
-	}
 	
 	@Test
 	public void testToString() {

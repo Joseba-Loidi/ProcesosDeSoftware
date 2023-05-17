@@ -112,7 +112,22 @@ public class Cliente {
 		}
 		return b;
 	}
-
+	
+	public static boolean deleteAlquiler(String codPelicula, String loginUser) {
+	    boolean deleted = false;
+	    WebTarget deleteAlquilerWebTarget = webTarget.path("deleteAlquiler");
+	    Invocation.Builder invocationBuilder = deleteAlquilerWebTarget.request(MediaType.APPLICATION_JSON);
+	    //Puede que haya que crear un objeto JSON JSONObject jsonInput = new JSONObject(); jsonInput.put("codPelicula", codPelicula); jsonInput.put("loginUser", loginUser); y pasarlo asi en el invocation builder. Hace falta libreria
+	    Response response = invocationBuilder.post(Entity.entity(codPelicula + ";" + loginUser, MediaType.APPLICATION_JSON));
+	    if (response.getStatus() != Status.OK.getStatusCode()) {
+	        logger.error("Error connecting with the server. Code: {}", response.getStatus());
+	    } else {
+	        logger.info("Alquiler correctly deleted");
+	        deleted = true;
+	    }
+	    return deleted;
+	}
+	
 	public static boolean login(String login, String password) {
 		boolean inicio = false;
 		logger.info("HOLA CLIENTE");

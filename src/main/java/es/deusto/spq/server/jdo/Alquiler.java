@@ -1,51 +1,39 @@
 package es.deusto.spq.server.jdo;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
 public class Alquiler {
-	
-	
     @PrimaryKey
-    @Persistent(valueStrategy=IdGeneratorStrategy.INCREMENT)   
-	protected long codAlquiler;
-	protected String codPelicula;
-	protected String LoginUser;
-	
-	public Alquiler(String codPelicula, String loginUser) {
-		super();	
-		this.codPelicula = codPelicula;
-		this.LoginUser = loginUser;
-	}
+    protected String codPelicula;
+    @PrimaryKey
+    protected String loginUser;
 
-	public String getCodPelicula() {
-		return codPelicula;
-	}
+    public Alquiler(String codPelicula, String loginUser) {
+        this.codPelicula = codPelicula;
+        this.loginUser = loginUser;
+    }
 
-	public void setCodPelicula(String codPelicula) {
-		this.codPelicula = codPelicula;
-	}
+    public String getCodPelicula() {
+        return codPelicula;
+    }
 
-	public String getLoginUser() {
-		return LoginUser;
-	}
+    public void setCodPelicula(String codPelicula) {
+        this.codPelicula = codPelicula;
+    }
 
-	public void setLoginUser(String loginUser) {
-		LoginUser = loginUser;
-	}
+    public String getLoginUser() {
+        return loginUser;
+    }
 
-	public long getCodAlquiler() {
-		return codAlquiler;
-	}
+    public void setLoginUser(String loginUser) {
+        this.loginUser = loginUser;
+    }
 
-	@Override
-	public String toString() {
-		return "Alquiler [codAlquiler=" + codAlquiler + ", codPelicula=" + codPelicula + ", LoginUser=" + LoginUser
-				+ "]";
-	}
-	
+    @Override
+    public String toString() {
+        return "Alquiler [codPelicula=" + codPelicula + ", loginUser=" + loginUser + "]";
+    }
 }
 
