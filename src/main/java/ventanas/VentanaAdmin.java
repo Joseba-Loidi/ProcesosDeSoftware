@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import es.deusto.spq.client.Cliente;
 import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Pelicula;
+import es.deusto.spq.server.jdo.User;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
@@ -28,6 +29,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JTextField;
+import java.awt.GridLayout;
 
 public class VentanaAdmin extends JFrame {
 	
@@ -45,9 +47,12 @@ public class VentanaAdmin extends JFrame {
 	private int minutos ;
 	private int valoracion;
 	private Genero genero;
-
 	private JPanel contentPane;
-
+	private JTable tableUsuario;
+	private DefaultTableModel modeloTablaUsuario;
+	private JScrollPane scrollTablaUsuario;
+	private Object[] columnaUsuario = new Object[7];
+	
 	/**
 	 * Launch the application.
 	 */
@@ -82,14 +87,9 @@ public class VentanaAdmin extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblNewLabel = new JLabel("Peliculas");
-		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 25));
-		lblNewLabel.setForeground(Color.WHITE);
-		panel.add(lblNewLabel, BorderLayout.NORTH);
 		
 		
-		
-		
+		//PANEL PELICULAS
 		
 		//Creamos la JTable
 		modeloTabla = new DefaultTableModel();
@@ -103,14 +103,42 @@ public class VentanaAdmin extends JFrame {
 		
 		cargarTabla();
 		
-		// JSCROLLPANE Y A�ADIR LA TABLA
+		JPanel panelPelis = new JPanel();
+		panelPelis.setBackground(Color.BLUE);
+		panel.add(panelPelis, BorderLayout.CENTER);
+		
+		
+		
+	//	 JSCROLLPANE Y A�ADIR LA TABLA
 		scrollTabla = new JScrollPane(table);
 		scrollTabla.setVisible(true);
-		panel.add(scrollTabla, BorderLayout.CENTER);
+		panelPelis.add(scrollTabla, BorderLayout.CENTER);
 		
 	
 		scrollTabla.getViewport().setBackground(new Color(204,204,204));
 		
+		
+//PANEL USUARIOS
+		JPanel panelUsu = new JPanel();
+		panelUsu.setBackground(Color.MAGENTA);
+		
+		
+//Creamos la JTable
+		modeloTablaUsuario = new DefaultTableModel();
+		tableUsuario = new JTable(modeloTablaUsuario);
+		//Creamos las columnas
+		modeloTablaUsuario.addColumn("Login");
+		modeloTablaUsuario.addColumn("Correo");
+		modeloTablaUsuario.addColumn("Contraseña");
+
+				
+		cargarTablaUsuarios();	
+						
+// JSCROLLPANE Y A�ADIR LA TABLA
+		scrollTablaUsuario = new JScrollPane(tableUsuario);
+		scrollTablaUsuario.setVisible(true);
+		panelUsu.add(scrollTablaUsuario, BorderLayout.CENTER);
+						
 		
 		
 		JPanel panelBtn = new JPanel();
@@ -185,6 +213,61 @@ public class VentanaAdmin extends JFrame {
 		eliminar.setBackground(SystemColor.activeCaption);
 		eliminar.setBounds(81, 266, 163, 27);
 		panelBtn.add(eliminar);
+		
+		JPanel panel_1 = new JPanel();
+		panel.add(panel_1, BorderLayout.NORTH);
+		panel_1.setLayout(new GridLayout(0, 4, 0, 0));
+		panel_1.setBackground(Color.BLACK);
+		
+		
+		JButton Peliculas = new JButton("Peliculas");
+		Peliculas.setBackground(Color.GRAY);
+		Peliculas.setBorderPainted(false);
+		Peliculas.setContentAreaFilled(false); 
+		Peliculas.setOpaque(true); 
+		Peliculas.setForeground(Color.WHITE); 
+		Peliculas.setFont(new Font("Arial", Font.BOLD, 14)); 
+		panel_1.add(Peliculas);
+		
+		
+		Peliculas.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				panelUsu.setVisible(false);
+				panelBtn.setVisible(true);
+				panel.add(panelPelis, BorderLayout.CENTER);
+				panelPelis.setVisible(true);
+				
+				
+			}
+		});
+		
+		JButton Usuarios = new JButton("Usuarios");
+		Usuarios.setBackground(Color.GRAY);
+		Usuarios.setBorderPainted(false); 
+		Usuarios.setContentAreaFilled(false);
+		Usuarios.setOpaque(true); 
+		Usuarios.setForeground(Color.WHITE);
+		Usuarios.setFont(new Font("Arial", Font.BOLD, 14)); 
+		panel_1.add(Usuarios);
+		
+		Usuarios.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				panelPelis.setVisible(false);
+				panelBtn.setVisible(false);
+				
+				panel.add(panelUsu, BorderLayout.CENTER);
+				panelUsu.setVisible(true);
+				
+				
+			}
+		});
+		
 		eliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					boolean inicio = Cliente.eliminarPelicula(codigo, titulo, minutos, valoracion, genero);
@@ -217,6 +300,25 @@ public class VentanaAdmin extends JFrame {
 				columna[3] = pelicula.getValoracion();
 				columna[4] = pelicula.getGenero();
 				modeloTabla.addRow(columna);// agregamos una fila a nuestro modelo de tabla
+			}
+		} catch (Exception e) {
+			System.out.println("No se puede rellenar la tabla");
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void cargarTablaUsuarios() {
+		tableUsuario.removeAll();
+		try {
+			List<User> listaUsuarios = Cliente.obtenerUsuarios();
+			for (User usu : listaUsuarios) {
+				System.out.println(usu.toString());
+				columnaUsuario[0] = usu.getLogin();
+				columnaUsuario[1] = usu.getCorreo();
+				columnaUsuario[2] = usu.getPassword();
+				modeloTablaUsuario.addRow(columnaUsuario);// agregamos una fila a nuestro modelo de tabla
+	
 			}
 		} catch (Exception e) {
 			System.out.println("No se puede rellenar la tabla");

@@ -237,6 +237,29 @@ public class Resource {
 	}
 
 	
+	@POST
+	@Path("/getUsuarios")
+	public List<User> obtenerUsuarios() {
+		List<User> usuarios = new ArrayList<>();
+		try{
+			tx.begin();
+			logger.info("Creating query ...");
+			Extent<User> usuExtent = pm.getExtent(User.class, true);	
+			for (User usu : usuExtent) {
+				usuarios.add(usu);
+				logger.info("User retrieved: {}", usu);
+			}			
+			tx.commit();	
+		} catch (Exception ex) {
+			System.out.println("  $ Error querying all films: " + ex.getMessage());
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+		}
+		return usuarios;
+	}
+	
 	
 	@POST
 	@Path("/login")

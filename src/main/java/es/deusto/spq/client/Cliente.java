@@ -131,7 +131,6 @@ public class Cliente {
 	
 	public static boolean login(String login, String password) {
 		boolean inicio = false;
-		logger.info("HOLA CLIENTE");
 		WebTarget registerAdminWebTarget = webTarget.path("login");
 		// registerAdminWebTarget = registerAdminWebTarget.queryParam(login)
 		// .queryParam(password);
@@ -148,7 +147,7 @@ public class Cliente {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());
 
 		} else {
-			logger.info("Login de usuario: " + login + " realizado correctamente");
+			logger.info("Login de usuario " + login + " realizado correctamente");
 			inicio = true;
 		}
 		return inicio;
@@ -172,7 +171,6 @@ public class Cliente {
 	
 	public static boolean loginAdmin(String login, String password) {
 		boolean inicio = false;
-		logger.info("HOLA CLIENTE");
 		WebTarget registerAdminWebTarget = webTarget.path("loginAdmin");
 
 		Invocation.Builder invocationBuilder = registerAdminWebTarget.request(MediaType.APPLICATION_JSON);
@@ -255,6 +253,21 @@ public class Cliente {
 		}
 	}
 	
+	public static List<User> obtenerUsuarios() {
+		WebTarget getUsuariosWebTarget = webTarget.path("getUsuarios");
+		Invocation.Builder invocationBuilder = getUsuariosWebTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(null);
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			logger.error("Error connecting with the server. Code: {}", response.getStatus());
+			return null;
+		} else {
+			GenericType<List<User>> listType = new GenericType<List<User>>(){};
+            List<User> usuarios = response.readEntity(listType);
+			return usuarios;
+		}
+	}
+	
+	
 	public static Pelicula filtrarNombre(String nombre) {
 		 webTarget = webTarget.path("filtrarNombre");
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
@@ -300,20 +313,17 @@ public class Cliente {
 	}
 	
 	public static List<Pelicula> filtrarUsuario(String user) {
-		System.out.println("He llegado a filtrar usuario");
+		
 		WebTarget getFiltrarUsuario = webTarget.path("filtrarUsuario");
-		System.out.println("He llegado a filtrar usuario2");
+		
 		Invocation.Builder invocationBuilder = getFiltrarUsuario.request(MediaType.APPLICATION_JSON);
-		System.out.println("He llegado a filtrar usuario3---");
+		
 		System.out.println(user.toString());
 		Response response = invocationBuilder.post(Entity.entity(user, MediaType.TEXT_PLAIN)); // Agregar el parámetro al cuerpo de la petición
-		System.out.println("He llegado a filtrar usuario4");
 		if (response.getStatus() != Status.OK.getStatusCode()) {
-			System.out.println("Estamos en este error");
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());
 			return null;
 		} else {
-			System.out.println("He llegado a filtrar usuario5");
 			GenericType<List<Pelicula>> listType = new GenericType<List<Pelicula>>(){};
             List<Pelicula> pelis = response.readEntity(listType);
 			return pelis;
@@ -331,7 +341,7 @@ public class Cliente {
 		String port = args[1];
 
 		Cliente exampleClient = new Cliente(hostname, port);
-		exampleClient.registerUser(USER, PASSWORD, CORREO);
+//		exampleClient.registerUser(USER, PASSWORD, CORREO);
 //		exampleClient.registerAdmin(SUPER_USER, S_PASSWORD);
 //
 //		exampleClient.eliminarPelicula(CODIGO, TITULO, MINUTOS, VALORACION, GENERO);
@@ -339,7 +349,7 @@ public class Cliente {
 //		exampleClient.sayMessage(USER, PASSWORD, "This is a test!...");
 //		exampleClient.sayMessage(USER, PASSWORD, "VIDEOCLUB");
 //
-		exampleClient.login(USER, PASSWORD);
+//		exampleClient.login(USER, PASSWORD);
 
 //		VentanaRegistro v1 = new VentanaRegistro();
 //		v1.setVisible(true);
