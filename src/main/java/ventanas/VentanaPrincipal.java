@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.ButtonGroup;
@@ -11,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -27,6 +29,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -53,6 +57,15 @@ public class VentanaPrincipal extends JFrame {
 	private Object[] columna2 = new Object[7];
 	
 	int numValoracion;
+	
+	
+	private String codigo;
+	private String titulo;
+	private int minutos ;
+	private int valoracion;
+	private Genero genero;
+
+
 
 	/**
 	 * Launch the application.
@@ -168,6 +181,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		JPanel panelPeliculas = new JPanel();
 		panelPeliculas.setBackground(Color.RED);
+		panelPeliculas.setLayout(new BorderLayout(0, 0));
 		//panel_3.add(panelPeliculas, BorderLayout.CENTER);
 		
 		//Creamos la JTable
@@ -186,6 +200,76 @@ public class VentanaPrincipal extends JFrame {
 		scrollTablaPelicula = new JScrollPane(tablePelicula);
 		scrollTablaPelicula.setVisible(true);
 		panelPeliculas.add(scrollTablaPelicula, BorderLayout.CENTER);
+		
+		JPanel panelAbajo = new JPanel();
+		panelAbajo.setLayout(new FlowLayout());
+		JButton botonAlquilar = new JButton("Alquilar");
+
+		tablePelicula.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int selectedRowIndex = tablePelicula.getSelectedRow();
+				
+				codigo = modeloTablaPelicula.getValueAt(selectedRowIndex, 0).toString();
+				titulo = modeloTablaPelicula.getValueAt(selectedRowIndex, 1).toString();
+				String min = modeloTablaPelicula.getValueAt(selectedRowIndex, 2).toString();
+				minutos = Integer.parseInt(min);
+				String val = modeloTablaPelicula.getValueAt(selectedRowIndex, 3).toString();
+				valoracion = Integer.parseInt(val);
+				String gen = modeloTablaPelicula.getValueAt(selectedRowIndex, 4).toString();
+				genero = Genero.valueOf(gen);
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		
+				
+		botonAlquilar.addActionListener(new ActionListener() {
+					
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("codigo"+ codigo);
+				System.out.println("login"+ user.getLogin());
+				
+				if(Cliente.crearAlquiler(codigo, user.getLogin())) {
+					JOptionPane.showMessageDialog(null, "Pelicula alquilada correctamente", "Alquilar Pelicula", JOptionPane.INFORMATION_MESSAGE);
+						}else {
+							JOptionPane.showMessageDialog(null, "Error al alquilar la Pelicula", "Alquilar Pelicula", JOptionPane.ERROR_MESSAGE);
+							
+						}
+						
+					}
+				});
+				panelAbajo.add(botonAlquilar);
+				panelPeliculas.add(panelAbajo, BorderLayout.SOUTH);
+						
+
+
 				
 			
 		//scrollTablaPelicula.getViewport().setBackground(new Color(204,204,204));
@@ -194,6 +278,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		JPanel panelLista = new JPanel();
 		panelLista.setBackground(Color.pink);
+		panelLista.setLayout(new BorderLayout(0, 0));
 		//panel_3.add(panelLista, BorderLayout.CENTER);
 		
 		
@@ -417,7 +502,7 @@ public class VentanaPrincipal extends JFrame {
 		scrollTabla2.setVisible(true);
 		
 		panelFiltro.add(scrollTabla, BorderLayout.CENTER);
-		panelLista.add(scrollTabla2);
+		panelLista.add(scrollTabla2, BorderLayout.CENTER);
 					
 		scrollTabla.getViewport().setBackground(new Color(204,204,204));
 		

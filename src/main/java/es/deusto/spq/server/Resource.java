@@ -536,60 +536,69 @@ public class Resource {
 //	    return Response.ok().build();
 //	}
 	
-	
-//	@GET
-//	@Path("/hello")
-//	@Produces(MediaType.TEXT_PLAIN)
-//	public Response sayHello() {
-//		return Response.ok("Hello world!").build();
-//	}
-//
-//	public void setPersistenceManager(PersistenceManager pm2) {
-//		this.pm = pm2;
-//		
-//	}
-//	public PersistenceManager getPersistenceManager() {
-//	    return pm;
-//	}
 
 	@POST
-	@Path("/crearAlquiler")
-	public Response crearAlquiler(AlquilerData alquilerData) {
-	   try {
-	       tx.begin();
-	       logger.info("Checking whether the alquiler already exists or not: '{}'", alquilerData.getCodPelicula() + alquilerData.getLoginUser());
-	       Alquiler alquiler = null;
-	       try {
-	           Query query = pm.newQuery(Alquiler.class);
-	           query.setFilter("codPelicula == pelicula && loginUser == usuario");
-	           query.declareParameters("String pelicula, String usuario");
-	           List<Alquiler> resultados = (List<Alquiler>) query.execute(alquilerData.getCodPelicula(), alquilerData.getLoginUser());
-	           if (resultados.size() > 0) {
-	               alquiler = resultados.get(0);
-	           }
-	       } catch (Exception e) {
-	           logger.info("Exception launched: {}", e.getMessage());
-	       }
-	       logger.info("Alquiler: {}", alquiler);
-	       if (alquiler != null) {
-	           logger.info("Updating alquiler: {}", alquiler);
-	           alquiler.setLoginUser(alquilerData.getLoginUser());
-	           alquiler.setCodPelicula(alquilerData.getCodPelicula());
-	           logger.info("Alquiler updated: {}", alquiler);
-	       } else {
-	           logger.info("Creating alquiler: {}", alquiler);
-	           alquiler = new Alquiler(alquilerData.getCodPelicula(), alquilerData.getLoginUser());
-	           pm.makePersistent(alquiler);
-	           logger.info("Alquiler created: {}", alquiler);
-	       }
-	       tx.commit();
-	       return Response.ok().build();
-	   } finally {
-	       if (tx.isActive()) {
-	           tx.rollback();
-	       }
-	   }
+    @Path("/crearAlquiler")
+    public Response crearAlquiler(AlquilerData alquilerData) {
+		try {
+            tx.begin();
+            logger.info("Checking whether the film already exists or not: '{}'", alquilerData.getCodPelicula());
+            logger.info("Checking whether the user already exists or not: '{}'", alquilerData.getLoginUser());
+            
+            Alquiler alquiler = new Alquiler(alquilerData.getCodPelicula(), alquilerData.getLoginUser());
+            pm.makePersistent(alquiler);
+            logger.info("Alquiler created: {}", alquiler);
+            
+            tx.commit();
+            return Response.ok().build();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            logger.error("Error creating alquiler: {}", e.getMessage());
+            return Response.serverError().build();
+        }    
 	}
+	
+
+//	@POST
+//	@Path("/crearAlquiler")
+//	public Response crearAlquiler(AlquilerData alquilerData) {
+//	   try {
+//	       tx.begin();
+//	       logger.info("Checking whether the alquiler already exists or not: '{}'", alquilerData.getCodPelicula() + alquilerData.getLoginUser());
+//	       Alquiler alquiler = null;
+//	       try {
+//	           Query query = pm.newQuery(Alquiler.class);
+//	           query.setFilter("codPelicula == pelicula && loginUser == usuario");
+//	           query.declareParameters("String pelicula, String usuario");
+//	           List<Alquiler> resultados = (List<Alquiler>) query.execute(alquilerData.getCodPelicula(), alquilerData.getLoginUser());
+//	           if (resultados.size() > 0) {
+//	               alquiler = resultados.get(0);
+//	           }
+//	       } catch (Exception e) {
+//	           logger.info("Exception launched: {}", e.getMessage());
+//	       }
+//	       logger.info("Alquiler: {}", alquiler);
+//	       if (alquiler != null) {
+//	           logger.info("Updating alquiler: {}", alquiler);
+//	           alquiler.setLoginUser(alquilerData.getLoginUser());
+//	           alquiler.setCodPelicula(alquilerData.getCodPelicula());
+//	           logger.info("Alquiler updated: {}", alquiler);
+//	       } else {
+//	           logger.info("Creating alquiler: {}", alquiler);
+//	           alquiler = new Alquiler(alquilerData.getCodPelicula(), alquilerData.getLoginUser());
+//	           pm.makePersistent(alquiler);
+//	           logger.info("Alquiler created: {}", alquiler);
+//	       }
+//	       tx.commit();
+//	       return Response.ok().build();
+//	   } finally {
+//	       if (tx.isActive()) {
+//	           tx.rollback();
+//	       }
+//	   }
+//	}
 
 	
 }

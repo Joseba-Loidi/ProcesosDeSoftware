@@ -25,6 +25,7 @@ import ventanas.VentanaAdmin;
 import ventanas.VentanaInicioSesion;
 //import ventanas.VentanaRegistro;
 import es.deusto.spq.pojo.AdminData;
+import es.deusto.spq.pojo.AlquilerData;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -359,11 +360,11 @@ public class Cliente {
 	//	v2.setVisible(true);
 	}
 	
-	 public boolean crearAlquiler(String codPelicula, String loginUser) {
+	 public static boolean crearAlquiler(String codPelicula, String loginUser) {
 		   WebTarget crearAlquilerWebTarget = webTarget.path("crearAlquiler");
 		   Invocation.Builder invocationBuilder = crearAlquilerWebTarget.request(MediaType.APPLICATION_JSON);
 
-		   Alquiler alquiler = new Alquiler(codPelicula, loginUser);
+		   AlquilerData alquiler = new AlquilerData(codPelicula, loginUser);
 
 		   Response response = invocationBuilder.post(Entity.entity(alquiler, MediaType.APPLICATION_JSON));
 		   if (response.getStatus() != Status.OK.getStatusCode()) {
