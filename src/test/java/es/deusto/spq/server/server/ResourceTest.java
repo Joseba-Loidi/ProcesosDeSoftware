@@ -350,33 +350,33 @@ public class ResourceTest {
         assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
     }
     
-//    @Test
-//    public void testDeleteAlquiler() {
-//        // prepare mock Persistence Manager to return Alquiler instance
-//        Alquiler alquiler = new Alquiler("testCodPelicula", "testLoginUser");
-//        Object[] primaryKey = { "testCodPelicula", "testLoginUser" };
-//        when(persistenceManager.getObjectById(Alquiler.class, primaryKey)).thenReturn(alquiler);
-//
-//        // call tested method
-//        Response result = resource.deleteAlquiler("testCodPelicula", "testLoginUser");
-//
-//        // check that the alquiler has been deleted
-//        verify(persistenceManager).deletePersistent(alquiler);
-//        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
-//    }
-//    
-//    @Test
-//    public void testDeleteAlquiler_WhenAlquilerNotExists_ReturnsErrorResponse() {
-//        // Llama al método deleteAlquiler con valores que no corresponden a ningún alquiler existente
-//        Response result = resource.deleteAlquiler("nonExistentCodPelicula", "nonExistentLoginUser");
-//
-//        // Verifica que no se haya realizado ninguna operación de eliminación en la base de datos
-//        verify(persistenceManager, never()).deletePersistent(any(Alquiler.class));
-//
-//        // Verifica que se devuelva una respuesta HTTP OK
-//        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
-//        // Puedes ajustar el código de estado si se espera un código diferente en caso de alquiler inexistente
-//    }
+    @Test
+    public void testDeleteAlquiler() {
+        // prepare mock Persistence Manager to return Alquiler instance
+        Alquiler alquiler = new Alquiler("testCodPelicula", "testLoginUser");
+        Object[] primaryKey = { "testCodPelicula", "testLoginUser" };
+        when(persistenceManager.getObjectById(Alquiler.class, primaryKey)).thenReturn(alquiler);
+
+        // call tested method
+        Response result = resource.deleteAlquilerResource("testCodPelicula", "testLoginUser");
+
+        // check that the alquiler has been deleted
+        verify(persistenceManager).deletePersistent(alquiler);
+        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
+    }
+    
+    @Test
+    public void testDeleteAlquiler_WhenAlquilerNotExists_ReturnsErrorResponse() {
+        // Llama al método deleteAlquiler con valores que no corresponden a ningún alquiler existente
+        Response result = resource.deleteAlquilerResource("nonExistentCodPelicula", "nonExistentLoginUser");
+
+        // Verifica que no se haya realizado ninguna operación de eliminación en la base de datos
+        verify(persistenceManager, never()).deletePersistent(any(Alquiler.class));
+
+        // Verifica que se devuelva una respuesta HTTP OK
+        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
+        // Puedes ajustar el código de estado si se espera un código diferente en caso de alquiler inexistente
+    }
     
 //    @Test
 //    public void testDeleteAlquiler_WhenExceptionOccurs_ReturnsErrorResponse() {
@@ -387,7 +387,7 @@ public class ResourceTest {
 //        resource.setPersistenceManager(persistenceManager);
 //
 //        // Llama al método deleteAlquiler con valores válidos de codPelicula y loginUser
-//        Response result = resource.deleteAlquiler("testCodPelicula", "testLoginUser");
+//        Response result = resource.deleteAlquilerResource("testCodPelicula", "testLoginUser");
 //
 //        // Verifica que se devuelva una respuesta HTTP INTERNAL_SERVER_ERROR (código 500)
 //        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), result.getStatus());
