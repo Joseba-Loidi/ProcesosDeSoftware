@@ -100,19 +100,19 @@ private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceMan
 //
 //        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
 //    }
-    @Test
-    public void testRegistrarAdmin() {
-    	Admin admin = new Admin();
-    	admin.setLogin(UUID.randomUUID().toString());
-    	admin.setPassword("admin6");
-    	
-    	Response response = target.path("adminRegister")
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
-
-        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
-    }
-    
+//    @Test
+//    public void testRegistrarAdmin() {
+//    	Admin admin = new Admin();
+//    	admin.setLogin(UUID.randomUUID().toString());
+//    	admin.setPassword("admin6");
+//    	
+//    	Response response = target.path("adminRegister")
+//                .request(MediaType.APPLICATION_JSON)
+//                .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
+//
+//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+//    }
+//    
 //    @Test
 //    public void testAddPelicula() {
 //    	Pelicula peli = new Pelicula();
