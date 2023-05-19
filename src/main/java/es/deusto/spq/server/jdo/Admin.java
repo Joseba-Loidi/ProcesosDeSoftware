@@ -20,6 +20,11 @@ public class Admin {
 		this.password = password;
 	}
 	
+	public Admin() {
+		this.login = "";
+		this.password = "";
+	}
+	
 	public String getLogin() {
 		return this.login;
 	}
@@ -30,6 +35,10 @@ public class Admin {
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	@Override
