@@ -265,8 +265,10 @@ public class VentanaPrincipal extends JFrame {
 						
 					}
 				});
-				panelAbajo.add(botonAlquilar);
-				panelPeliculas.add(panelAbajo, BorderLayout.SOUTH);
+		panelAbajo.add(botonAlquilar);
+		panelPeliculas.add(panelAbajo, BorderLayout.SOUTH);
+				
+
 						
 
 
@@ -503,6 +505,78 @@ public class VentanaPrincipal extends JFrame {
 		
 		panelFiltro.add(scrollTabla, BorderLayout.CENTER);
 		panelLista.add(scrollTabla2, BorderLayout.CENTER);
+		
+		table2.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int selectedRowIndex = table2.getSelectedRow();
+				
+				codigo = modeloTabla2.getValueAt(selectedRowIndex, 0).toString();
+				titulo = modeloTabla2.getValueAt(selectedRowIndex, 1).toString();
+				String min = modeloTabla2.getValueAt(selectedRowIndex, 2).toString();
+				minutos = Integer.parseInt(min);
+				String val = modeloTabla2.getValueAt(selectedRowIndex, 3).toString();
+				valoracion = Integer.parseInt(val);
+				String gen = modeloTabla2.getValueAt(selectedRowIndex, 4).toString();
+				genero = Genero.valueOf(gen);
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		JButton verPeli = new JButton("ver");
+		
+		verPeli.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("codigo"+ codigo);
+				System.out.println("login"+ user.getLogin());
+				
+				if(Cliente.borrarAlquiler(codigo, nombreUsuario)) {
+					ProgressWindow pw = new ProgressWindow();
+					pw.setVisible(true);
+					cargarTablaUsuario(user);
+					
+					
+						}else {
+							JOptionPane.showMessageDialog(null, "Error al ver la Pelicula", "Alquilar Pelicula", JOptionPane.ERROR_MESSAGE);
+							
+						}
+						
+					}
+				});
+		
+		JPanel panelAbajo2 = new JPanel();
+		panelAbajo2.setLayout(new FlowLayout());
+		
+		panelAbajo2.add(verPeli);
+		panelLista.add(panelAbajo2, BorderLayout.SOUTH);
+		
 					
 		scrollTabla.getViewport().setBackground(new Color(204,204,204));
 		

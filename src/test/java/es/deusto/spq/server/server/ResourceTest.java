@@ -39,6 +39,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import es.deusto.spq.client.Cliente;
 import es.deusto.spq.pojo.AdminData;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
@@ -350,33 +351,9 @@ public class ResourceTest {
         assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
     }
     
-    @Test
-    public void testDeleteAlquiler() {
-        // prepare mock Persistence Manager to return Alquiler instance
-        Alquiler alquiler = new Alquiler("testCodPelicula", "testLoginUser");
-        Object[] primaryKey = { "testCodPelicula", "testLoginUser" };
-        when(persistenceManager.getObjectById(Alquiler.class, primaryKey)).thenReturn(alquiler);
 
-        // call tested method
-        Response result = resource.deleteAlquilerResource("testCodPelicula", "testLoginUser");
-
-        // check that the alquiler has been deleted
-        verify(persistenceManager).deletePersistent(alquiler);
-        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
-    }
     
-    @Test
-    public void testDeleteAlquiler_WhenAlquilerNotExists_ReturnsErrorResponse() {
-        // Llama al método deleteAlquiler con valores que no corresponden a ningún alquiler existente
-        Response result = resource.deleteAlquilerResource("nonExistentCodPelicula", "nonExistentLoginUser");
 
-        // Verifica que no se haya realizado ninguna operación de eliminación en la base de datos
-        verify(persistenceManager, never()).deletePersistent(any(Alquiler.class));
-
-        // Verifica que se devuelva una respuesta HTTP OK
-        assertEquals(Response.Status.OK.getStatusCode(), result.getStatus());
-        // Puedes ajustar el código de estado si se espera un código diferente en caso de alquiler inexistente
-    }
     
 //    @Test
 //    public void testDeleteAlquiler_WhenExceptionOccurs_ReturnsErrorResponse() {

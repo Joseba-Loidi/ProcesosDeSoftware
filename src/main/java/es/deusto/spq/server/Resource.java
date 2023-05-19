@@ -520,22 +520,27 @@ public class Resource {
 			
 	}
 	
-	@POST
-	@Path("/deleteAlquiler")
-	public Response deleteAlquilerResource(@FormParam("codPelicula") String codPelicula, @FormParam("loginUser") String loginUser) {
+	@DELETE
+	@Path("/borrarAlquiler/{codPelicula}/{loginUser}")
+	public Response borrarAlquiler(@PathParam("codPelicula") String codPelicula, @PathParam("loginUser") String loginUser) {
 	    try {
 	        tx.begin();
-	        Object[] primaryKey = { codPelicula, loginUser };
-	        Alquiler rental = pm.getObjectById(Alquiler.class, primaryKey);
-	        pm.deletePersistent(rental);
+	        
+	        Query query = pm.newQuery(Alquiler.class, "codPelicula == :codPelicula && loginUser == :loginUser");
+	        query.deletePersistentAll(codPelicula, loginUser);
+	        
 	        tx.commit();
+	        return Response.ok().build();
 	    } catch (Exception e) {
-	        e.printStackTrace();
-	        tx.rollback();
-	        return Response.status(Status.INTERNAL_SERVER_ERROR).entity("An error occurred while deleting rental").build();
+	        if (tx.isActive()) {
+	            tx.rollback();
+	        }
+	        logger.error("Error deleting alquiler: {}", e.getMessage());
+	        return Response.serverError().build();
 	    }
-	    return Response.ok().build();
 	}
+
+
 	
 
 	@POST

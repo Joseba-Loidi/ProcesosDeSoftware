@@ -118,24 +118,20 @@ public class Cliente {
 		return b;
 	}
 	
-	public static boolean deleteAlquiler(String codPelicula, String loginUser) {
-	    boolean deleted = false;
-	    WebTarget deleteAlquilerWebTarget = webTarget.path("deleteAlquiler");
-	    Invocation.Builder invocationBuilder = deleteAlquilerWebTarget.request(MediaType.APPLICATION_JSON);
-	    
-	    // Crear el objeto Form y agregar los parámetros
-	    Form form = new Form();
-	    form.param("codPelicula", codPelicula);
-	    form.param("loginUser", loginUser);
+	public static boolean borrarAlquiler(String codPelicula, String loginUser) {
+	    WebTarget borrarAlquilerWebTarget = webTarget.path("borrarAlquiler/{codPelicula}/{loginUser}")
+	        .resolveTemplate("codPelicula", codPelicula)
+	        .resolveTemplate("loginUser", loginUser);
+	    Invocation.Builder invocationBuilder = borrarAlquilerWebTarget.request();
 
-	    Response response = invocationBuilder.post(Entity.form(form));
+	    Response response = invocationBuilder.delete();
 	    if (response.getStatus() != Status.OK.getStatusCode()) {
 	        logger.error("Error connecting with the server. Code: {}", response.getStatus());
+	        return false;
 	    } else {
-	        logger.info("Alquiler correctly deleted");
-	        deleted = true;
+	        logger.info("Alquiler deleted: {} - {}", codPelicula, loginUser);
+	        return true;
 	    }
-	    return deleted;
 	}
 	
 	public static boolean login(String login, String password) {
