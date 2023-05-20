@@ -133,14 +133,6 @@ private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceMan
     
     @Test
     public void testDeleteFilm() {
-//    	Pelicula peli = new Pelicula();
-//    	peli.setCodigo("codigo123");
-//    	peli.setMinutos(10);
-//    	peli.setTitulo("Test");
-//    	peli.setValoracion(5);
-//    	peli.setGenero(Genero.ACCION);
-//    	
-//    	pm.makePersistent(peli);
     	// Llamar al método deleteFilm para eliminar la película
         Response response = target.path("codigo123")
                 .request()
@@ -151,39 +143,39 @@ private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceMan
         // Verificar que la película ha sido eliminada
         assertNull(pm.getObjectById(Pelicula.class, "codigo123"));
     }
-//    @Test
-//    public void testObtenerPeliculas() {
-//        // Llamar al método obtenerPeliculas
-//        Response response = target.path("getPeliculas")
-//                .request()
-//                .post(null); // No se envía ningún cuerpo en la solicitud
-//
-//        // Verificar que la respuesta sea exitosa (código 200)
-//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//
-//        // Obtener la lista de películas de la respuesta
-//        List<Pelicula> peliculasObtenidas = response.readEntity(new GenericType<List<Pelicula>>() {});
-//
-//        // Verificar que se hayan obtenido las películas correctas
-//        assertEquals(1, peliculasObtenidas.size());
-//    }
-//    @Test
-//    public void testObtenerUsuarios() {
-//        // Llamar al método obtenerPeliculas
-//        Response response = target.path("getUsuarios")
-//                .request()
-//                .post(null); // No se envía ningún cuerpo en la solicitud
-//
-//        // Verificar que la respuesta sea exitosa (código 200)
-//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//
-//        // Obtener la lista de películas de la respuesta
-//        List<Pelicula> usuariosObtenidos = response.readEntity(new GenericType<List<Pelicula>>() {});
-//
-//        // Verificar que se hayan obtenido las películas correctas
-//        assertEquals(1, usuariosObtenidos.size());
-//    }
-//    @Test
+    @Test
+    public void testObtenerPeliculas() {
+        // Llamar al método obtenerPeliculas
+        Response response = target.path("getPeliculas")
+                .request()
+                .post(null); // No se envía ningún cuerpo en la solicitud
+
+        // Verificar que la respuesta sea exitosa (código 200)
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        // Obtener la lista de películas de la respuesta
+        List<Pelicula> peliculasObtenidas = response.readEntity(new GenericType<List<Pelicula>>() {});
+
+        // Verificar que se hayan obtenido las películas correctas
+        assertEquals(1, peliculasObtenidas.size());
+    }
+    @Test
+    public void testObtenerUsuarios() {
+        // Llamar al método obtenerPeliculas
+        Response response = target.path("getUsuarios")
+                .request()
+                .post(null); // No se envía ningún cuerpo en la solicitud
+
+        // Verificar que la respuesta sea exitosa (código 200)
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        // Obtener la lista de películas de la respuesta
+        List<Pelicula> usuariosObtenidos = response.readEntity(new GenericType<List<Pelicula>>() {});
+
+        // Verificar que se hayan obtenido las películas correctas
+        assertEquals(2, usuariosObtenidos.size());
+    }
+    @Test
     public void testLogin() {
         // Crear un objeto User con datos de usuario válidos
         UserData user = new UserData();
