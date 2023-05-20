@@ -4,10 +4,12 @@ package es.deusto.spq.client;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -44,6 +46,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import es.deusto.spq.pojo.AdminData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.Resource;
 import es.deusto.spq.server.jdo.Genero;
@@ -150,6 +153,50 @@ public class ClienteTest {
         assertEquals("test-login", userDataEntityCaptor.getValue().getEntity().getLogin());
         assertEquals("passwd", userDataEntityCaptor.getValue().getEntity().getPassword());
     }
+    
+    @Test
+    public void testLoginAdmin() {
+        when(webTarget.path("loginAdmin")).thenReturn(webTarget);
+
+        // Crear una respuesta simulada exitosa
+        Response successResponse = Response.ok().build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(successResponse);
+
+        // Llamar al método de prueba
+        assertTrue(cliente.loginAdmin("test-login", "passwd"));
+
+        // Verificar que se haya llamado a post con los datos correctos
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(argThat(entity -> {
+            AdminData adminData = (AdminData) entity.getEntity();
+            return adminData.getLogin().equals("test-login") && adminData.getPassword().equals("passwd");
+        }));
+    }
+    
+    @Test
+    public void testObtenerPelisServerError() {
+        when(webTarget.path("getPeliculas")).thenReturn(webTarget);
+
+        // Crear una respuesta simulada de error de servidor
+        Response errorResponse = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any())).thenReturn(errorResponse);
+
+        // Llamar al método de prueba
+        List<Pelicula> resultado = cliente.obtenerPelis();
+
+        // Verificar que se haya llamado a post sin enviar una entidad
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(null);
+
+        // Verificar el resultado
+        assertNull(resultado);
+    }
+
+
+    
+    
+
+
+
+
     
     
 //    @Test
