@@ -47,6 +47,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import es.deusto.spq.pojo.AdminData;
+import es.deusto.spq.pojo.AlquilerData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.Resource;
 import es.deusto.spq.server.jdo.Genero;
@@ -74,6 +75,12 @@ public class ClienteTest {
     
     @Captor
     private ArgumentCaptor<Entity<UserData>> userDataEntityCaptor;
+    
+    @Captor
+    private ArgumentCaptor<Entity<AdminData>> adminDataEntityCaptor;
+    
+    @Captor
+    private ArgumentCaptor<Entity<AlquilerData>> alquilerDataEntityCaptor;
     
     private Cliente cliente;
 
@@ -189,11 +196,91 @@ public class ClienteTest {
         // Verificar el resultado
         assertNull(resultado);
     }
+    
+    @Test
+    public void testRegisterUserWithError() {
+        when(webTarget.path("register")).thenReturn(webTarget);
 
-
+        Response response = Response.serverError().build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+        assertFalse(cliente.registerUser("test-login", "passwd", "email"));
+        
+        
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(userDataEntityCaptor.capture());
+        assertEquals("test-login", userDataEntityCaptor.getValue().getEntity().getLogin());
+        assertEquals("passwd", userDataEntityCaptor.getValue().getEntity().getPassword());
+        assertEquals("email", userDataEntityCaptor.getValue().getEntity().getCorreo());
+    }
+    
+//    @Test
+//    public void testRegisterAdmin() {
+//      	when(webTarget.path("adminRegister")).thenReturn(webTarget);
+//
+//          Response response = Response.ok().build();
+//          when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+//          assertTrue(cliente.registerAdmin("test-login", "passwd"));
+//
+//          verify(webTarget.request(MediaType.APPLICATION_JSON)).post(adminDataEntityCaptor.capture());
+//          assertEquals("test-login", adminDataEntityCaptor.getValue().getEntity().getLogin());
+//          assertEquals("passwd", adminDataEntityCaptor.getValue().getEntity().getPassword());
+//          
+//    }
+//    
+//    @Test
+//    public void testRegisterAdminUserWithError() {
+//        when(webTarget.path("adminRegister")).thenReturn(webTarget);
+//
+//        Response response = Response.serverError().build();
+//        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+//        assertFalse(cliente.registerAdmin("test-login", "passwd"));
+//        
+//        
+//        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(adminDataEntityCaptor.capture());
+//        assertEquals("test-login", adminDataEntityCaptor.getValue().getEntity().getLogin());
+//        assertEquals("passwd", adminDataEntityCaptor.getValue().getEntity().getPassword());
+//
+//    }
+//
+//
+//    
+//   
+//    
+//    @Test
+//    public void testCrearAlquiler() {
+//    	when(webTarget.path("crearAlquiler")).thenReturn(webTarget);
+//
+//        Response response = Response.ok().build();
+//        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+//        assertTrue(cliente.crearAlquiler("1", "1"));
+//
+//        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(alquilerDataEntityCaptor.capture());
+//        assertEquals("1", alquilerDataEntityCaptor.getValue().getEntity().getCodPelicula());
+//        assertEquals("1", alquilerDataEntityCaptor.getValue().getEntity().getLoginUser());
+//    }
     
     
 
+//  @Test
+//  public void testFiltrarNombre() {
+//  	// Datos de prueba
+//      String nombre = "Toy Story";
+//      Pelicula pelicula = new Pelicula();
+//      pelicula.setTitulo(nombre);
+//      
+//      when(webTarget.path("filtrarNombre")).thenReturn(webTarget);
+//      
+//      Response response = mock(Response.class);
+////      when(response.getStatus()).thenReturn(Response.Status.OK.getStatusCode());
+////      when(response.readEntity(Pelicula.class)).thenReturn(pelicula);
+////      
+//      when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+//      Pelicula respuesta = cliente.filtrarNombre(nombre);
+//      
+//      verify(webTarget.request(MediaType.APPLICATION_JSON)).post(peliculaEntityCaptor.capture());
+//      System.out.println(peliculaEntityCaptor);
+//      //assertEquals(respuesta.getTitulo(), pelicula.getTitulo());
+//      assertEquals(pelicula.getTitulo(), peliculaEntityCaptor.getValue().getEntity().getTitulo());
+//  }
 
 
 

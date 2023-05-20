@@ -64,6 +64,8 @@ public class VentanaPrincipal extends JFrame {
 	private int minutos ;
 	private int valoracion;
 	private Genero genero;
+	
+	Cliente cliente;
 
 
 
