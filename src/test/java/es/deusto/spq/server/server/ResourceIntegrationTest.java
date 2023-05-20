@@ -131,8 +131,8 @@ private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceMan
         assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
     }
     
-//    @Test
-//    public void testDeleteFilm() {
+    @Test
+    public void testDeleteFilm() {
 //    	Pelicula peli = new Pelicula();
 //    	peli.setCodigo("codigo123");
 //    	peli.setMinutos(10);
@@ -141,16 +141,16 @@ private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceMan
 //    	peli.setGenero(Genero.ACCION);
 //    	
 //    	pm.makePersistent(peli);
-//    	// Llamar al método deleteFilm para eliminar la película
-//        Response response = target.path("codigo123")
-//                .request()
-//                .delete();
-//        // Verificar que la respuesta sea exitosa (código 200)
-//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//
-//        // Verificar que la película ha sido eliminada
-//        assertNull(pm.getObjectById(Pelicula.class, "codigo123"));
-//    }
+    	// Llamar al método deleteFilm para eliminar la película
+        Response response = target.path("codigo123")
+                .request()
+                .delete();
+        // Verificar que la respuesta sea exitosa (código 200)
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        // Verificar que la película ha sido eliminada
+        assertNull(pm.getObjectById(Pelicula.class, "codigo123"));
+    }
 //    @Test
 //    public void testObtenerPeliculas() {
 //        // Llamar al método obtenerPeliculas
@@ -184,34 +184,34 @@ private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceMan
 //        assertEquals(1, usuariosObtenidos.size());
 //    }
 //    @Test
-//    public void testLogin() {
-//        // Crear un objeto User con datos de usuario válidos
-//        UserData user = new UserData();
-//        user.setLogin("Iñaki");
-//        user.setCorreo("Iñaki@gmail.com");
-//        user.setPassword("Iñaki");
-//        
-//        // Llamar al método login
-//        Response response = target.path("login")
-//                .request()
-//                .post(Entity.entity(user, MediaType.APPLICATION_JSON));
-//
-//        // Verificar que la respuesta sea exitosa (código 200)
-//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//    }
-//    @Test
-//    public void testLoginAdmin() {
-//        Admin admin = new Admin();
-//        admin.setLogin("admin6");
-//        admin.setPassword("admin6");
-//        
-//        // Llamar al método loginAdmin
-//        Response response = target.path("loginAdmin")
-//                .request()
-//                .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
-//
-//        // Verificar que la respuesta sea exitosa (código 200)
-//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//    }
+    public void testLogin() {
+        // Crear un objeto User con datos de usuario válidos
+        UserData user = new UserData();
+        user.setLogin("Iñaki");
+        user.setCorreo("Iñaki@gmail.com");
+        user.setPassword("Iñaki");
+        
+        // Llamar al método login
+        Response response = target.path("login")
+                .request()
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON));
+
+        // Verificar que la respuesta sea exitosa (código 200)
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+    @Test
+    public void testLoginAdmin() {
+        Admin admin = new Admin();
+        admin.setLogin("admin6");
+        admin.setPassword("admin6");
+        
+        // Llamar al método loginAdmin
+        Response response = target.path("loginAdmin")
+                .request()
+                .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
+
+        // Verificar que la respuesta sea exitosa (código 200)
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
 
 }
