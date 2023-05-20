@@ -48,6 +48,7 @@ import org.mockito.MockitoAnnotations;
 
 import es.deusto.spq.pojo.AdminData;
 import es.deusto.spq.pojo.AlquilerData;
+import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.Resource;
 import es.deusto.spq.server.jdo.Genero;
@@ -81,6 +82,9 @@ public class ClienteTest {
     
     @Captor
     private ArgumentCaptor<Entity<AlquilerData>> alquilerDataEntityCaptor;
+    
+    @Captor
+    private ArgumentCaptor<Entity<PeliculaData>> peliculaDataEntityCaptor;
     
     private Cliente cliente;
 
@@ -253,6 +257,22 @@ public class ClienteTest {
         verify(webTarget.request(MediaType.APPLICATION_JSON)).post(alquilerDataEntityCaptor.capture());
         assertEquals("1", alquilerDataEntityCaptor.getValue().getEntity().getCodPelicula());
         assertEquals("1", alquilerDataEntityCaptor.getValue().getEntity().getLoginUser());
+    }
+    
+    @Test
+    public void testAddPelicula() {
+    	when(webTarget.path("addPelicula")).thenReturn(webTarget);
+
+        Response response = Response.ok().build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+        assertTrue(cliente.addPelicula("1", "Pelicula", 0, 0, Genero.ACCION));
+
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(peliculaDataEntityCaptor.capture());
+        assertEquals("1", peliculaDataEntityCaptor.getValue().getEntity().getCodigo());
+        assertEquals("Pelicula", peliculaDataEntityCaptor.getValue().getEntity().getTitulo());
+        assertEquals(0, peliculaDataEntityCaptor.getValue().getEntity().getMinutos());
+        assertEquals(0, peliculaDataEntityCaptor.getValue().getEntity().getValoracion());
+        assertEquals(Genero.ACCION, peliculaDataEntityCaptor.getValue().getEntity().getGenero());
     }
     
     
