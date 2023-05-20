@@ -212,34 +212,34 @@ public class ClienteTest {
         assertEquals("email", userDataEntityCaptor.getValue().getEntity().getCorreo());
     }
     
-//    @Test
-//    public void testRegisterAdmin() {
-//      	when(webTarget.path("adminRegister")).thenReturn(webTarget);
-//
-//          Response response = Response.ok().build();
-//          when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
-//          assertTrue(cliente.registerAdmin("test-login", "passwd"));
-//
-//          verify(webTarget.request(MediaType.APPLICATION_JSON)).post(adminDataEntityCaptor.capture());
-//          assertEquals("test-login", adminDataEntityCaptor.getValue().getEntity().getLogin());
-//          assertEquals("passwd", adminDataEntityCaptor.getValue().getEntity().getPassword());
-//          
-//    }
-//    
-//    @Test
-//    public void testRegisterAdminUserWithError() {
-//        when(webTarget.path("adminRegister")).thenReturn(webTarget);
-//
-//        Response response = Response.serverError().build();
-//        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
-//        assertFalse(cliente.registerAdmin("test-login", "passwd"));
-//        
-//        
-//        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(adminDataEntityCaptor.capture());
-//        assertEquals("test-login", adminDataEntityCaptor.getValue().getEntity().getLogin());
-//        assertEquals("passwd", adminDataEntityCaptor.getValue().getEntity().getPassword());
-//
-//    }
+    @Test
+    public void testRegisterAdmin() {
+      	when(webTarget.path("adminRegister")).thenReturn(webTarget);
+
+          Response response = Response.ok().build();
+          when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+          assertTrue(cliente.registerAdmin("test-login", "passwd"));
+
+          verify(webTarget.request(MediaType.APPLICATION_JSON)).post(adminDataEntityCaptor.capture());
+          assertEquals("test-login", adminDataEntityCaptor.getValue().getEntity().getLogin());
+          assertEquals("passwd", adminDataEntityCaptor.getValue().getEntity().getPassword());
+          
+    }
+    
+    @Test
+    public void testRegisterAdminUserWithError() {
+        when(webTarget.path("adminRegister")).thenReturn(webTarget);
+
+        Response response = Response.serverError().build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+        assertFalse(cliente.registerAdmin("test-login", "passwd"));
+        
+        
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(adminDataEntityCaptor.capture());
+        assertEquals("test-login", adminDataEntityCaptor.getValue().getEntity().getLogin());
+        assertEquals("passwd", adminDataEntityCaptor.getValue().getEntity().getPassword());
+
+    }
 //
 //
 //    
