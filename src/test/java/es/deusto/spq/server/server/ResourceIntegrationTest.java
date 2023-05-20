@@ -103,34 +103,34 @@ private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceMan
 
         assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
     }
-//    @Test
-//    public void testRegistrarAdmin() {
-//    	Admin admin = new Admin();
-//    	admin.setLogin(UUID.randomUUID().toString());
-//    	admin.setPassword("admin6");
-//    	
-//    	Response response = target.path("adminRegister")
-//                .request(MediaType.APPLICATION_JSON)
-//                .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
-//
-//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
-//    }
-//    
-//    @Test
-//    public void testAddPelicula() {
-//    	Pelicula peli = new Pelicula();
-//    	peli.setCodigo("codigo123");
-//    	peli.setMinutos(10);
-//    	peli.setTitulo("Test");
-//    	peli.setValoracion(8);
-//    	
-//    	Response response = target.path("addPelicula")
-//                .request(MediaType.APPLICATION_JSON)
-//                .post(Entity.entity(peli, MediaType.APPLICATION_JSON));
-//
-//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
-//    }
-//    
+    @Test
+    public void testRegistrarAdmin() {
+    	Admin admin = new Admin();
+    	admin.setLogin(UUID.randomUUID().toString());
+    	admin.setPassword("admin6");
+    	
+    	Response response = target.path("adminRegister")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
+
+        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+    }
+    
+    @Test
+    public void testAddPelicula() {
+    	Pelicula peli = new Pelicula();
+    	peli.setCodigo("codigo123");
+    	peli.setMinutos(10);
+    	peli.setTitulo("Test");
+    	peli.setValoracion(8);
+    	
+    	Response response = target.path("addPelicula")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(peli, MediaType.APPLICATION_JSON));
+
+        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+    }
+    
 //    @Test
 //    public void testDeleteFilm() {
 //    	Pelicula peli = new Pelicula();
