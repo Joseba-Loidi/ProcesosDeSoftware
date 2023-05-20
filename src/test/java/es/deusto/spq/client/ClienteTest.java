@@ -240,23 +240,20 @@ public class ClienteTest {
         assertEquals("passwd", adminDataEntityCaptor.getValue().getEntity().getPassword());
 
     }
-//
-//
-//    
-//   
-//    
-//    @Test
-//    public void testCrearAlquiler() {
-//    	when(webTarget.path("crearAlquiler")).thenReturn(webTarget);
-//
-//        Response response = Response.ok().build();
-//        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
-//        assertTrue(cliente.crearAlquiler("1", "1"));
-//
-//        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(alquilerDataEntityCaptor.capture());
-//        assertEquals("1", alquilerDataEntityCaptor.getValue().getEntity().getCodPelicula());
-//        assertEquals("1", alquilerDataEntityCaptor.getValue().getEntity().getLoginUser());
-//    }
+
+    
+    @Test
+    public void testCrearAlquiler() {
+    	when(webTarget.path("crearAlquiler")).thenReturn(webTarget);
+
+        Response response = Response.ok().build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+        assertTrue(cliente.crearAlquiler("1", "1"));
+
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(alquilerDataEntityCaptor.capture());
+        assertEquals("1", alquilerDataEntityCaptor.getValue().getEntity().getCodPelicula());
+        assertEquals("1", alquilerDataEntityCaptor.getValue().getEntity().getLoginUser());
+    }
     
     
 
