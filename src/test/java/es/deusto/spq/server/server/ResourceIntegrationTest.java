@@ -24,7 +24,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+import categories.IntegrationTest;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.Main;
 import es.deusto.spq.server.jdo.Admin;
@@ -32,6 +34,7 @@ import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Pelicula;
 import es.deusto.spq.server.jdo.User;
 
+@Category(IntegrationTest.class)
 public class ResourceIntegrationTest {
 private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
     
