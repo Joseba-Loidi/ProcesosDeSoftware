@@ -87,19 +87,19 @@ private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceMan
             pm.close();
         }
     }
-//    @Test
-//    public void testRegisterUser() {
-//        User user = new User();
-//        user.setLogin(UUID.randomUUID().toString());
-//        user.setPassword("Sancet");
-//        user.setCorreo("Sancet@gmail.com");
-//
-//        Response response = target.path("register")
-//            .request(MediaType.APPLICATION_JSON)
-//            .post(Entity.entity(user, MediaType.APPLICATION_JSON));
-//
-//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
-//    }
+    @Test
+    public void testRegisterUser() {
+        UserData userdata = new UserData();
+        userdata.setLogin(UUID.randomUUID().toString());
+        userdata.setPassword("Sancet");
+        userdata.setCorreo("Sancet@gmail.com");
+
+        Response response = target.path("register")
+            .request(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(userdata, MediaType.APPLICATION_JSON));
+
+        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+    }
 //    @Test
 //    public void testRegistrarAdmin() {
 //    	Admin admin = new Admin();
