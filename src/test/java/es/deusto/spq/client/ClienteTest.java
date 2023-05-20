@@ -2,6 +2,7 @@ package es.deusto.spq.client;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -98,6 +99,57 @@ public class ClienteTest {
         assertEquals("passwd", userDataEntityCaptor.getValue().getEntity().getPassword());
         assertEquals("email", userDataEntityCaptor.getValue().getEntity().getCorreo());
   }
+    
+    @Test
+    public void testLogin() {
+        when(webTarget.path("login")).thenReturn(webTarget);
+
+        // Crear una respuesta simulada exitosa
+        Response successResponse = Response.ok().build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(successResponse);
+
+        // Llamar al método de prueba
+        assertTrue(cliente.login("test-login", "passwd"));
+
+        // Verificar que se haya llamado a post con los datos correctos
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(userDataEntityCaptor.capture());
+        assertEquals("test-login", userDataEntityCaptor.getValue().getEntity().getLogin());
+        assertEquals("passwd", userDataEntityCaptor.getValue().getEntity().getPassword());
+    }
+    
+    @Test
+    public void testLoginInvalidCredentials() {
+        when(webTarget.path("login")).thenReturn(webTarget);
+
+        // Crear una respuesta simulada de credenciales no válidas
+        Response errorResponse = Response.status(Response.Status.UNAUTHORIZED).build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(errorResponse);
+
+        // Llamar al método de prueba
+        assertFalse(cliente.login("test-login", "passwd"));
+
+        // Verificar que se haya llamado a post con los datos correctos
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(userDataEntityCaptor.capture());
+        assertEquals("test-login", userDataEntityCaptor.getValue().getEntity().getLogin());
+        assertEquals("passwd", userDataEntityCaptor.getValue().getEntity().getPassword());
+    }
+    
+    @Test
+    public void testLoginServerError() {
+        when(webTarget.path("login")).thenReturn(webTarget);
+
+        // Crear una respuesta simulada de error de servidor
+        Response errorResponse = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(errorResponse);
+
+        // Llamar al método de prueba
+        assertFalse(cliente.login("test-login", "passwd"));
+
+        // Verificar que se haya llamado a post con los datos correctos
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(userDataEntityCaptor.capture());
+        assertEquals("test-login", userDataEntityCaptor.getValue().getEntity().getLogin());
+        assertEquals("passwd", userDataEntityCaptor.getValue().getEntity().getPassword());
+    }
     
     
 //    @Test
