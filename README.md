@@ -18,7 +18,7 @@ Para lanzar el cliente debemos de ejecutar este comando en otra ventana:
 
     mvn exec:java -Pclient
 
-JUnit
+Test
 ============================
 
 Para compilar y ejecutar las pruebas unitarias:
@@ -36,3 +36,11 @@ Para realizar verificaciones adicionales en el artefacto construido:
 Para generar documentación e informes sobre el proyecto:
 
     mvn site
+    
+Las pruebas de integración se pueden realizar con el siguiente comando. Se lanzará un servidor HTTP Grizzly incorporado para realizar llamadas reales a la API REST y a la base de datos MySQL.
+    
+    mvn verify -Pintegration-tests
+    
+Las pruebas de rendimiento se pueden realizar con el siguiente comando.
+
+	mvn verify -Pperformance-tests
