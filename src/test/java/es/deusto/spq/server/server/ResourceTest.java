@@ -41,6 +41,7 @@ import org.mockito.MockitoAnnotations;
 
 import es.deusto.spq.client.Cliente;
 import es.deusto.spq.pojo.AdminData;
+import es.deusto.spq.pojo.AlquilerData;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.Resource;
@@ -221,6 +222,32 @@ public class ResourceTest {
         assertEquals(194, peliculaCaptor.getValue().getMinutos());
         assertEquals(8, peliculaCaptor.getValue().getValoracion());
         assertEquals(Genero.DRAMA, peliculaCaptor.getValue().getGenero());
+
+        // check expected response
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    
+    @Test
+    public void testCrearAlquiler() {
+        // prepare mock Persistence Manager to return alquiler
+        AlquilerData alquilerData = new AlquilerData();
+        alquilerData.setCodPelicula("AABB");;
+        alquilerData.setLoginUser("123");
+
+        // simulate that the object is not found in the database
+        when(persistenceManager.getObjectById(any(), anyString())).thenThrow(new JDOObjectNotFoundException());
+
+        // prepare mock transaction behaviour
+        when(transaction.isActive()).thenReturn(true);
+
+        // call tested method
+        Response response = resource.crearAlquiler(alquilerData);
+
+        // check that the new pelicula is stored in the database with the correct values
+        ArgumentCaptor<Alquiler> alquilerCaptor = ArgumentCaptor.forClass(Alquiler.class);
+        verify(persistenceManager).makePersistent(alquilerCaptor.capture());
+        assertEquals("AABB", alquilerCaptor.getValue().getCodPelicula());
+        assertEquals("123", alquilerCaptor.getValue().getLoginUser());
 
         // check expected response
         assertEquals(Response.Status.OK, response.getStatusInfo());
@@ -569,6 +596,34 @@ public class ResourceTest {
         assertEquals(peliculasSimuladas.get(0), peliculasObtenidas.get(0));
         assertEquals(peliculasSimuladas.get(1), peliculasObtenidas.get(1));
     }
+    
+    @Test
+    public void testObtenerUsuarios() {
+        // Crear una lista de películas simulada
+        List<User> usuariosSimulados = new ArrayList<>();
+        usuariosSimulados.add(new User("user", "user", "user"));
+        usuariosSimulados.add(new User("user1", "user1", "user1"));
+
+        // Configurar comportamiento simulado para el PersistenceManager
+        Extent<User> userExtent = mock(Extent.class);
+        when(persistenceManager.getExtent(User.class, true)).thenReturn(userExtent);
+        when(userExtent.iterator()).thenReturn(usuariosSimulados.iterator());
+
+        // Llamar al método obtenerPeliculas
+        List<User> usuariosObtenidos = resource.obtenerUsuarios();
+
+        // Verificar que se haya llamado a los métodos necesarios
+        verify(transaction).begin();
+        verify(persistenceManager).getExtent(User.class, true);
+        verify(userExtent).iterator();
+        verify(transaction).commit();
+
+        // Verificar el resultado de las películas obtenidas
+        assertEquals(usuariosSimulados.size(), usuariosObtenidos.size());
+        assertEquals(usuariosSimulados.get(0), usuariosObtenidos.get(0));
+        assertEquals(usuariosSimulados.get(1), usuariosObtenidos.get(1));
+    }
+    
     
     @Test
     public void testGetLogin() {
