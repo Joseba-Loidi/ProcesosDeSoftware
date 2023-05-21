@@ -3,6 +3,7 @@ package es.deusto.spq.server.server;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -221,5 +222,4 @@ private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceMan
         // Verificar que la respuesta sea exitosa (código 200)
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
-
 }

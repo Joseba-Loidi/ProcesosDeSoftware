@@ -73,6 +73,12 @@ public class UserTest {
         user.setPassword("pass456");
         assertEquals("pass456", user.getPassword());
     }
+    @Test
+    public void testGetSetLogin() {
+        User user = new User();
+        user.setLogin("log456");
+        assertEquals("log456", user.getLogin());
+    }
     
     // Test getter y setter de correo
     @Test

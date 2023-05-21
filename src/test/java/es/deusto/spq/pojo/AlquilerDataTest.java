@@ -1,17 +1,19 @@
-package es.deusto.spq.server.jdo;
+package es.deusto.spq.pojo;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
-public class AlquilerTest {
-	
-	private Alquiler alquiler;
+import es.deusto.spq.server.jdo.Alquiler;
+
+public class AlquilerDataTest {
+private AlquilerData alquiler;
 	
 	@Before
 	public void setUp() {
-		alquiler = new Alquiler("ABC123", "user123");
+		alquiler = new AlquilerData("ABC123", "user123");
 	}
 	
 	@Test
@@ -39,15 +41,15 @@ public class AlquilerTest {
 	
 	@Test
 	public void testToString() {
-	    String expectedString = "Alquiler [codPelicula=ABC123, loginUser=user123]";
+	    String expectedString = "Alquiler [codPelicula=ABC123, LoginUser=user123]";
 	    assertEquals(expectedString, alquiler.toString());
 	}
 	@Test
     public void testConstructorVacio() {
-        Alquiler alqui = new Alquiler();
+        AlquilerData alqui = new AlquilerData();
         assertNotNull(alqui);
         assertEquals(null, alqui.getCodPelicula());
         assertEquals(null, alqui.getLoginUser());
     }
+	
 }
-

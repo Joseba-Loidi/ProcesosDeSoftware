@@ -226,6 +226,11 @@
 			        	</goals>
 			        </execution>
 			    </executions>
+			    <configuration>
+			        <excludes>
+			            <exclude>**/config/*</exclude>
+			        </excludes>
+     			</configuration>
 			</plugin>
 			<plugin>
        			<groupId>org.apache.maven.plugins</groupId>

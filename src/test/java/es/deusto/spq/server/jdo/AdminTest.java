@@ -42,6 +42,19 @@ public class AdminTest {
         // Verify that the password is updated correctly
         assertEquals("newpassword", admin.getPassword());
     }
+    
+    @Test
+    public void testSetLogin() {
+        // Create an instance of Admin
+        Admin admin = new Admin("admin123", "password");
+
+        // Call the tested method
+        admin.setLogin("admin123");
+
+        // Verify that the password is updated correctly
+        assertEquals("admin123", admin.getLogin());
+    }
+
 
     @Test
     public void testToString() {
