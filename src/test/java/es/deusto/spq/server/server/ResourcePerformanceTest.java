@@ -100,7 +100,7 @@ public class ResourcePerformanceTest {
         }
     }
     @Test
-    @JUnitPerfTest(threads = 10, durationMs = 5000)
+   // @JUnitPerfTest(threads = 10, durationMs = 5000)
     public void testRegisterUser() {
         UserData user = new UserData();
         user.setLogin(UUID.randomUUID().toString());

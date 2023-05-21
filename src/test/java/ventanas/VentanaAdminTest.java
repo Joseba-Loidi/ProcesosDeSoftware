@@ -43,7 +43,7 @@ public class VentanaAdminTest {
 	}
 	
 	@Test
-    public void testVentanaAdmin() {
+    public void testVentanaAdmin() { //NO CAMBIA NADA
         // Crear los objetos necesarios para el test
         VentanaAdmin ventanaAdmin = new VentanaAdmin();
         DefaultTableModel modeloTabla = mock(DefaultTableModel.class);
@@ -120,7 +120,6 @@ public class VentanaAdminTest {
 //        JButton usuarios = (JButton) panel_1.getComponent(1);
 //        assertNotNull(peliculas);
 //        assertNotNull(usuarios);
-        
         
 	}
 	
