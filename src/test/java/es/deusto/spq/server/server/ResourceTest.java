@@ -355,20 +355,48 @@ public class ResourceTest {
     
 
     
-//    @Test
-//    public void testDeleteAlquiler_WhenExceptionOccurs_ReturnsErrorResponse() {
-//        // Configura el PersistenceManager para lanzar una excepción al eliminar un alquiler
-//        doThrow(new RuntimeException("Simulated exception")).when(persistenceManager).deletePersistent(any(Alquiler.class));
-//
-//        // Establece el PersistenceManager simulado en el recurso
-//        resource.setPersistenceManager(persistenceManager);
-//
-//        // Llama al método deleteAlquiler con valores válidos de codPelicula y loginUser
-//        Response result = resource.deleteAlquilerResource("testCodPelicula", "testLoginUser");
-//
-//        // Verifica que se devuelva una respuesta HTTP INTERNAL_SERVER_ERROR (código 500)
-//        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), result.getStatus());
-//    }
+    @Test
+    public void testBorrarAlquiler_WhenExceptionOccurs_ReturnsErrorResponse() {
+        // Configura el PersistenceManager para lanzar una excepción al eliminar un alquiler
+        doThrow(new RuntimeException("Simulated exception")).when(persistenceManager).deletePersistent(any(Alquiler.class));
+
+        // Establece el PersistenceManager simulado en el recurso
+        resource.setPersistenceManager(persistenceManager);
+
+        // Llama al método deleteAlquiler con valores válidos de codPelicula y loginUser
+        Response result = resource.borrarAlquiler("testCodPelicula", "testLoginUser");
+
+        // Verifica que se devuelva una respuesta HTTP INTERNAL_SERVER_ERROR (código 500)
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), result.getStatus());
+    }
+    
+    @Test
+    public void testBorrarAlquiler() {
+        // Mocking input parameters
+        String codPelicula = "ABC123";
+        String loginUser = "john.doe";
+
+        // Mocking the PersistenceManager and Query objects
+        Query queryMock = mock(Query.class);
+        when(persistenceManager.newQuery(Alquiler.class, "codPelicula == :codPelicula && loginUser == :loginUser")).thenReturn(queryMock);
+
+        // Mocking the transaction
+        when(persistenceManager.currentTransaction()).thenReturn(transaction);
+
+        // Mocking the query result
+        when(queryMock.deletePersistentAll(codPelicula, loginUser)).thenReturn((long) 1);
+
+        // Calling the method under test
+        Response response = resource.borrarAlquiler(codPelicula, loginUser);
+
+        // Verifying the behavior and assertions
+        verify(transaction).begin();
+        verify(transaction).commit();
+        verify(queryMock).deletePersistentAll(codPelicula, loginUser);
+        verify(transaction, never()).rollback();
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
 
 
     

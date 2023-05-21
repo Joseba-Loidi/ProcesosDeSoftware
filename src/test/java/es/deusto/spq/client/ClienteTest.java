@@ -11,9 +11,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +52,7 @@ import es.deusto.spq.pojo.AdminData;
 import es.deusto.spq.pojo.AlquilerData;
 import es.deusto.spq.pojo.PeliculaData;
 import es.deusto.spq.pojo.UserData;
+import es.deusto.spq.server.Main;
 import es.deusto.spq.server.Resource;
 import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Pelicula;
@@ -95,6 +98,7 @@ public class ClienteTest {
     private PersistenceManager persistenceManager;
     private Query<?> query;
     private Transaction tx;
+    private ArrayList<Pelicula> listaPelicula = new ArrayList<>();
     
 
     @Before
@@ -312,6 +316,91 @@ public class ClienteTest {
         assertEquals(Genero.ACCION, peliculaDataEntityCaptor.getValue().getEntity().getGenero());
     }
     
+    @Test
+    public void testFiltrarGenero() {
+    	when(webTarget.path("/filtrarGenero")).thenReturn(webTarget);
+
+        Response response = mock(Response.class);
+        GenericType<ArrayList<Pelicula>> listType = new GenericType<ArrayList<Pelicula>>() {};
+        
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+        when(response.getStatus()).thenReturn(Response.Status.OK.getStatusCode());
+        
+		when(response.readEntity(listType)).thenReturn((ArrayList<Pelicula>) listaPelicula );
+        Cliente.filtrarGenero(Genero.ACCION);
+        
+    }
+    
+    @Test
+    public void testFiltrarValoracion() {
+    	when(webTarget.path("/filtrarValoracion")).thenReturn(webTarget);
+
+        Response response = mock(Response.class);
+        GenericType<ArrayList<Pelicula>> listType = new GenericType<ArrayList<Pelicula>>() {};
+        
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+        when(response.getStatus()).thenReturn(Response.Status.OK.getStatusCode());
+        
+		when(response.readEntity(listType)).thenReturn((ArrayList<Pelicula>) listaPelicula );
+        Cliente.filtrarValoracion(5);
+        
+    }
+    
+    @Test
+    public void testFiltrarNombre() {
+    	when(webTarget.path("/filtrarNombre")).thenReturn(webTarget);
+
+        Response response = mock(Response.class);
+        GenericType<ArrayList<Pelicula>> listType = new GenericType<ArrayList<Pelicula>>() {};
+        
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+        when(response.getStatus()).thenReturn(Response.Status.OK.getStatusCode());
+        
+		when(response.readEntity(listType)).thenReturn((ArrayList<Pelicula>) listaPelicula );
+        Cliente.filtrarNombre("Smile");
+        
+    }
+    
+    @Test
+    public void testFiltrarUsuario() {
+    	when(webTarget.path("/filtrarUsuario")).thenReturn(webTarget);
+
+        Response response = mock(Response.class);
+        GenericType<ArrayList<Pelicula>> listType = new GenericType<ArrayList<Pelicula>>() {};
+        
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+        when(response.getStatus()).thenReturn(Response.Status.OK.getStatusCode());
+        
+		when(response.readEntity(listType)).thenReturn((ArrayList<Pelicula>) listaPelicula );
+        Cliente.filtrarUsuario("iker");
+        
+    }
+    
+
+
+    @Test
+    public void testBorrarAlquiler() {
+        // Mocking input parameters
+        String codPelicula = "ABC123";
+        String loginUser = "john.doe";
+
+        // Mocking the web target and invocation builder
+        when(webTarget.path(any(String.class))).thenReturn(webTarget);
+        when(webTarget.resolveTemplate(any(String.class), any(String.class))).thenReturn(webTarget);
+        when(webTarget.request()).thenReturn(invocationBuilderMock);
+        when(invocationBuilderMock.delete()).thenReturn(Response.ok().build());
+
+        // Calling the method under test
+        boolean result = cliente.borrarAlquiler(codPelicula, loginUser);
+
+        // Verifying the behavior and assertions
+        verify(webTarget).path("borrarAlquiler/{codPelicula}/{loginUser}");
+        verify(webTarget).resolveTemplate("codPelicula", codPelicula);
+        verify(webTarget).resolveTemplate("loginUser", loginUser);
+        verify(invocationBuilderMock).delete();
+
+        assertEquals(true, result);
+    }
 
 //    @Test
 //    public void testFiltrarNombre() {

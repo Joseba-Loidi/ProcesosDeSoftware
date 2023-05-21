@@ -58,16 +58,6 @@ public class Cliente {
 	
 	private PersistenceManager persistenceManager;
 	
-	public void setResource(Resource resource) {
-        this.resource = resource;
-    }
-	public void setWebTarget(WebTarget web) {
-        webTarget = web;
-    }
-	
-    public void setPersistenceManager(PersistenceManager persistenceManager) {
-        this.persistenceManager = persistenceManager;
-    }
 
 	public Cliente(String hostname, String port) {
 		
@@ -354,17 +344,6 @@ public class Cliente {
 		String port = args[1];
 
 		Cliente exampleClient = new Cliente(hostname, port);
-//		exampleClient.registerUser(USER, PASSWORD, CORREO);
-//		exampleClient.registerAdmin(SUPER_USER, S_PASSWORD);
-//
-//		exampleClient.eliminarPelicula(CODIGO, TITULO, MINUTOS, VALORACION, GENERO);
-//
-//		exampleClient.sayMessage(USER, PASSWORD, "This is a test!...");
-//		exampleClient.sayMessage(USER, PASSWORD, "VIDEOCLUB");
-//
-//		exampleClient.login(USER, PASSWORD);
-
-//		VentanaRegistro v1 = new VentanaRegistro();
 //		v1.setVisible(true);
 		VentanaInicioSesion v1 = new VentanaInicioSesion();
 		v1.setVisible(true);
