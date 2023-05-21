@@ -86,7 +86,16 @@ public class ClienteTest {
     @Captor
     private ArgumentCaptor<Entity<PeliculaData>> peliculaDataEntityCaptor;
     
+    @Captor
+    private ArgumentCaptor<Entity<String>> stringDataEntityCaptor;
+    
     private Cliente cliente;
+    
+    
+    private PersistenceManager persistenceManager;
+    private Query<?> query;
+    private Transaction tx;
+    
 
     @Before
     public void setup() {
@@ -259,6 +268,18 @@ public class ClienteTest {
         assertEquals("1", alquilerDataEntityCaptor.getValue().getEntity().getLoginUser());
     }
     
+    public void testCrearAlquilerError() {
+    	when(webTarget.path("crearAlquiler")).thenReturn(webTarget);
+
+        Response response = Response.serverError().build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+        assertTrue(cliente.crearAlquiler("1", "1"));
+
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(alquilerDataEntityCaptor.capture());
+        assertEquals("1", alquilerDataEntityCaptor.getValue().getEntity().getCodPelicula());
+        assertEquals("1", alquilerDataEntityCaptor.getValue().getEntity().getLoginUser());
+    }
+    
     @Test
     public void testAddPelicula() {
     	when(webTarget.path("addPelicula")).thenReturn(webTarget);
@@ -275,7 +296,90 @@ public class ClienteTest {
         assertEquals(Genero.ACCION, peliculaDataEntityCaptor.getValue().getEntity().getGenero());
     }
     
+    @Test
+    public void testAddPeliculaError() {
+    	when(webTarget.path("addPelicula")).thenReturn(webTarget);
+
+        Response response = Response.ok().build();
+        when(webTarget.request(MediaType.APPLICATION_JSON).post(any(Entity.class))).thenReturn(response);
+        assertTrue(cliente.addPelicula("1", "Pelicula", 0, 0, Genero.ACCION));
+
+        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(peliculaDataEntityCaptor.capture());
+        assertEquals("1", peliculaDataEntityCaptor.getValue().getEntity().getCodigo());
+        assertEquals("Pelicula", peliculaDataEntityCaptor.getValue().getEntity().getTitulo());
+        assertEquals(0, peliculaDataEntityCaptor.getValue().getEntity().getMinutos());
+        assertEquals(0, peliculaDataEntityCaptor.getValue().getEntity().getValoracion());
+        assertEquals(Genero.ACCION, peliculaDataEntityCaptor.getValue().getEntity().getGenero());
+    }
     
+
+//    @Test
+//    public void testFiltrarNombre() {
+//        // Configurar el nombre de la película a filtrar
+//        String nombrePelicula = "pelicula";
+//
+//        // Crear el objeto de la película simulada
+//        Pelicula peliculaSimulada = new Pelicula();
+//        peliculaSimulada.setTitulo(nombrePelicula);
+//        
+//
+//        // Mockear el web target y la solicitud
+//        WebTarget mockWebTarget = Mockito.mock(WebTarget.class);
+//        Invocation.Builder mockInvocationBuilder = Mockito.mock(Invocation.Builder.class);
+//        Response mockResponse = Mockito.mock(Response.class);
+//
+//        Mockito.when(webTarget.path("filtrarNombre")).thenReturn(mockWebTarget);
+//        Mockito.when(mockWebTarget.request(MediaType.APPLICATION_JSON)).thenReturn(mockInvocationBuilder);
+//        Mockito.when(mockInvocationBuilder.post(Entity.entity(nombrePelicula, MediaType.TEXT_PLAIN))).thenReturn(mockResponse);
+//        Mockito.when(mockResponse.getStatus()).thenReturn(Response.Status.OK.getStatusCode());
+//        Mockito.when(mockResponse.readEntity(Pelicula.class)).thenReturn(peliculaSimulada);
+//
+//        // Llamar al método real para probarlo
+//        Pelicula resultado = cliente.filtrarNombre(nombrePelicula);
+//
+//        // Verificar que el resultado no sea nulo
+//        assertNull(resultado);
+//
+//        // Verificar que el resultado tiene el título esperado
+//       // assertEquals(nombrePelicula, resultado.getTitulo());
+//    }
+
+    
+//    @Test
+//    public void testFiltrarNombre() {
+//    	Pelicula pelicula = new Pelicula();
+//    	String nombrePelicula = "pelicula";
+//        pelicula.setTitulo(nombrePelicula);
+//        
+//        Response successResponse = Response.ok(pelicula).build();
+//
+//        when(webTarget.path("filtrarNombre")).thenReturn(webTarget);
+//        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilderMock);
+//        when(invocationBuilderMock.post(Entity.entity(nombrePelicula, MediaType.TEXT_PLAIN))).thenReturn(successResponse);
+//       when(successResponse.getStatusInfo()).thenReturn(Response.Status.OK);
+//       when(successResponse.readEntity(Pelicula.class)).thenReturn(pelicula);
+//        
+//        // Llamar al método de prueba
+//        Pelicula resultado = cliente.filtrarNombre("pelicula");
+//        
+//   
+//        verify(webTarget.request(MediaType.APPLICATION_JSON)).post(stringDataEntityCaptor.capture());
+//        
+//        // Obtener la cadena capturada
+//        String tituloCapturado = stringDataEntityCaptor.getValue().getEntity();
+//
+//        // Verificar que el título capturado es igual al título de la película
+//        assertEquals("pelicula", tituloCapturado);
+//
+////        // Verificar que el resultado no sea nulo
+////        assertNotNull(resultado);
+////
+////        // Verificar que el resultado es la película esperada
+////        assertEquals(pelicula.getTitulo(), resultado.getTitulo());
+//// 
+//    }
+//    
+
 
 //  @Test
 //  public void testFiltrarNombre() {
@@ -443,5 +547,4 @@ public class ClienteTest {
 
     
 }
-
 

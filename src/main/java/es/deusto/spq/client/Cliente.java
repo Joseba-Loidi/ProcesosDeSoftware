@@ -3,6 +3,7 @@ package es.deusto.spq.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jdo.PersistenceManager;
 import javax.ws.rs.client.Client;
 
 import javax.ws.rs.client.ClientBuilder;
@@ -55,11 +56,17 @@ public class Cliente {
 	
 	private Resource resource;
 	
+	private PersistenceManager persistenceManager;
+	
 	public void setResource(Resource resource) {
         this.resource = resource;
     }
 	public void setWebTarget(WebTarget web) {
         webTarget = web;
+    }
+	
+    public void setPersistenceManager(PersistenceManager persistenceManager) {
+        this.persistenceManager = persistenceManager;
     }
 
 	public Cliente(String hostname, String port) {
