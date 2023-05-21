@@ -2,13 +2,13 @@ VIDEOCLUB
 ============================
 
 
-Ejecute el siguiente comando para compilar todo y mejorar las clases de base de datos:
+Ejecute el siguiente comando para compilar:
 
       mvn clean compile
 
-Ejecute el siguiente comando para crear un esquema de base de datos:
-
-      mvn datanucleus:schema-create
+Mejorar las clases de base de datos:
+      
+      mvn datanucleus:enhance
 
 Para lanzar el servidor:
 

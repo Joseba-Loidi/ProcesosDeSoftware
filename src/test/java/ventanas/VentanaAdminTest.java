@@ -1,12 +1,25 @@
 package ventanas;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import org.junit.Test;
@@ -27,6 +40,88 @@ public class VentanaAdminTest {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}		
+	}
+	
+	@Test
+    public void testVentanaAdmin() {
+        // Crear los objetos necesarios para el test
+        VentanaAdmin ventanaAdmin = new VentanaAdmin();
+        DefaultTableModel modeloTabla = mock(DefaultTableModel.class);
+        JTable table = mock(JTable.class);
+        JScrollPane scrollTabla = mock(JScrollPane.class);
+        DefaultTableModel modeloTablaUsuario = mock(DefaultTableModel.class);
+        JTable tableUsuario = mock(JTable.class);
+        JScrollPane scrollTablaUsuario = mock(JScrollPane.class);
+
+        // Verificar la configuración de la ventana
+        assertEquals(JFrame.EXIT_ON_CLOSE, ventanaAdmin.getDefaultCloseOperation());
+        assertEquals(700, ventanaAdmin.getWidth());
+        assertEquals(478, ventanaAdmin.getHeight());
+
+        // Verificar la configuración del contentPane
+        JPanel contentPane = (JPanel) ventanaAdmin.getContentPane();
+        assertNotNull(contentPane);
+        assertEquals(Color.DARK_GRAY, contentPane.getBackground());
+        assertEquals(EmptyBorder.class, contentPane.getBorder().getClass());
+
+        // Verificar la estructura del contentPane
+        assertEquals(BorderLayout.class, contentPane.getLayout().getClass());
+        assertNotNull(contentPane.getComponent(0));
+
+        // Verificar la configuración del panel
+        JPanel panel = (JPanel) contentPane.getComponent(0);
+        assertNotNull(panel);
+        assertEquals(Color.DARK_GRAY, panel.getBackground());
+        assertEquals(BorderLayout.class, panel.getLayout().getClass());
+
+        // Verificar la estructura del panel
+        assertNotNull(panel.getComponent(0));
+        assertNotNull(panel.getComponent(1));
+
+     // Verificar la configuración del panelPelis
+        JPanel panelPelis = (JPanel) panel.getComponent(0);
+        assertNotNull(panelPelis);
+        assertEquals(Color.BLUE, panelPelis.getBackground());
+        assertEquals(FlowLayout.class, panelPelis.getLayout().getClass());
+        
+        
+
+        // Verificar la configuración de la tabla
+        assertNotNull(table);
+        //verify(panelPelis).add(scrollTabla, BorderLayout.CENTER);
+       // verify(scrollTabla).setViewportView(table);
+
+        // Verificar la configuración del panelUsu
+        JPanel panelUsu = (JPanel) panel.getComponent(1);
+        assertNotNull(panelUsu);
+       // assertEquals(Color.MAGENTA, panelUsu.getBackground());
+        assertNotNull(tableUsuario);
+//        verify(panelUsu).add(scrollTablaUsuario, BorderLayout.CENTER);
+//        verify(scrollTablaUsuario).setViewportView(tableUsuario);
+
+        // Verificar la configuración de los botones
+        JPanel panelBtn = (JPanel) panel.getComponent(2);
+        assertNotNull(panelBtn);
+        //assertEquals(Color.DARK_GRAY, panelBtn.getBackground());
+        assertEquals(GridLayout.class, panelBtn.getLayout().getClass());
+        JButton anadir = (JButton) panelBtn.getComponent(0);
+        JButton eliminar = (JButton) panelBtn.getComponent(1);
+        assertNotNull(anadir);
+        assertNotNull(eliminar);
+        assertTrue(anadir.getActionListeners().length > 0);
+        assertTrue(eliminar.getActionListeners().length > 0);
+
+        // Verificar la configuración de los botones Peliculas y Usuarios
+//        JPanel panel_1 = (JPanel) panel.getComponent(3);
+//        assertNotNull(panel_1);
+//        assertEquals(Color.BLACK, panel_1.getBackground());
+//        assertEquals(GridLayout.class, panel_1.getLayout().getClass());
+//        JButton peliculas = (JButton) panel_1.getComponent(0);
+//        JButton usuarios = (JButton) panel_1.getComponent(1);
+//        assertNotNull(peliculas);
+//        assertNotNull(usuarios);
+        
+        
 	}
 	
 //	@Test

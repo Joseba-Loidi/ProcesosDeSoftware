@@ -36,20 +36,20 @@ import javax.swing.UIManager;
 
 public class VentanaInicioSesion extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField usuarioTxt;
-	private JTextField contrLoginTxt;
-	private JPanel panelInicio;
+	 JPanel contentPane;
+	JTextField usuarioTxt;
+	 JTextField contrLoginTxt;
+	 JPanel panelInicio;
 	
 	Cliente cliente;
 	
 	//REGISTRO
-	private JTextField nombreTxt;
-	private JTextField emailTxt;
-    private JTextField contrTxt;
-    private JTextField contr2Txt;
-    private String hostname;
-    private String port;
+	JTextField nombreTxt;
+	 JTextField emailTxt;
+     JTextField contrTxt;
+     JTextField contr2Txt;
+     String hostname;
+     String port;
     
     //CONEXIÓN
   /*  private Client client;

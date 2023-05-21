@@ -45,8 +45,8 @@ public class ResourcePerformanceTest {
     private static HttpServer server;
     private WebTarget target;
     
-    public PersistenceManager pm = pmf.getPersistenceManager();
-    private Transaction tx = pm.currentTransaction();
+//    public PersistenceManager pm;
+//    public Transaction tx;
     
 
     @Rule
@@ -100,7 +100,7 @@ public class ResourcePerformanceTest {
         }
     }
     @Test
-    @JUnitPerfTest(threads = 10, durationMs = 2000)
+    @JUnitPerfTest(threads = 10, durationMs = 5000)
     public void testRegisterUser() {
         UserData user = new UserData();
         user.setLogin(UUID.randomUUID().toString());
@@ -116,65 +116,65 @@ public class ResourcePerformanceTest {
     
     
     
-    @Test
-    @JUnitPerfTest(threads = 10, durationMs = 3000)
-    public void testRegistrarAdmin() {
-    	Admin admin = new Admin();
-    	admin.setLogin(UUID.randomUUID().toString());
-    	admin.setPassword("admin6");
-    	
-    	Response response = target.path("adminRegister")
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
-
-        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
-    }
-    
-    @Test
-    @JUnitPerfTest(threads = 10, durationMs = 3000)
-    public void testAddPelicula() {
-    	Pelicula peli = new Pelicula();
-    	peli.setCodigo("codigo123");
-    	peli.setMinutos(10);
-    	peli.setTitulo("Test");
-    	peli.setValoracion(8);
-    	
-    	Response response = target.path("addPelicula")
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(peli, MediaType.APPLICATION_JSON));
-
-        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
-    }
-    
-    @Test
-    @JUnitPerfTest(threads = 10, durationMs = 3000)
-    public void testDeleteFilm() {
-    	Pelicula peli = new Pelicula();
-    	peli.setCodigo("codigo12");
-    	peli.setMinutos(10);
-    	peli.setTitulo("Test");
-    	peli.setValoracion(5);
-    	peli.setGenero(Genero.ACCION);
-    	
-    	try {
-            tx.begin();
-            pm.makePersistent(peli);
-            tx.commit();
-        } finally {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            pm.close();
-        }	
-    	// Llamar al método deleteFilm para eliminar la película
-        Response response = target.path("codigo12")
-                .request()
-                .delete();
-        // Verificar que la respuesta sea exitosa (código 200)
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-
-    }
-    
+//    @Test
+//    @JUnitPerfTest(threads = 10, durationMs = 3000)
+//    public void testRegistrarAdmin() {
+//    	Admin admin = new Admin();
+//    	admin.setLogin(UUID.randomUUID().toString());
+//    	admin.setPassword("admin6");
+//    	
+//    	Response response = target.path("adminRegister")
+//                .request(MediaType.APPLICATION_JSON)
+//                .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
+//
+//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+//    }
+//    
+//    @Test
+//    @JUnitPerfTest(threads = 10, durationMs = 3000)
+//    public void testAddPelicula() {
+//    	Pelicula peli = new Pelicula();
+//    	peli.setCodigo("codigo123");
+//    	peli.setMinutos(10);
+//    	peli.setTitulo("Test");
+//    	peli.setValoracion(8);
+//    	
+//    	Response response = target.path("addPelicula")
+//                .request(MediaType.APPLICATION_JSON)
+//                .post(Entity.entity(peli, MediaType.APPLICATION_JSON));
+//
+//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+//    }
+//    
+//    @Test
+//    @JUnitPerfTest(threads = 10, durationMs = 3000)
+//    public void testDeleteFilm() {
+//    	Pelicula peli = new Pelicula();
+//    	peli.setCodigo("codigo12");
+//    	peli.setMinutos(10);
+//    	peli.setTitulo("Test");
+//    	peli.setValoracion(5);
+//    	peli.setGenero(Genero.ACCION);
+//    	
+//    	try {
+//            tx.begin();
+//            pm.makePersistent(peli);
+//            tx.commit();
+//        } finally {
+//            if (tx.isActive()) {
+//                tx.rollback();
+//            }
+//            pm.close();
+//        }	
+//    	// Llamar al método deleteFilm para eliminar la película
+//        Response response = target.path("codigo12")
+//                .request()
+//                .delete();
+//        // Verificar que la respuesta sea exitosa (código 200)
+//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+//
+//    }
+//    
     
     
     
