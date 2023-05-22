@@ -20,6 +20,7 @@ import static org.mockito.Mockito.when;
 import javax.ws.rs.core.Response.Status;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jdo.Extent;
@@ -222,6 +223,35 @@ public class ResourceTest {
         assertEquals(194, peliculaCaptor.getValue().getMinutos());
         assertEquals(8, peliculaCaptor.getValue().getValoracion());
         assertEquals(Genero.DRAMA, peliculaCaptor.getValue().getGenero());
+
+        // check expected response
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testAddPelicula_PeliculaExistente() {
+        // prepare mock Persistence Manager to return existing Pelicula
+        Pelicula peliculaExistente = new Pelicula("123456", "Anterior", 120, 7, Genero.ACCION);
+        when(persistenceManager.getObjectById(Pelicula.class, "123456")).thenReturn(peliculaExistente);
+
+        // prepare mock transaction behaviour
+        when(transaction.isActive()).thenReturn(true);
+
+        // prepare input PeliculaData
+        PeliculaData peliculaData = new PeliculaData();
+        peliculaData.setCodigo("123456");
+        peliculaData.setTitulo("Titanic");
+        peliculaData.setMinutos(194);
+        peliculaData.setValoracion(8);
+        peliculaData.setGenero(Genero.DRAMA);
+
+        // call tested method
+        Response response = resource.addPelicula(peliculaData);
+
+        // verify that the existing pelicula is updated with the new values
+        assertEquals("Titanic", peliculaExistente.getTitulo());
+        assertEquals(194, peliculaExistente.getMinutos());
+        assertEquals(8, peliculaExistente.getValoracion());
+        assertEquals(Genero.DRAMA, peliculaExistente.getGenero());
 
         // check expected response
         assertEquals(Response.Status.OK, response.getStatusInfo());
@@ -676,6 +706,31 @@ public class ResourceTest {
         // check expected result
         assertEquals(0, result.size());
 
+    }
+    @Test
+    public void testFiltrarUsuario_NoAlquileres() {
+        // prepare mock Persistence Manager with no alquileres for the given user
+        Extent<Alquiler> alquilerExtent = mock(Extent.class);
+        when(persistenceManager.getExtent(Alquiler.class, true)).thenReturn(alquilerExtent);
+        when(alquilerExtent.iterator()).thenReturn(Collections.emptyIterator());
+
+        // call tested method
+        List<Pelicula> result = resource.filtrarUsuario("1");
+
+        // check expected result
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    public void testFiltrarUsuario_ExceptionDuringTransaction() {
+        // Simular una excepción al iniciar la transacción
+        doThrow(new RuntimeException("Error starting transaction")).when(transaction).begin();
+
+        // Llamar al método bajo prueba
+        List<Pelicula> resultado = resource.filtrarUsuario("1");
+
+        // Verificar el resultado esperado (lista vacía)
+        assertEquals(0, resultado.size());
     }
     
 //    @Test

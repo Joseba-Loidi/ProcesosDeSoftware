@@ -230,6 +230,8 @@
 			    <configuration>
 			        <excludes>
 			            <exclude>**/config/*</exclude>
+			            <exclude>**/ventanas/*</exclude>
+			            <exclude>**/Main/*</exclude>
 			        </excludes>
      			</configuration>
 			</plugin>
