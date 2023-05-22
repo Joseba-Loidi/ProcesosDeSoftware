@@ -32,6 +32,15 @@ public class VentanaPerfilTest{
 		}		
 	}
 	
+	@Test
+	public void testVentanaPerfilConstructor() {
+	    User user = new User("username", "psw", "crr");
+	    VentanaPerfil ventanaPerfil = new VentanaPerfil(user);
+	    assertNotNull(ventanaPerfil);
+	   
+	}
+
+	
 //	@Test
 //    public void testVentanaPerfil() {
 //        User user = new User("john_doe", "John Doe", "hola");
