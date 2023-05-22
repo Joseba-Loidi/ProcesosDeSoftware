@@ -231,7 +231,7 @@
 			        <excludes>
 			            <exclude>**/config/*</exclude>
 			            <exclude>**/ventanas/*</exclude>
-			            <exclude>**/Main/*</exclude>
+			            <exclude>es/deusto/spq/client/Cliente.main</exclude>
 			        </excludes>
      			</configuration>
 			</plugin>

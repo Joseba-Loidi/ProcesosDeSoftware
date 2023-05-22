@@ -13,14 +13,6 @@ Mejorar las clases de base de datos:
 Ejecute el siguiente comando para crear un esquema de base de datos:
       
       mvn datanucleus:schema-create
-      
-Ejecute el siguiente comando para crear las tablas de la base de datos:
-      
-      mysql –uroot -p < sql/db.sql
-      
-Ejecute el siguiente comando para insertar datos de prueba en la base de datos:
-      
-      mysql –uroot -p < sql/insertDatos.sql
 
 Para lanzar el servidor:
 
@@ -56,3 +48,8 @@ Las pruebas de integración se pueden realizar con el siguiente comando. Se lanz
 Las pruebas de rendimiento se pueden realizar con el siguiente comando.
 
 	mvn verify -Pperformance-tests
+
+Generar documentación de Javadoc
+
+	mvn javadoc:javadoc
+
