@@ -26,7 +26,8 @@ public class VentanaPerfilTest{
 	@Test
 	public void test() {
 		try {
-			VentanaPerfilTest VPerfil = new VentanaPerfilTest();
+			VentanaPerfil vp = new VentanaPerfil(new User("test", "test","test@deusto.es"));
+			 assertNotNull(vp);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}		
