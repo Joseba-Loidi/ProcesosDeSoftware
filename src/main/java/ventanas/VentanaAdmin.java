@@ -53,21 +53,7 @@ public class VentanaAdmin extends JFrame {
 	private JScrollPane scrollTablaUsuario;
 	private Object[] columnaUsuario = new Object[7];
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaAdmin frame = new VentanaAdmin();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.

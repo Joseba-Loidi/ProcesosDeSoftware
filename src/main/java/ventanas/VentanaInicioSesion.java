@@ -59,28 +59,6 @@ public class VentanaInicioSesion extends JFrame {
 
 	private static Connection con =null; */
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaInicioSesion frame = new VentanaInicioSesion();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		
-		/*String hostname = "127.0.0.1";
-		String port = "8080";	
-		
-		new VentanaInicioSesion();*/
-					
-	}
 
 	/**
 	 * Create the frame.

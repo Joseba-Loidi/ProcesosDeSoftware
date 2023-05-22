@@ -38,27 +38,18 @@ public class Cliente {
 
 	protected static final Logger logger = LogManager.getLogger();
 
-	private static final String USER = "dipina";
-	private static final String PASSWORD = "dipina";
-	private static final String CORREO = "dipina@gmail.com";
-
-	private static final String SUPER_USER = "admin";
-	private static final String S_PASSWORD = "admin";
-
-	private static final String CODIGO = "193ja";
-	private static final String TITULO = "Iker y los 7 enenitos";
-	private static final int MINUTOS = 120;
-	private static final int VALORACION = 8;
-	private static final Genero GENERO = Genero.ACCION;
 
 	private Client client;
 	private static WebTarget webTarget;
 	
-	private Resource resource;
 	
-	private PersistenceManager persistenceManager;
+	/**
+	 * Crea una instancia de Cliente que se conecta a un servidor REST en el host y puerto especificados.
+	 *
+	 * @param hostname El nombre del host del servidor REST.
+	 * @param port     El número de puerto del servidor REST.
+	 */
 	
-
 	public Cliente(String hostname, String port) {
 		
 		client = ClientBuilder.newClient();
@@ -91,6 +82,14 @@ public class Cliente {
 			return true;
 		}
 	}
+	
+	/**
+	 * Registra un nuevo Administrador recibiendo su login y contraseña.
+	 *
+	 * @param login    Nombre de usuario.
+	 * @param password Contraseña.
+	 * @return {@code true} Si se registra correctamente, {@code false} si hay algún problema.
+	 */
 
 	public static boolean registerAdmin(String login, String password) {
 		WebTarget registerAdminWebTarget = webTarget.path("adminRegister");
@@ -108,6 +107,12 @@ public class Cliente {
 			return true;
 		}
 	}
+	/**
+	 * Recibe el login de un usuario y lo borra de la BBDD
+	 *
+	 * @param login    Nombre de usuario.
+	 * @return {@code true} Si se elimina correctamente, {@code false} si hay algún problema.
+	 */
 	
 	public static boolean deleteUser(String login) {
 		boolean b = false;
@@ -124,6 +129,12 @@ public class Cliente {
 		}
 		return b;
 	}
+	/**
+	 * Recibe el codigo de una película y el login de un usuario. Busca el alquiler correspondiente y lo borra de la BBDD
+	 * @param codPelicula código de la película.
+	 * @param loginUser   Nombre de usuario.
+	 * @return {@code true} Si se elimina correctamente, {@code false} si hay algún problema.
+	 */
 	
 	public static boolean borrarAlquiler(String codPelicula, String loginUser) {
 	    WebTarget borrarAlquilerWebTarget = webTarget.path("borrarAlquiler/{codPelicula}/{loginUser}")
@@ -140,6 +151,14 @@ public class Cliente {
 	        return true;
 	    }
 	}
+	
+	/**
+	 * recibe login y contraseña de un usuario, y si está en la BBDD accede a la ventana principal.
+	 *
+	 * @param login    Nombre de usuario.
+	 * @param password Contraseña.
+	 * @return {@code true} Si entra correctamente, {@code false} si hay algún problema.
+	 */
 	
 	public static boolean login(String login, String password) {
 		boolean inicio = false;
@@ -166,6 +185,13 @@ public class Cliente {
 			
 	}
 	
+	/**
+	 * recibe un nombre y busca al usuario en la BBDD.
+	 *
+	 * @param nombre    Nombre de usuario.
+	 * @return {@code true} Si entra correctamente, {@code false} si hay algún problema.
+	 */
+	
 	public static User getLogin(String nombre) {
 		WebTarget getLogin = webTarget.path("getLogin");
 		Invocation.Builder invocationBuilder = getLogin.request(MediaType.APPLICATION_JSON);
@@ -178,7 +204,15 @@ public class Cliente {
             User user = response.readEntity(listType);
 			return user;
 		}
-	}		
+	}
+	
+	/**
+	 * recibe login y contraseña de un administrador, y si está en la BBDD accede a la ventana admin.
+	 *
+	 * @param login    Nombre de usuario.
+	 * @param password Contraseña.
+	 * @return {@code true} Si entra correctamente, {@code false} si hay algún problema.
+	 */
 	
 	
 	public static boolean loginAdmin(String login, String password) {
@@ -204,6 +238,17 @@ public class Cliente {
 		return inicio;
 			
 	}
+	
+	/**
+	 * Agrega una película con los datos proporcionados.
+	 *
+	 * @param codigo     El código de la película.
+	 * @param titulo     El título de la película.
+	 * @param minutos    La duración en minutos de la película.
+	 * @param valoracion La valoración de la película.
+	 * @param genero     El género de la película.
+	 * @return {@code true} si la película se agregó correctamente, {@code false} en caso contrario.
+	 */
 
 	public static boolean addPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
 		boolean inicio = false;
@@ -228,6 +273,17 @@ public class Cliente {
 		return inicio;
 	}
 	
+	/**
+	 * Elimina una película con los datos proporcionados.
+	 *
+	 * @param codigo     El código de la película.
+	 * @param titulo     El título de la película.
+	 * @param minutos    La duración en minutos de la película.
+	 * @param valoracion La valoración de la película.
+	 * @param genero     El género de la película.
+	 * @return {@code true} si la película se agregó correctamente, {@code false} en caso contrario.
+	 */
+	
 	public static boolean eliminarPelicula(String codigo, String titulo, int minutos, int valoracion, Genero genero) {
 		boolean inicio = false;
 		
@@ -250,6 +306,11 @@ public class Cliente {
 		return inicio;
 	}
 
+	/**
+	 * Obtiene una lista de películas.
+	 *
+	 * @return Una lista de películas o {@code null} si ocurrió un error al conectar con el servidor.
+	 */
 
 	public static List<Pelicula> obtenerPelis() {
 		WebTarget getPeliculaWebTarget = webTarget.path("getPeliculas");
@@ -265,6 +326,12 @@ public class Cliente {
 		}
 	}
 	
+	/**
+	 * Obtiene una lista de usuarios.
+	 *
+	 * @return Una lista de usuarios o {@code null} si ocurrió un error al conectar con el servidor.
+	 */
+	
 	public static List<User> obtenerUsuarios() {
 		WebTarget getUsuariosWebTarget = webTarget.path("getUsuarios");
 		Invocation.Builder invocationBuilder = getUsuariosWebTarget.request(MediaType.APPLICATION_JSON);
@@ -279,6 +346,12 @@ public class Cliente {
 		}
 	}
 	
+	/**
+	 * Filtra una película por nombre.
+	 *
+	 * @param nombre El nombre de la película a filtrar.
+	 * @return La película filtrada o {@code null} si ocurrió un error al conectar con el servidor.
+	 */
 	
 	public static Pelicula filtrarNombre(String nombre) {
 		 webTarget = webTarget.path("filtrarNombre");
@@ -294,7 +367,12 @@ public class Cliente {
 		}
 	}
 	
-	
+	/**
+	 * Filtra películas por género.
+	 *
+	 * @param genero El género utilizado para filtrar las películas.
+	 * @return Una lista de películas filtradas por género o {@code null} si ocurrió un error al conectar con el servidor.
+	 */
 	
 	public static List<Pelicula> filtrarGenero(Genero genero) {
 		WebTarget getFiltrarNombre = webTarget.path("filtrarGenero");
@@ -310,6 +388,13 @@ public class Cliente {
 		}
 	}
 	
+	/**
+	 * Filtra películas por valoración.
+	 *
+	 * @param valoracion La valoración para filtrar las películas.
+	 * @return Una lista de películas filtradas por valoración o {@code null} si ocurrió un error al conectar con el servidor.
+	 */
+	
 	public static List<Pelicula> filtrarValoracion(int valoracion) {
 		WebTarget getFiltrarValoracion = webTarget.path("filtrarValoracion");
 		Invocation.Builder invocationBuilder = getFiltrarValoracion.request(MediaType.APPLICATION_JSON);
@@ -323,6 +408,13 @@ public class Cliente {
 			return pelis;
 		}
 	}
+	
+	/**
+	 * Busca las peliculas alquiladas de un usuario.
+	 *
+	 * @param user Usuario del que buscar los alquileres.
+	 * @return Una lista de películas alquiladas por el usuario o {@code null} si ocurrió un error al conectar con el servidor.
+	 */
 	
 	public static List<Pelicula> filtrarUsuario(String user) {
 		
@@ -359,6 +451,15 @@ public class Cliente {
 //		VentanaAdmin v2 = new VentanaAdmin();
 	//	v2.setVisible(true);
 	}
+	
+	/**
+	 * Crea un nuevo alquiler para una película y un usuario específicos.
+	 *
+	 * @param codPelicula El código de la película a alquilar.
+	 * @param loginUser   El nombre de usuario del usuario que realiza el alquiler.
+	 * @return {@code true} si el alquiler se crea correctamente, {@code false} en caso contrario.
+	 */
+	
 	
 	 public static boolean crearAlquiler(String codPelicula, String loginUser) {
 		   WebTarget crearAlquilerWebTarget = webTarget.path("crearAlquiler");

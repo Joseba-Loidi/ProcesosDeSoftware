@@ -9,14 +9,26 @@ Ejecute el siguiente comando para compilar:
 Mejorar las clases de base de datos:
       
       mvn datanucleus:enhance
+      
+Ejecute el siguiente comando para crear un esquema de base de datos:
+      
+      mvn datanucleus:schema-create
+      
+Ejecute el siguiente comando para crear las tablas de la base de datos:
+      
+      mysql –uroot -p < sql/db.sql
+      
+Ejecute el siguiente comando para insertar datos de prueba en la base de datos:
+      
+      mysql –uroot -p < sql/insertDatos.sql
 
 Para lanzar el servidor:
 
-    mvn jetty:run
+      mvn jetty:run
 
 Para lanzar el cliente debemos de ejecutar este comando en otra ventana:
 
-    mvn exec:java -Pclient
+      mvn exec:java -Pclient
 
 Test
 ============================

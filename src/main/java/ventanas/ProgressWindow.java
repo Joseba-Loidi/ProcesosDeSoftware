@@ -1,5 +1,6 @@
 package ventanas;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,10 @@ import javax.imageio.ImageIO;
 import javax.swing.WindowConstants;
 import javax.swing.ImageIcon;
 
+/**
+ * Esta ventana sirve para simular que se está viendo una película
+ */
+
 public class ProgressWindow extends JFrame {
 
     private JPanel mainPanel;
@@ -22,6 +27,10 @@ public class ProgressWindow extends JFrame {
     private ImageIcon[] images;
     private Random random;
 
+    /**
+     * Crea una nueva instancia de ProgressWindow.
+     */
+    
     public ProgressWindow() {
         super("Ventana de Progreso");
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -66,6 +75,15 @@ public class ProgressWindow extends JFrame {
 
         timer.start();
     }
+    
+    /**
+     * Método privado para redimensionar una imagen a un tamaño específico.
+     *
+     * @param imagePath La ruta de la imagen.
+     * @param width     El ancho deseado de la imagen redimensionada.
+     * @param height    La altura deseada de la imagen redimensionada.
+     * @return Una instancia de ImageIcon que representa la imagen redimensionada.
+     */
 
     private ImageIcon resizeImageIcon(String imagePath, int width, int height) {
         try {
@@ -78,14 +96,6 @@ public class ProgressWindow extends JFrame {
         return null;
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ProgressWindow progressWindow = new ProgressWindow();
-                progressWindow.setVisible(true);
-            }
-        });
-    }
 }
 
 

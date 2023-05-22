@@ -69,22 +69,7 @@ public class VentanaPrincipal extends JFrame {
 
 
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					User u1 = new User();
-					VentanaPrincipal frame = new VentanaPrincipal(u1);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
