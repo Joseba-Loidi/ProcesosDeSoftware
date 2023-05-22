@@ -64,6 +64,15 @@ public class Cliente {
 		client = ClientBuilder.newClient();
 		webTarget = client.target(String.format("http://%s:%s/rest/resource", hostname, port));
 	}
+	
+	/**
+	 * Registra un nuevo usuario recibiendo su login, correo y contraseña.
+	 *
+	 * @param login    Nombre de usuario.
+	 * @param password Contraseña.
+	 * @param correo   Correo.
+	 * @return {@code true} Si se registra correctamente, {@code false} si hay algún problema.
+	 */
 
 	public static boolean registerUser(String login, String password, String correo) {
 		WebTarget registerUserWebTarget = webTarget.path("register");

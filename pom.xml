@@ -205,6 +205,7 @@
 				<configuration>
 					<show>private</show>
 					<nohelp>true</nohelp>
+					<reportOutputDirectory>docs</reportOutputDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -242,6 +243,7 @@
 					<excludedGroups>categories.IntegrationTest, categories.PerformanceTest</excludedGroups>
         		</configuration>
       		</plugin>
+      		
 		</plugins>
 	</build>
 
