@@ -376,6 +376,36 @@ public class ClienteTest {
         
     }
     
+    @Test
+    public void testGetLogin() {
+        // Mocking input parameter
+        String nombre = "iker";
+
+        // Mocking the web target and invocation builder
+        when(webTarget.path(any(String.class))).thenReturn(webTarget);
+        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilderMock);
+        when(invocationBuilderMock.post(Entity.entity(nombre, MediaType.TEXT_PLAIN))).thenReturn(responseMock);
+        when(responseMock.getStatus()).thenReturn(Response.Status.OK.getStatusCode());
+
+        // Mocking the response entity
+        User userMock = new User();
+        // Set up the userMock with desired values
+
+        when(responseMock.readEntity(new GenericType<User>(){})).thenReturn(userMock);
+
+        // Calling the method under test
+        User result = Cliente.getLogin(nombre);
+
+        // Verifying the behavior and assertions
+        verify(webTarget).path("getLogin");
+        verify(webTarget).request(MediaType.APPLICATION_JSON);
+        verify(invocationBuilderMock).post(Entity.entity(nombre, MediaType.TEXT_PLAIN));
+        verify(responseMock).getStatus();
+        verify(responseMock).readEntity(new GenericType<User>(){});
+
+        assertEquals(userMock, result);
+    }
+    
 
 
     @Test
@@ -401,6 +431,61 @@ public class ClienteTest {
 
         assertEquals(true, result);
     }
+    
+    @Test
+    public void testDeleteUser() {
+        // Mocking input parameters
+        String login = "john.doe";
+
+        // Mocking the web target and invocation builder
+        when(webTarget.path(any(String.class))).thenReturn(webTarget);
+        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilderMock);
+        when(invocationBuilderMock.post(Entity.entity(login, MediaType.APPLICATION_JSON))).thenReturn(Response.ok().build());
+
+        // Calling the method under test
+        boolean result = cliente.deleteUser(login);
+
+        // Verifying the behavior and assertions
+        verify(webTarget).path("deleteUser");
+        verify(webTarget).request(MediaType.APPLICATION_JSON);
+        verify(invocationBuilderMock).post(Entity.entity(login, MediaType.APPLICATION_JSON));
+
+        assertEquals(true, result);
+    }
+    
+    @Test
+    public void testEliminarPelicula() {
+        // Mocking input parameters
+        String codigo = "ABC123";
+        String titulo = "Mi película";
+        int minutos = 120;
+        int valoracion = 4;
+        Genero genero = Genero.ACCION;
+
+        // Mocking the web target and response
+        WebTarget deletePeliculaWebTarget = mock(WebTarget.class);
+        Invocation.Builder invocationBuilder = mock(Invocation.Builder.class);
+        Response response = Response.ok().build();
+
+        // Mocking the method calls
+        when(webTarget.path(any(String.class))).thenReturn(deletePeliculaWebTarget);
+        when(deletePeliculaWebTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilder);
+        when(invocationBuilder.delete()).thenReturn(response);
+
+        // Calling the method under test
+        boolean result = Cliente.eliminarPelicula(codigo, titulo, minutos, valoracion, genero);
+
+        // Verifying the behavior and assertions
+        verify(webTarget).path(codigo);
+        verify(deletePeliculaWebTarget).request(MediaType.APPLICATION_JSON);
+        verify(invocationBuilder).delete();
+
+        assertEquals(true, result);
+    }
+
+
+    
+    
 
 //    @Test
 //    public void testFiltrarNombre() {
