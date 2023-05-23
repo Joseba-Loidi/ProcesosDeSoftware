@@ -52,7 +52,7 @@ public class ProgressWindow extends JFrame {
 
         images = new ImageIcon[12]; // Cambiar numero según numero de fotos!!!!
         for (int i = 0; i < images.length; i++) {
-            String imagePath = "img/imagen" + (i + 1) + ".jpg";
+            String imagePath = "src/main/resources/imagen" + (i + 1) + ".jpg";
             images[i] = resizeImageIcon(imagePath, getWidth(), getHeight());
         }
 

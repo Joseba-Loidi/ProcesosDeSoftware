@@ -88,7 +88,8 @@ public class VentanaInicioSesion extends JFrame {
 		panel.add(panel_1);
 		
 		//poner la imagen
-		ImageIcon imageIcon = new ImageIcon("img//ejemplo1.jpg");
+		ImageIcon imageIcon = new ImageIcon("src/main/resources/ejemplo1.jpg");
+		//ImageIcon imageIcon = new ImageIcon("img//ejemplo1.jpg");
 		
 		JLabel labelImagen = new JLabel(imageIcon);
 		//labelImagen.setPreferredSize(new Dimension(panel_1.getWidth(), panel_1.getHeight()));
