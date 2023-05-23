@@ -6,13 +6,21 @@ Ejecute el siguiente comando para compilar:
 
       mvn clean compile
 
+Para crear la base de datos y el usuario con ciertos permisos en el servidor local (Password=root):
+      
+      mysql –uroot -p < sql/db.sql
+
 Mejorar las clases de base de datos:
       
       mvn datanucleus:enhance
-      
+ 
 Ejecute el siguiente comando para crear un esquema de base de datos:
       
       mvn datanucleus:schema-create
+
+Para insertar datos de ejemplo, usar el siguiente comando:
+
+	  mysql –uroot -p < sql/insertDatos.sql
 
 Para lanzar el servidor:
 
@@ -32,14 +40,6 @@ Para compilar y ejecutar las pruebas unitarias:
 Limpiar el directorio, compilar y ejecutar todos los teses unitarios, además de actualizar JaCoCo:
     
     mvn clean test
-
-Para realizar verificaciones adicionales en el artefacto construido:
-
-    mvn verify
-
-Para generar documentación e informes sobre el proyecto:
-
-    mvn site
     
 Las pruebas de integración se pueden realizar con el siguiente comando. Se lanzará un servidor HTTP Grizzly incorporado para realizar llamadas reales a la API REST y a la base de datos MySQL.
     

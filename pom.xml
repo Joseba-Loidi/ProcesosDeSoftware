@@ -8,7 +8,7 @@
 	<artifactId>VIDEOCLUB</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>Jersey + Datanucleus + MySQL</name>
+	<name>VIDEOCLUB</name>
 
 	<properties>
 		<maven.compiler.release>8</maven.compiler.release>
@@ -100,13 +100,6 @@
 			<artifactId>mockito-inline</artifactId>
 			<version>4.6.0</version>
 			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.jacoco</groupId>
-		    <artifactId>org.jacoco.core</artifactId>
-		    <version>0.8.7</version>
-		    <scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -241,7 +234,9 @@
         		<version>3.0.0</version>
         		<configuration>
           			<!-- Allow JUnitPerf to access the test classes in JDK 17 -->
+          			<argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
 					<excludedGroups>categories.IntegrationTest, categories.PerformanceTest</excludedGroups>
+					<childDelegation>false</childDelegation>
         		</configuration>
       		</plugin>
       		
@@ -286,8 +281,7 @@
 							<includes>
 								<include>**/*</include>
 							</includes>
-							<groups>categories.IntegrationTest, categories.PerformanceTest</groups>
-							<argLine>@{argLine} --add-opens java.base/java.lang=ALL-UNNAMED</argLine>
+							<groups>categories.IntegrationTest</groups>
 						</configuration>
 						<executions>
 							<execution>
@@ -327,7 +321,10 @@
 				</plugins>
 			</build>
 		</profile>
-
+		
+		
+		
+		
         <profile>
             <id>grizzly-server</id>
             <build>

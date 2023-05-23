@@ -45,8 +45,8 @@ public class ResourcePerformanceTest {
     private static HttpServer server;
     private WebTarget target;
     
-//    public PersistenceManager pm;
-//    public Transaction tx;
+    public PersistenceManager pm;
+    public Transaction tx;
     
 
     @Rule
@@ -100,54 +100,54 @@ public class ResourcePerformanceTest {
         }
     }
     @Test
-   @JUnitPerfTest(threads = 1, durationMs = 5000)
+    @JUnitPerfTest(threads = 1, durationMs = 5000)
     public void testRegisterUser() {
-//        UserData user = new UserData();
-//        user.setLogin(UUID.randomUUID().toString());
-//        user.setCorreo("juan@gmail.com");
-//        user.setPassword("1234");
-//
-//        Response response = target.path("register")
-//            .request(MediaType.APPLICATION_JSON)
-//            .post(Entity.entity(user, MediaType.APPLICATION_JSON));
-//
-//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+        UserData user = new UserData();
+        user.setLogin(UUID.randomUUID().toString());
+        user.setCorreo("juan@gmail.com");
+        user.setPassword("1234");
+
+        Response response = target.path("register")
+            .request(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(user, MediaType.APPLICATION_JSON));
+
+        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
     }
     
     
     
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 3000)
+    public void testRegistrarAdmin() {
+    	Admin admin = new Admin();
+    	admin.setLogin(UUID.randomUUID().toString());
+    	admin.setPassword("admin6");
+    	
+    	Response response = target.path("adminRegister")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
+
+        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+    }
+    
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 3000)
+    public void testAddPelicula() {
+    	Pelicula peli = new Pelicula();
+    	peli.setCodigo("codigo123");
+    	peli.setMinutos(10);
+    	peli.setTitulo("Test");
+    	peli.setValoracion(8);
+    	
+    	Response response = target.path("addPelicula")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(peli, MediaType.APPLICATION_JSON));
+
+        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+    }
+    
 //    @Test
-//    @JUnitPerfTest(threads = 10, durationMs = 3000)
-//    public void testRegistrarAdmin() {
-//    	Admin admin = new Admin();
-//    	admin.setLogin(UUID.randomUUID().toString());
-//    	admin.setPassword("admin6");
-//    	
-//    	Response response = target.path("adminRegister")
-//                .request(MediaType.APPLICATION_JSON)
-//                .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
-//
-//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
-//    }
-//    
-//    @Test
-//    @JUnitPerfTest(threads = 10, durationMs = 3000)
-//    public void testAddPelicula() {
-//    	Pelicula peli = new Pelicula();
-//    	peli.setCodigo("codigo123");
-//    	peli.setMinutos(10);
-//    	peli.setTitulo("Test");
-//    	peli.setValoracion(8);
-//    	
-//    	Response response = target.path("addPelicula")
-//                .request(MediaType.APPLICATION_JSON)
-//                .post(Entity.entity(peli, MediaType.APPLICATION_JSON));
-//
-//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
-//    }
-//    
-//    @Test
-//    @JUnitPerfTest(threads = 10, durationMs = 3000)
+//    @JUnitPerfTest(threads = 1, durationMs = 3000)
 //    public void testDeleteFilm() {
 //    	Pelicula peli = new Pelicula();
 //    	peli.setCodigo("codigo12");
@@ -174,9 +174,6 @@ public class ResourcePerformanceTest {
 //        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 //
 //    }
-//    
-    
-    
-    
+ 
     
 }

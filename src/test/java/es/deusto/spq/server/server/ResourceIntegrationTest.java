@@ -24,10 +24,17 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import com.github.noconnor.junitperf.JUnitPerfRule;
+import com.github.noconnor.junitperf.JUnitPerfTest;
+import com.github.noconnor.junitperf.JUnitPerfTestRequirement;
+import com.github.noconnor.junitperf.reporting.providers.HtmlReportGenerator;
+
 import categories.IntegrationTest;
+import categories.PerformanceTest;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.Main;
 import es.deusto.spq.server.jdo.Admin;
@@ -37,12 +44,15 @@ import es.deusto.spq.server.jdo.User;
 
 @Category(IntegrationTest.class)
 public class ResourceIntegrationTest {
-private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
+	
+	private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
     
 	public PersistenceManager pm = pmf.getPersistenceManager();
     private static HttpServer server;
     private WebTarget target;
     private Transaction tx = pm.currentTransaction();
+     
+    
     @BeforeClass
     public static void prepareTests() throws Exception {
         // start the server
@@ -175,22 +185,22 @@ private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceMan
         // Verificar que se hayan obtenido las películas correctas
         assertEquals(1, peliculasObtenidas.size());
     }
-//    @Test
-//    public void testObtenerUsuarios() {
-//        // Llamar al método obtenerPeliculas
-//        Response response = target.path("getUsuarios")
-//                .request()
-//                .post(null); // No se envía ningún cuerpo en la solicitud
-//
-//        // Verificar que la respuesta sea exitosa (código 200)
-//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//
-//        // Obtener la lista de películas de la respuesta
-//        List<Pelicula> usuariosObtenidos = response.readEntity(new GenericType<List<Pelicula>>() {});
-//
-//        // Verificar que se hayan obtenido las películas correctas
-//        assertEquals(2, usuariosObtenidos.size());
-//    }
+    @Test
+    public void testObtenerUsuarios() {
+        // Llamar al método obtenerPeliculas
+        Response response = target.path("getUsuarios")
+                .request()
+                .post(null); // No se envía ningún cuerpo en la solicitud
+
+        // Verificar que la respuesta sea exitosa (código 200)
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        // Obtener la lista de películas de la respuesta
+        List<User> usuariosObtenidos = response.readEntity(new GenericType<List<User>>() {});
+
+        // Verificar que se hayan obtenido las películas correctas
+        assertEquals(2, usuariosObtenidos.size());
+    }
     @Test
     public void testLogin() {
         // Crear un objeto User con datos de usuario válidos
