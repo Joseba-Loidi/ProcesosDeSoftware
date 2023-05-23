@@ -48,18 +48,33 @@ public class Resource {
 	
 	private PersistenceManager persistenceManager;
 
+	/**
+     * Establece el administrador de persistencia.
+     * @param persistenceManager El administrador de persistencia a establecer.
+     */
+	
     public void setPersistenceManager(PersistenceManager persistenceManager) {
         this.persistenceManager = persistenceManager;
     }
+    
+    /**
+     * Constructor de la clase Resource.
+     * Crea un PersistenceManager y una Transaction.
+     */
 
 	public Resource() {
 		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 		this.pm = pmf.getPersistenceManager();
 		this.tx = pm.currentTransaction();
 	}
-
+	
 	@POST
 	@Path("/register")
+	/**
+     * Maneja una solicitud POST para registrar un usuario.
+     * @param userData Los datos del usuario enviados en el cuerpo de la solicitud.
+     * @return Una respuesta HTTP indicando el resultado de la operación.
+     */
 	public Response registerUser(UserData userData) {
 		try
         {	
@@ -100,6 +115,11 @@ public class Resource {
 	///////////////////////////////////////
 	@POST
 	@Path("/adminRegister")
+	/**
+     * Maneja una solicitud POST para registrar un administrador.
+     * @param adminData Los datos del administrador enviados en el cuerpo de la solicitud.
+     * @return Una respuesta HTTP indicando el resultado de la operación.
+     */
 	public Response registerAdmin(AdminData adminData) {
 		try
         {	
@@ -138,6 +158,11 @@ public class Resource {
 	////////////AÑADIR PELICULA/////////////
 	@POST
 	@Path("/addPelicula")
+	/**
+     * Maneja una solicitud POST para agregar una película.
+     * @param peliculaData Los datos de la película enviados en el cuerpo de la solicitud.
+     * @return Una respuesta HTTP indicando el resultado de la operación.
+     */
 	public Response addPelicula(PeliculaData peliculaData) {
 		try
 		{
@@ -182,6 +207,12 @@ public class Resource {
 		}
 	}
 	
+	/**
+     * Maneja una solicitud DELETE para eliminar una película.
+     * @param codigo El código de la película proporcionado en la URL.
+     * @return Una respuesta HTTP indicando el resultado de la operación.
+     */
+	
 	@DELETE
     @Path("/{codigo}")
     public Response deleteFilm(@PathParam("codigo") String codigo) {
@@ -213,6 +244,10 @@ public class Resource {
 
 		}
     }
+	/**
+     * Obtiene una lista de todas las películas.
+     * @return Una lista de objetos Pelicula que representa todas las películas almacenadas.
+     */
 	
 	@POST
 	@Path("/getPeliculas")
@@ -237,6 +272,10 @@ public class Resource {
 		return peliculas;
 	}
 
+	/**
+     * Obtiene una lista de todos los usuarios.
+     * @return Una lista de objetos User que representa todos los usuarios almacenados.
+     */
 	
 	@POST
 	@Path("/getUsuarios")
@@ -261,6 +300,11 @@ public class Resource {
 		return usuarios;
 	}
 	
+	/**
+     * Realiza el inicio de sesión de un usuario.
+     * @param userData Objeto UserData que contiene los datos de inicio de sesión del usuario.
+     * @return Una respuesta que indica si el inicio de sesión fue exitoso o no.
+     */
 	
 	@POST
 	@Path("/login")
@@ -304,6 +348,12 @@ public class Resource {
 		
 	}
 	
+	/**
+     * Realiza el inicio de sesión de un administrador.
+     * @param adminData Objeto AdminData que contiene los datos de inicio de sesión del administrador.
+     * @return Una respuesta que indica si el inicio de sesión fue exitoso o no.
+     */
+	
 	@POST
 	@Path("/loginAdmin")
 	public Response loginAdmin(AdminData adminData) {
@@ -345,6 +395,12 @@ public class Resource {
 		
 		
 	}
+	
+	/**
+     * Filtra una película por su nombre.
+     * @param nombre El nombre de la película a filtrar.
+     * @return La película que coincide con el nombre especificado.
+     */
 	
 	@POST
 	@Path("/filtrarNombre")
@@ -409,6 +465,11 @@ public class Resource {
 		return u;
 	}
 	
+	/**
+	 * Filtra películas por género.
+	 * @param genero El género por el que se desea filtrar las películas.
+	 * @return Una lista de películas que pertenecen al género especificado.
+	 */
 	
 	@POST
 	@Path("/filtrarGenero")
@@ -435,6 +496,11 @@ public class Resource {
 		}
 		return peliculas;
 	}
+	/**
+	 * Filtra películas por valoración.
+	 * @param valoracion La valoración por la que se desea filtrar las películas.
+	 * @return Una lista de películas que tienen la valoración especificada.
+	 */
 	
 	@POST
 	@Path("/filtrarValoracion")
@@ -462,6 +528,11 @@ public class Resource {
 		return peliculas;
 	}
 	
+	/**
+	 * Filtra películas por usuario.
+	 * @param user El nombre de usuario por el que se desea filtrar las películas.
+	 * @return Una lista de películas que han sido alquiladas por el usuario especificado.
+	 */
 	@POST
 	@Path("/filtrarUsuario")
 	public List<Pelicula> filtrarUsuario(String user) {
@@ -502,6 +573,12 @@ public class Resource {
 		return peliculas;
 	}
 	
+	/**
+	 * Elimina un usuario.
+	 * @param login El nombre de usuario del usuario que se desea eliminar.
+	 * @return Una respuesta indicando el resultado de la eliminación.
+	 */
+	
 	@POST
 	@Path("/deleteUser")
 	public Response deleteUser(String login) {
@@ -519,6 +596,13 @@ public class Resource {
 		return Response.ok().build();
 			
 	}
+	
+	/**
+	 * Elimina un alquiler.
+	 * @param codPelicula El código de la película asociada al alquiler que se desea eliminar.
+	 * @param loginUser El nombre de usuario asociado al alquiler que se desea eliminar.
+	 * @return Una respuesta indicando el resultado de la eliminación.
+	 */
 	
 	@DELETE
 	@Path("/borrarAlquiler/{codPelicula}/{loginUser}")
@@ -540,9 +624,12 @@ public class Resource {
 	    }
 	}
 
-
 	
-
+	/**
+	 * Crea un nuevo alquiler.
+	 * @param alquilerData Los datos del alquiler que se desea crear.
+	 * @return Una respuesta indicando el resultado de la creación del alquiler.
+	 */
 	@POST
     @Path("/crearAlquiler")
     public Response crearAlquiler(AlquilerData alquilerData) {
