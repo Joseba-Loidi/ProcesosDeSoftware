@@ -70,7 +70,7 @@ public class VentanaPerfil extends JFrame {
 		panel_1.setLayout(new GridLayout(5,1));
 		
 		//poner la imagen
-		ImageIcon imageIcon = new ImageIcon("img//IconoUsuario1.png");
+		ImageIcon imageIcon = new ImageIcon("src/main/resources/IconoUsuario1.png");
 					
 		JLabel labelImagen = new JLabel(imageIcon);
 		panel_1.add(labelImagen);

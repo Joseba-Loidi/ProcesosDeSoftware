@@ -117,7 +117,8 @@ public class VentanaPrincipal extends JFrame {
 		
 		
 		//poner la imagen
-		ImageIcon imageIcon = new ImageIcon("img//IconoUsuario1.png");
+		
+		ImageIcon imageIcon = new ImageIcon("src/main/resources/IconoUsuario1.png");
 				
 		JLabel labelImagen = new JLabel(imageIcon);
 		//labelImagen.setPreferredSize(new Dimension(panel_1.getWidth(), panel_1.getHeight()));
@@ -156,13 +157,13 @@ public class VentanaPrincipal extends JFrame {
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(Color.GRAY);
 		panel_3.add(panel_4, BorderLayout.NORTH);
-		panel_4.setLayout(new GridLayout(1, 5));
+		panel_4.setLayout(new GridLayout(1, 4));
 		
 		//PANELES
 		//---------------- PANEL FAVORITO-----------------------------------------
-		JPanel panelFavorito = new JPanel();
-		panelFavorito.setBackground(Color.CYAN);
-		//panel_3.add(panelFavorito, BorderLayout.CENTER);	
+//		JPanel panelFavorito = new JPanel();
+//		panelFavorito.setBackground(Color.CYAN);
+//		//panel_3.add(panelFavorito, BorderLayout.CENTER);	
 		
 		//---------------- PANEL PELICULAS-----------------------------------------
 		
@@ -616,7 +617,6 @@ public class VentanaPrincipal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//panel_3.getParent().setVisible(false);
-				panelFavorito.setVisible(false);
 				//panelPeliculas.setVisible(false);
 				panelLista.setVisible(false);
 				panelFiltro.setVisible(false);
@@ -641,7 +641,6 @@ public class VentanaPrincipal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//panel_3.getParent().setVisible(false);
-				panelFavorito.setVisible(false);
 				panelPeliculas.setVisible(false);
 				//panelLista.setVisible(false);
 				panelFiltro.setVisible(false);
@@ -653,29 +652,29 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
 		
-		JButton Favoritos = new JButton("Favoritos");
-		Favoritos.setBackground(Color.GRAY);
-		Favoritos.setBorderPainted(false); // Quita el borde del botón
-		Favoritos.setContentAreaFilled(false); // Quita el color de fondo del botón
-		Favoritos.setOpaque(true); // Hace que el botón sea opaco para que se pueda ver el texto
-		Favoritos.setForeground(Color.WHITE); // Establece el color del texto
-		Favoritos.setFont(new Font("Arial", Font.BOLD, 14)); // Establece la fuente y el tamaño del texto
-		panel_4.add(Favoritos);
-		Favoritos.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//panel_3.getParent().setVisible(false);
-				//panelFavorito.setVisible(false);
-				panelPeliculas.setVisible(false);
-				panelLista.setVisible(false);
-				panelFiltro.setVisible(false);
-				
-				panel_3.add(panelFavorito, BorderLayout.CENTER);
-				panelFavorito.setVisible(true);
-				
-			}
-		});
+//		JButton Favoritos = new JButton("Favoritos");
+//		Favoritos.setBackground(Color.GRAY);
+//		Favoritos.setBorderPainted(false); // Quita el borde del botón
+//		Favoritos.setContentAreaFilled(false); // Quita el color de fondo del botón
+//		Favoritos.setOpaque(true); // Hace que el botón sea opaco para que se pueda ver el texto
+//		Favoritos.setForeground(Color.WHITE); // Establece el color del texto
+//		Favoritos.setFont(new Font("Arial", Font.BOLD, 14)); // Establece la fuente y el tamaño del texto
+//		panel_4.add(Favoritos);
+//		Favoritos.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				//panel_3.getParent().setVisible(false);
+//				//panelFavorito.setVisible(false);
+//				panelPeliculas.setVisible(false);
+//				panelLista.setVisible(false);
+//				panelFiltro.setVisible(false);
+//				
+//				panel_3.add(panelFavorito, BorderLayout.CENTER);
+//				panelFavorito.setVisible(true);
+//				
+//			}
+//		});
 		
 		JButton botonFiltrar = new JButton("Filtro");
 		botonFiltrar.setBackground(Color.GRAY);
@@ -690,7 +689,6 @@ public class VentanaPrincipal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//panel_3.getParent().setVisible(false);
-				panelFavorito.setVisible(false);
 				panelPeliculas.setVisible(false);
 				panelLista.setVisible(false);
 				//panelFiltro.setVisible(false);
