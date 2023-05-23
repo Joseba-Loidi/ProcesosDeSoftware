@@ -32,6 +32,17 @@ Para lanzar el cliente debemos de ejecutar este comando en otra ventana:
 
 Test
 ============================
+Para crear la base de datos y el usuario con ciertos permisos en el servidor local (Password=root):
+      
+      mysql –uroot -p < sql/db.sql
+
+Mejorar las clases de base de datos:
+      
+      mvn datanucleus:enhance
+ 
+Ejecute el siguiente comando para crear un esquema de base de datos:
+      
+      mvn datanucleus:schema-create
 
 Para compilar y ejecutar las pruebas unitarias:
 
@@ -45,7 +56,7 @@ Las pruebas de integración se pueden realizar con el siguiente comando. Se lanz
     
     mvn verify -Pintegration-tests
     
-Las pruebas de rendimiento se pueden realizar con el siguiente comando.
+Las pruebas de rendimiento sobre las pruebas de integración se pueden realizar con el siguiente comando.
 
 	mvn verify -Pperformance-tests
 
