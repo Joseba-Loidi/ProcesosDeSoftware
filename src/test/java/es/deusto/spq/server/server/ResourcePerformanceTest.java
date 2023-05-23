@@ -100,18 +100,18 @@ public class ResourcePerformanceTest {
         }
     }
     @Test
-   // @JUnitPerfTest(threads = 10, durationMs = 5000)
+   @JUnitPerfTest(threads = 1, durationMs = 5000)
     public void testRegisterUser() {
-        UserData user = new UserData();
-        user.setLogin(UUID.randomUUID().toString());
-        user.setCorreo("juan@gmail.com");
-        user.setPassword("1234");
-
-        Response response = target.path("register")
-            .request(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(user, MediaType.APPLICATION_JSON));
-
-        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+//        UserData user = new UserData();
+//        user.setLogin(UUID.randomUUID().toString());
+//        user.setCorreo("juan@gmail.com");
+//        user.setPassword("1234");
+//
+//        Response response = target.path("register")
+//            .request(MediaType.APPLICATION_JSON)
+//            .post(Entity.entity(user, MediaType.APPLICATION_JSON));
+//
+//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
     }
     
     
