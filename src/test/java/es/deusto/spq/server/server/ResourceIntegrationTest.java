@@ -1,6 +1,7 @@
 package es.deusto.spq.server.server;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
@@ -35,9 +36,11 @@ import com.github.noconnor.junitperf.reporting.providers.HtmlReportGenerator;
 
 import categories.IntegrationTest;
 import categories.PerformanceTest;
+import es.deusto.spq.pojo.AlquilerData;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.Main;
 import es.deusto.spq.server.jdo.Admin;
+import es.deusto.spq.server.jdo.Alquiler;
 import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Pelicula;
 import es.deusto.spq.server.jdo.User;
@@ -232,4 +235,22 @@ public class ResourceIntegrationTest {
         // Verificar que la respuesta sea exitosa (código 200)
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
+    
+//    @Test
+//    public void testCrearAlquiler() {
+//        AlquilerData alquiler = new AlquilerData();
+//        alquiler.setCodPelicula("codigo123");
+//        alquiler.setLoginUser("Iñaki");
+//        
+//        // Llamar al método 
+//        Response response = target.path("crearAlquiler")
+//                .request(MediaType.APPLICATION_JSON)
+//                .post(Entity.entity(alquiler, MediaType.APPLICATION_JSON));
+//
+//        // Verificar que la respuesta sea exitosa (código 200)
+//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+//    }
+    
+     
+    
 }

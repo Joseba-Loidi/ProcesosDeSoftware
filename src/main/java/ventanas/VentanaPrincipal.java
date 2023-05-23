@@ -170,6 +170,7 @@ public class VentanaPrincipal extends JFrame {
 		JPanel panelPeliculas = new JPanel();
 		panelPeliculas.setBackground(Color.RED);
 		panelPeliculas.setLayout(new BorderLayout(0, 0));
+		panel_3.add(panelPeliculas, BorderLayout.CENTER);
 		//panel_3.add(panelPeliculas, BorderLayout.CENTER);
 		
 		//Creamos la JTable
@@ -275,7 +276,6 @@ public class VentanaPrincipal extends JFrame {
 		//---------------- PANEL FILTRO-----------------------------------------
 		JPanel panelFiltro = new JPanel();
 		panelFiltro.setBackground(Color.green);
-		panel_3.add(panelFiltro, BorderLayout.CENTER);
 		panelFiltro.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_5 = new JPanel();

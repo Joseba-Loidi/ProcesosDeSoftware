@@ -32,6 +32,7 @@ import categories.PerformanceTest;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.Main;
 import es.deusto.spq.server.jdo.Admin;
+import es.deusto.spq.server.jdo.Alquiler;
 import es.deusto.spq.server.jdo.Genero;
 import es.deusto.spq.server.jdo.Pelicula;
 import es.deusto.spq.server.jdo.User;
@@ -145,6 +146,22 @@ public class ResourcePerformanceTest {
 
         assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
     }
+    
+//    @Test
+//    @JUnitPerfTest(threads = 10, durationMs = 3000)
+//    public void testCrearAlquiler() {
+//        Alquiler alquiler = new Alquiler();
+//        alquiler.setCodPelicula("codigo123");
+//        alquiler.setLoginUser("Iñaki");
+//        
+//        // Llamar al método 
+//        Response response = target.path("crearAlquiler")
+//                .request(MediaType.APPLICATION_JSON)
+//                .post(Entity.entity(alquiler, MediaType.APPLICATION_JSON));
+//
+//        // Verificar que la respuesta sea exitosa (código 200)
+//        assertEquals(Family.SUCCESSFUL, response.getStatusInfo().getFamily());
+//    }
     
 //    @Test
 //    @JUnitPerfTest(threads = 1, durationMs = 3000)
